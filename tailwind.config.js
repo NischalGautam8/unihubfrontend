@@ -9,6 +9,7 @@ module.exports = {
     fontFamily: {
       inter: ["Inter", "sans-serif"],
       poppins: ["Poppins", "sans-serif"],
+      ubuntu: ["Ubuntu", "sans-serif"],
     },
     colors: {
       background: "#030303",
