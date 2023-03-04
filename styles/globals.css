@@ -12,8 +12,8 @@ img {
 }
 * {
   margin: 0;
-  /* background-color: hsl(202, 22%, 10%);
-   */
+  /* background-color: black; */
+
   color: white;
   font-family: "Inter", sans-serif;
 }
@@ -28,4 +28,17 @@ input {
 .icon:hover {
   background-color: #3c3232;
   border-radius: 16px;
+}
+.post__wrapper {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.fixx {
+  position: fixed;
+  width: 100%;
+  background-color: black;
+}
+.mainn {
+  margin-top: 5rem;
+  padding-top: 15px;
+  padding-bottom: 25px;
 }

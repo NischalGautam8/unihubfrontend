@@ -21,25 +21,11 @@ function SinglePost({
     <div className="" style={{ width: "700px" }}>
       <div
         style={{ backgroundColor: "#000000" }}
-        className="post__wrapper   flex rounded-lg gap-3 pl-2 pr-2 pb-2 pt-2 "
+        className="post__wrapper    flex rounded-lg gap-3 pl-2 pr-2 pb-2 pt-2 "
       >
-        {/* <div className="likes__section flex flex-col gap-3 ">
-          <Image
-            style={{ width: "32px" }}
-            width={32}
-            alt="upvote"
-            src={uplike}
-          ></Image>
-          <Image
-            //   style={{ width: "32px" }}
-            width={32}
-            alt="downvote"
-            src={downlike}
-          ></Image>
-        </div> */}
         <div
           style={{ objectFit: "cover" }}
-          className="profile__pic__content flex gap-2"
+          className="profile__pic__content flex gap-3"
         >
           <div className="">
             <Image
@@ -76,8 +62,8 @@ function SinglePost({
                 <Image
                   src={comment}
                   alt="comment"
-                  width={20}
-                  height={20}
+                  width={18}
+                  height={18}
                 ></Image>
                 <h1
                   className=" text-sm font-ubuntu "
@@ -90,8 +76,8 @@ function SinglePost({
                 <Image
                   src={comment}
                   alt="comment"
-                  width={20}
-                  height={20}
+                  width={18}
+                  height={18}
                 ></Image>
                 <h1
                   className=" text-sm font-ubuntu"
@@ -101,7 +87,7 @@ function SinglePost({
                 </h1>
               </div>
               <div className="comment flex items-center gap-2">
-                <Image src={share} alt="comment" width={20} height={20}></Image>
+                <Image src={share} alt="comment" width={18} height={18}></Image>
                 <h1
                   className=" text-sm font-ubuntu"
                   style={{ color: "#8B8B8B" }}
