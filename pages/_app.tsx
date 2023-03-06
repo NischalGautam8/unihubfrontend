@@ -50,7 +50,9 @@ export default function App({ Component, pageProps }: AppProps) {
         style={{ backgroundColor: "#000000" }}
         className="whole__wrapper pb-10"
       >
-        <Navbar />
+        <div className="">
+          <Navbar />
+        </div>
         <div className="lower flex sm:gap-2 lg:gap-36">
           <div className="wrapper__forflex  ">
             <div className="overflow-x-hidden fixed ">

@@ -18,9 +18,18 @@ img {
   font-family: "Inter", sans-serif;
 }
 input {
-  color: black;
+  color: rgb(255, 255, 255);
+  background-color: black;
   padding: 0 5px;
+  border-bottom: 1px solid rgb(255, 255, 255, 0.2);
 }
+input:focus {
+  transition-delay: 100ms;
+  transition-timing-function: ease-in-out;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  outline: none;
+}
+
 .icon {
   font-weight: 400;
   justify-content: start;

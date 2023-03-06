@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Posts from "@/components/Posts";
 import SinglePost from "@/components/SinglePost";
@@ -33,10 +33,14 @@ function id({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const route = useRouter();
   console.log(data);
+  const [postdata, setpostdata] = useState(data);
+  const [commentdata, setcommentdata] = useState(comm);
+
+  //router.push(/posts/id?route.pathname)
   return (
-    <div className=" boddy h-screen ">
-      <div className=" fixx flex gap-2 items-center  ">
-        <Link href="">
+    <div className="  min-h-screen ">
+      <div className=" fixed flex gap-2  items-center  ">
+        <Link href={route.query.refby?.toString() || "/"}>
           <Icon width={42} icon="ion:arrow-back-outline" color="white" />
         </Link>
 
@@ -46,7 +50,7 @@ function id({
         <SinglePost key={data._id} {...data} />
         <div className="comments">
           {console.log("comments array", comm)}
-          <Comment data={comm} />
+          <Comment data={comm.msg} />
         </div>
       </div>
     </div>
