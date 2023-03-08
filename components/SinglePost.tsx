@@ -20,7 +20,7 @@ function SinglePost({
   userId,
   lastName,
   postimage,
-  comments,
+  comments, //make it just comment number
   likes,
 }: postinterface) {
   const router = useRouter();
@@ -28,7 +28,8 @@ function SinglePost({
     likes.includes("64030116af5f071d1cefc0a1")
   ); //look from prop
   const [likedCount, setLikedCount] = useState<number>(likes.length);
-  console.log(liked);
+  const [commentCount, setCommentCount] = useState<number>(comments.length);
+  console.log("comment count", comments);
   ///check if the user has liked it or not previously ,do it while fetching the data in the backend check for the user requesting data lies in each of the posts liked array if liked then set liked state as true default & vice versa
   //or you can check it infront end with
   console.log(_id);
@@ -42,22 +43,21 @@ function SinglePost({
       );
       console.log(response);
       response.status == 200 && setLiked(true);
-      liked == true && setLikedCount((prev) => prev + 1);
+      response.status == 200 && setLikedCount((prev) => prev + 1);
     } catch (err) {
       console.log(err);
     }
   };
   const handleUnlike = async () => {
     const response = await axios.post(
-      `http://localhost:5000/api/posts/like/${_id}`,
+      `http://localhost:5000/api/posts/unlike/${_id}`,
       {
         userid: "64030116af5f071d1cefc0a1",
       }
     );
     console.log(response);
     response.status == 200 && setLiked(false);
-    liked == true && setLikedCount((prev) => prev - 1);
-    setLiked(false);
+    response.status == 200 && setLikedCount((prev) => prev - 1);
   };
   return (
     <div
@@ -141,7 +141,7 @@ function SinglePost({
                   className=" text-sm font-ubuntu "
                   style={{ color: "#8B8B8B" }}
                 >
-                  Comments {comments.length}
+                  Comments {commentCount}
                 </h1>
               </div>
               <div className="comment flex items-center gap-2">

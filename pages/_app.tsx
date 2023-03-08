@@ -16,7 +16,6 @@ function LoadingSpinner() {
     const handleStart = (url) => url !== router.asPath && setLoading(true);
     const handleComplete = (url) => url === router.asPath && setLoading(false);
 
-    console.log(router.asPath);
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);

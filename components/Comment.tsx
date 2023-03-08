@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SingleComment from "./SingleComment";
 import Image from "next/image";
 import pp from "../public/pp.jpg";
 import axios from "axios";
+import Loading from "./loading";
 import { Router, useRouter } from "next/router";
+import { commentinterface } from "@/interfaces/commentinterface";
 interface comment {
   _id: string;
   user: string;
@@ -13,16 +15,28 @@ interface comment {
   updatedAt: string;
   likes: Array<string>;
 }
-function Comment({ data }: { data: Array<comment> }) {
+function Comment() {
   const router = useRouter();
-  console.log(router.query.id);
-  console.log(data);
-  const [commentsdata, setcommentsdata] = useState(data);
+  const [loading, setLoading] = useState(true);
+  const [commentsdata, setcommentsdata] = useState([]);
   const [err, seterr] = useState("");
   console.log("commentdatatype", commentsdata);
-  const mappeed = commentsdata.map((element) => (
+  const mappeed = commentsdata.map((element: commentinterface) => (
     <SingleComment key={element._id} {...element} />
   ));
+  const getcomment = async () => {
+    console.log("postid" + router.query.id);
+
+    const comments = await axios.get(
+      `http://localhost:5000/api/comment/${router.query.id}`
+    );
+    console.log(comments);
+    setcommentsdata(comments.data.msg);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getcomment();
+  }, []);
   const [comment, setcomment] = useState("");
   const makecomment = async () => {
     try {
@@ -37,6 +51,8 @@ function Comment({ data }: { data: Array<comment> }) {
         content: comment,
         userid: "64030116af5f071d1cefc0a2",
         postid: router.query.id,
+        likes: [],
+        replies: [],
       };
       console.log(comm);
       comm.status == 200 && setcommentsdata([...commentsdata, newdata]);
@@ -48,6 +64,7 @@ function Comment({ data }: { data: Array<comment> }) {
   console.log(comment);
   return (
     <div>
+      {loading && <Loading />}
       {err && (
         <div className="text-2xl mx-auto flex max-w-fit items-end gap-2  ">
           <h1>Unable to add comment</h1>

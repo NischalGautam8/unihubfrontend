@@ -35,7 +35,6 @@ function id({
   console.log(data);
   const [postdata, setpostdata] = useState(data);
   const [commentdata, setcommentdata] = useState(comm);
-
   //router.push(/posts/id?route.pathname)
   return (
     <div className="  min-h-screen ">
@@ -43,14 +42,12 @@ function id({
         <Link href={route.query.refby?.toString() || "/"}>
           <Icon width={42} icon="ion:arrow-back-outline" color="white" />
         </Link>
-
         <h1 className="text-3xl font-bold font-ubuntu">Post</h1>
       </div>
       <div className="mainn flex flex-col ">
         <SinglePost key={data._id} {...data} />
         <div className="comments">
-          {console.log("comments array", comm)}
-          <Comment data={comm.msg} />
+          <Comment />
         </div>
       </div>
     </div>
@@ -64,14 +61,10 @@ export const getServerSideProps: GetServerSideProps<{
   const id = context.query.id;
   const res = await axios.get(`http://localhost:5000/api/posts/${id}`);
   let data = res.data;
-  var comm = await fetch(`http://localhost:5000/api/comment/${id}`);
-  comm = await comm.json();
-  console.log(comm);
-  //   console.log(res);
+
   return {
     props: {
       data,
-      comm,
     },
   };
 };
