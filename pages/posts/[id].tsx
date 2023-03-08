@@ -47,7 +47,7 @@ function id({
       <div className="mainn flex flex-col ">
         <SinglePost key={data._id} {...data} />
         <div className="comments">
-          <Comment />
+          <Comment compontenttype={"comment"} />
         </div>
       </div>
     </div>

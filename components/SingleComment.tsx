@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { commentinterface } from "@/interfaces/commentinterface";
+import Comment from "./Comment";
 function SingleComment({
   _id,
   content,
@@ -26,13 +27,14 @@ function SingleComment({
   const [liked, setLiked] = useState<Boolean>(
     likes?.includes("64030116af5f071d1cefc0a1")
   ); //look from prop
-  const [likedCount, setLikedCount] = useState<number>(likes.length);
+  const [likedCount, setLikedCount] = useState<number>(likes?.length);
   const [commentCount, setCommentCount] = useState<number>(replies?.length);
-  const [reply, setreply] = useState(true);
+  const [reply, setreply] = useState(false);
   console.log(liked);
   ///check if the user has liked it or not previously ,do it while fetching the data in the backend check for the user requesting data lies in each of the posts liked array if liked then set liked state as true default & vice versa
   //or you can check it infront end with
   console.log(_id);
+  console.log("lastname",lastName,"fistsname",firstName);
   const handleLike = async () => {
     try {
       const response = await axios.post(
@@ -101,7 +103,7 @@ function SingleComment({
                 {liked ? (
                   <div>
                     <FavoriteIcon
-                      onClick={(e) => {
+                      onClick={() => {
                         handleUnlike();
                       }}
                     />
@@ -115,21 +117,21 @@ function SingleComment({
                   className=" text-sm font-ubuntu "
                   style={{ color: "#8B8B8B" }}
                 >
-                  {likedCount}
+                  Like {likedCount}
                 </h1>
               </div>
-              <div className="comment flex items-center gap-2">
-                <Image
+              <div onClick={()=>setreply(prev=>!prev)} className="comment icon cursor-pointer  flex items-center gap-2">
+                <Image onClick={()=>setreply(prev=>!prev)}
                   src={commentpic}
                   alt="comment"
                   width={18}
                   height={18}
                 ></Image>
                 <h1
-                  className=" icon text-sm font-ubuntu "
+                  className="  text-sm font-ubuntu "
                   style={{ color: "#8B8B8B" }}
                 >
-                  Reply {replies}
+                  Reply {replies.length}
                 </h1>
               </div>
             </div>
@@ -137,6 +139,9 @@ function SingleComment({
         </div>
       </div>
       {reply && (
+        <div className="replies__section">
+
+        
         <div className="flex items-center">
           <Image
             className="rounded-full max-w-fit"
@@ -156,6 +161,8 @@ function SingleComment({
             type="text"
             placeholder="Add a comment..."
           />
+        </div>
+        <Comment compontenttype={"reply"} commentid={_id}/>
         </div>
       )}
       {comment != "" && (
@@ -179,5 +186,4 @@ function SingleComment({
     </div>
   );
 }
-
 export default SingleComment;

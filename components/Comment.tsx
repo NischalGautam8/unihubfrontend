@@ -3,7 +3,7 @@ import SingleComment from "./SingleComment";
 import Image from "next/image";
 import pp from "../public/pp.jpg";
 import axios from "axios";
-import Loading from "./loading";
+import Loading from "./Loading";
 import { Router, useRouter } from "next/router";
 import { commentinterface } from "@/interfaces/commentinterface";
 interface comment {
@@ -15,7 +15,7 @@ interface comment {
   updatedAt: string;
   likes: Array<string>;
 }
-function Comment() {
+function Comment({compontenttype,commentid}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [commentsdata, setcommentsdata] = useState([]);
@@ -25,12 +25,12 @@ function Comment() {
     <SingleComment key={element._id} {...element} />
   ));
   const getcomment = async () => {
-    console.log("postid" + router.query.id);
-
+    console.log("postid" + commentid?commentid:router.query.id);
     const comments = await axios.get(
-      `http://localhost:5000/api/comment/${router.query.id}`
+      `http://localhost:5000/api/${compontenttype}/${commentid?commentid:router.query.id}`
     );
-    console.log(comments);
+
+    console.log("comments",comments);
     setcommentsdata(comments.data.msg);
     setLoading(false);
   };
@@ -40,10 +40,10 @@ function Comment() {
   const [comment, setcomment] = useState("");
   const makecomment = async () => {
     try {
-      const comm = await axios.post("http://localhost:5000/api/comment", {
+      const comm = await axios.post(`http://localhost:5000/api/${componenttype}/${commentid?commentid:router.query.id}`, {
         content: comment,
         userid: "64030116af5f071d1cefc0a2",
-        postid: router.query.id,
+        
       });
 
       setcomment("");

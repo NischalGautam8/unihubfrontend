@@ -127,7 +127,7 @@ function SinglePost({
                   style={{ color: "#8B8B8B" }}
                 >
                   Like {likedCount}
-                  {console.log(likedCount)}
+                 
                 </h1>
               </div>
               <div className="comment flex items-center gap-2">

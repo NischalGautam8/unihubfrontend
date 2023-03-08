@@ -55,9 +55,9 @@ input:focus {
   background-color: "#000000";
 }
 .icon {
-  padding: 3px 5px;
+  padding: 3px 7px;
   border-radius: 14px;
 }
 icon:hover {
-  background-color: #3c3232;
+  background-color: #616060;
 }
