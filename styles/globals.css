@@ -61,3 +61,17 @@ input:focus {
 icon:hover {
   background-color: #616060;
 }
+.signup__button {
+  background-color: rgb(95, 88, 231);
+
+  font-size: 22px;
+  color: white;
+  border-radius: 19px;
+}
+.login__button {
+  color: rgb(95, 88, 231);
+  font-size: 22px;
+  background-color: white;
+  border-radius: 19px;
+  border: 2px rgb(95, 88, 231) solid;
+}
