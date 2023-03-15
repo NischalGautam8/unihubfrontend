@@ -2,10 +2,12 @@ import React from "react";
 import Image from "next/image";
 import art from "../public/art.jpg";
 import { useState } from "react";
-import Form from "../components/Form";
+import LoginForm from "../components/LoginForm";
+import SignUpForm from "@/components/SignUpForm";
 function Login() {
-  const [chooseLogin, setChooseLogin] = useState(true);
+  const [chooseLogin, setChooseLogin] = useState(false);
   const [chooseRegister, setChooseRegister] = useState(false);
+  console.log(chooseLogin, chooseRegister);
   return (
     <div
       style={{ backgroundColor: "black" }}
@@ -24,14 +26,30 @@ function Login() {
             style={{ width: "60%" }}
             className="btns pl-3   flex flex-col  gap-3"
           >
-            <button className="signup__button  py-1 px-20  ">Sign Up</button>
-            <button className="login__button py-1   px-20">Login</button>
+            <button
+              onClick={() => {
+                setChooseLogin(false);
+                setChooseRegister(true);
+              }}
+              className="signup__button  py-1 px-20  "
+            >
+              Sign Up
+            </button>
+            <button
+              onClick={() => {
+                setChooseRegister(false);
+                setChooseLogin(true);
+              }}
+              className="login__button py-1   px-20"
+            >
+              Login
+            </button>
           </div>
         </div>
       )}
-      {chooseLogin && <Form type="login" />}
+      {chooseLogin && <LoginForm />}
+      {chooseRegister && <SignUpForm />}
     </div>
   );
 }
-
 export default Login;

@@ -41,11 +41,10 @@ function LoadingSpinner() {
   );
 }
 export default function App({ Component, pageProps }: AppProps) {
-  const router=useRouter();
-  console.log(router.pathname)
-  return (
-
-   router.pathname!=="/login" ? <>
+  const router = useRouter();
+  console.log(router.pathname);
+  return router.pathname !== "/login" ? (
+    <>
       <LoadingSpinner />
 
       <div
@@ -66,7 +65,11 @@ export default function App({ Component, pageProps }: AppProps) {
           </div>
         </div>
       </div>
-    </>:<> <Component {...pageProps} /></>
-
+    </>
+  ) : (
+    <>
+      {" "}
+      <Component {...pageProps} />
+    </>
   );
 }

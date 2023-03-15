@@ -18,8 +18,8 @@ img {
   font-family: "Inter", sans-serif;
 }
 input {
-  color: rgb(255, 255, 255);
-  background-color: black;
+  color: black;
+  background-color: rgb(247, 247, 247);
   padding: 0 5px;
   border-bottom: 1px solid rgb(255, 255, 255, 0.2);
 }
@@ -74,4 +74,15 @@ icon:hover {
   background-color: white;
   border-radius: 19px;
   border: 2px rgb(95, 88, 231) solid;
+}
+.login__button2 {
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  background-color: rgb(95, 88, 231);
+  border-radius: 19px;
+  border: 2px rgb(95, 88, 231) solid;
+}
+.singleconvo {
+  font-size: 18px;
+  font-weight: bold;
 }

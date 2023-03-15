@@ -7,7 +7,6 @@ import { Icon } from "@iconify/react";
 import { InferGetServerSidePropsType } from "next";
 import { GetServerSideProps } from "next";
 import Comment from "@/components/Comment";
-
 import axios from "axios";
 interface comment {
   user: string;
@@ -61,7 +60,6 @@ export const getServerSideProps: GetServerSideProps<{
   const id = context.query.id;
   const res = await axios.get(`http://localhost:5000/api/posts/${id}`);
   let data = res.data;
-
   return {
     props: {
       data,

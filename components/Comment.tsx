@@ -15,7 +15,7 @@ interface comment {
   updatedAt: string;
   likes: Array<string>;
 }
-function Comment({compontenttype,commentid}) {
+function Comment({ compontenttype, commentid }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [commentsdata, setcommentsdata] = useState([]);
@@ -25,12 +25,14 @@ function Comment({compontenttype,commentid}) {
     <SingleComment key={element._id} {...element} />
   ));
   const getcomment = async () => {
-    console.log("postid" + commentid?commentid:router.query.id);
+    console.log("postid" + commentid ? commentid : router.query.id);
     const comments = await axios.get(
-      `http://localhost:5000/api/${compontenttype}/${commentid?commentid:router.query.id}`
+      `http://localhost:5000/api/${compontenttype}/${
+        commentid ? commentid : router.query.id
+      }`
     );
 
-    console.log("comments",comments);
+    console.log("comments", comments);
     setcommentsdata(comments.data.msg);
     setLoading(false);
   };
@@ -40,17 +42,21 @@ function Comment({compontenttype,commentid}) {
   const [comment, setcomment] = useState("");
   const makecomment = async () => {
     try {
-      const comm = await axios.post(`http://localhost:5000/api/${componenttype}/${commentid?commentid:router.query.id}`, {
-        content: comment,
-        userid: "64030116af5f071d1cefc0a2",
-        
-      });
+      const comm = await axios.post(
+        `http://localhost:5000/api/${componenttype}/${
+          commentid ? commentid : router.query.id
+        }`,
+        {
+          content: comment,
+          userid: "64030116af5f071d1cefc0a2",
+        }
+      );
 
       setcomment("");
       const newdata = {
         content: comment,
         userid: "64030116af5f071d1cefc0a2",
-        postid: router.query.id,
+        postid: router.query.id, //look here
         likes: [],
         replies: [],
       };
