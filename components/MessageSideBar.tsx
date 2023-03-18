@@ -1,6 +1,6 @@
 import React from "react";
 import SingleConversation from "./SingleConversation";
-import conversations from "../interfaces/conversation";
+import { conversations } from "../interfaces/conversation";
 
 function MessageSideBar({
   conversations,
@@ -12,11 +12,8 @@ function MessageSideBar({
     <SingleConversation data={element} key={element._id} />
   ));
   return (
-    <div
-      style={{ backgroundColor: "#210404" }}
-      className="flex flex-col gap-5 min-h-screen"
-    >
-      {tomap}
+    <div className=" msg_sidebar pt-4 flex flex-col min-h-screen ">
+      <div className=" ">{tomap}</div>
     </div>
   );
 }

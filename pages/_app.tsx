@@ -31,7 +31,7 @@ function LoadingSpinner() {
     loading && (
       <div
         style={{ backgroundColor: "#000000" }}
-        className="h-screen flex items-center justify-center "
+        className="h-screen flex items-center justify-center"
       >
         <Box sx={{ display: "flex" }}>
           <CircularProgress color="secondary" />
@@ -45,14 +45,14 @@ export default function App({ Component, pageProps }: AppProps) {
   console.log(router.pathname);
   return router.pathname !== "/login" ? (
     <>
-      <LoadingSpinner />
+      {router.pathname != "/messages/[id]" && <LoadingSpinner />}
 
       <div
         style={{ backgroundColor: "#000000" }}
         className="whole__wrapper pb-10"
       >
-        <div className="">
-          <Navbar />
+        <div className="pt-6">
+          {router.pathname != "/messages/[id]" && <Navbar />}
         </div>
         <div className="lower flex sm:gap-2 lg:gap-36">
           <div className="wrapper__forflex  ">
@@ -60,7 +60,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Sidebar />
             </div>
           </div>
-          <div className="posts flex ml-32 flex-col gap-2">
+          <div className="posts w-full flex ml-32 flex-col gap-2">
             <Component {...pageProps} />
           </div>
         </div>
@@ -68,7 +68,6 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   ) : (
     <>
-      {" "}
       <Component {...pageProps} />
     </>
   );

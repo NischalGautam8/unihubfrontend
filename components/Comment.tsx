@@ -94,7 +94,7 @@ function Comment({ compontenttype, commentid }) {
         <input
           value={comment}
           onChange={(e) => setcomment(e.target.value)}
-          className=" py-1 w-full pl-4 mt-7 mb-5"
+          className="comment py-1 w-full pl-4 mt-7 mb-5"
           type="text"
           placeholder="Add a comment..."
         />

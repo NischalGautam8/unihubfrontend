@@ -17,17 +17,20 @@ img {
   color: white;
   font-family: "Inter", sans-serif;
 }
-input {
+.comment input {
   color: black;
-  background-color: rgb(247, 247, 247);
   padding: 0 5px;
   border-bottom: 1px solid rgb(255, 255, 255, 0.2);
 }
-input:focus {
+.comment input:focus {
   transition-delay: 100ms;
   transition-timing-function: ease-in-out;
   border-bottom: 1px solid rgb(255, 255, 255);
   outline: none;
+}
+.send_message {
+  background-color: #4b4949;
+  border: none;
 }
 
 .icon {
@@ -82,7 +85,20 @@ icon:hover {
   border-radius: 19px;
   border: 2px rgb(95, 88, 231) solid;
 }
+.msg_sidebar {
+  border: 1px solid rgb(247, 247, 247, 0.1);
+
+  /* background-color: #27292a; */
+}
 .singleconvo {
   font-size: 18px;
   font-weight: bold;
+}
+.nav__section {
+  background-color: #1e1e1f;
+  border-bottom: rgb(247, 247, 247, 0.3) 1px solid;
+  width: 100%;
+}
+.hi {
+  color: #5858ce;
 }
