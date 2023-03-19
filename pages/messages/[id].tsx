@@ -10,13 +10,7 @@ import axios from "axios";
 const socket = io.connect("http://localhost:5000");
 function Group({ data }: { data: Array<any> }) {
   const router = useRouter();
-  const [messages, setMessageReceived] = useState({
-    _id: "",
-    content: "",
-    sender: "",
-    receiver: "",
-    conversation: "",
-  });
+  const [messages, setMessageReceived] = useState({});
   console.log("received", messages);
   const [messagetosend, setmessagetosend] = useState("");
   const roomtojoin = router.query.id;
@@ -43,6 +37,7 @@ function Group({ data }: { data: Array<any> }) {
       receiver: router.query.id,
     });
   };
+
   useEffect(() => {
     socket.on(
       "receive_message",
@@ -63,7 +58,8 @@ function Group({ data }: { data: Array<any> }) {
         });
       }
     );
-  }, [socket]);
+  });
+  console.log("new messagge ", messages);
   return (
     <div className="flex min-h-screen w-full">
       {console.log("message received")}
@@ -75,6 +71,7 @@ function Group({ data }: { data: Array<any> }) {
           newMessage={messages}
         />
       </div>
+      <button onClick={() => sendMessage()}>send</button>
     </div>
   );
 }

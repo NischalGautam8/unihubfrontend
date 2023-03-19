@@ -30,7 +30,7 @@ function MessageSection({
     updatedAt: string;
   }>({ name: "", id: "", updatedAt: "" });
   const [memberData, setMemberData] = useState([]);
-  console.log(router.pathname);
+  // console.log(router.pathname);
   const [inputMsg, setInputMsg] = useState("");
   const fetchMessages = async () => {
     try {
@@ -42,7 +42,8 @@ function MessageSection({
         id: res.data.conversation._id,
         updatedAt: res.data.conversation.updatedAt,
       });
-      setMessagesData([res.data.conversation.messages]);
+      console.log(res);
+      setMessagesData([...res.data.conversation.messages, newMessage]);
       setMemberData(res.data.conversation.users);
       setload(false);
       console.log(res);
@@ -51,10 +52,12 @@ function MessageSection({
     }
   };
   useEffect(() => {
-    fetchMessages().then(() => setMessagesData([...messagesData, newMessage]));
-  }, [newMessage, router.query.id]);
-
-  console.log(conversationData);
+    setNewMessage(newMessage);
+    fetchMessages();
+  }, [newMessage]);
+  //update  on prop change
+  console.log("new msge", newmsg);
+  // console.log(conversationData);
   return (
     <div className="w-3/5 sticky  ">
       {load ? (

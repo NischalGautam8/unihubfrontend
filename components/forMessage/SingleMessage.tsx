@@ -4,7 +4,7 @@ import { determineMarginAndBackground } from "@/chatconfig/determineMargin";
 import cookie from "js-cookie";
 function SingleMessage({ message }: { message: messageinteface }) {
   const config = determineMarginAndBackground(message);
-  console.log(config);
+  // console.log(config);
   const user = JSON.parse(cookie.get("user"));
   return (
     <div
