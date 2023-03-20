@@ -17,6 +17,7 @@ img {
   color: white;
   font-family: "Inter", sans-serif;
 }
+
 .comment input {
   color: black;
   padding: 0 5px;
@@ -101,4 +102,11 @@ icon:hover {
 }
 .hi {
   color: #5858ce;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollable_chat {
+  max-height: 80vh;
+  min-height: 80vh;
 }

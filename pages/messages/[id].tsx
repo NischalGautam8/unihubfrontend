@@ -4,13 +4,22 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MessageSideBar from "@/components/MessageSideBar";
 import MessageSection from "@/components/MessageSection";
-import cookie from "js-cookie";
+import Cookies from "js-cookie";
 import { GetServerSideProps } from "next";
 import axios from "axios";
-const socket = io.connect("http://localhost:5000");
+import messageinterface from "../../interfaces/messageinterface";
+import { userinterface } from "../../interfaces/userinterface";
+const token = Cookies.get("refresh_token");
+// console.log("token", token);
+const socket = io.connect("http://localhost:5000", {
+  auth: {
+    token: token,
+    user: Cookies.get("user") && JSON.parse(Cookies.get("user")).userid,
+  },
+});
 function Group({ data }: { data: Array<any> }) {
   const router = useRouter();
-  const [messages, setMessageReceived] = useState({});
+  const [messages, setMessageReceived] = useState<messageinterface>({});
   console.log("received", messages);
   const [messagetosend, setmessagetosend] = useState("");
   const roomtojoin = router.query.id;
@@ -24,10 +33,11 @@ function Group({ data }: { data: Array<any> }) {
       console.log(err);
     }
   };
+  const userx = Cookies.get("user") && JSON.parse(Cookies.get("user"));
   const functionTopass = (data: string) => {
     setmessagetosend(data);
   };
-  const userx = cookie.get("user") && JSON.parse(cookie.get("user"));
+
   console.log(userx);
   const sendMessage = () => {
     socket.emit("send_message", {
@@ -61,29 +71,27 @@ function Group({ data }: { data: Array<any> }) {
   });
   console.log("new messagge ", messages);
   return (
-    <div className="flex min-h-screen w-full">
-      {console.log("message received")}
-      <div className="flex w-full">
+    <div className="flex min-h-screen   w-full ">
+      <div className="flex w-full ">
         <MessageSideBar conversations={data} />
         <MessageSection
           updateParent={functionTopass}
           sendMessage={sendMessage}
           newMessage={messages}
+          joinRoom={joinRoom}
         />
       </div>
-      <button onClick={() => sendMessage()}>send</button>
     </div>
   );
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async (context) => {
-  //   console.log(context.req.headers.cookie);
-  const { cookie } = context.req.headers;
-  //   console.log(cookie);
+  const user = JSON.parse(context.req.cookies.user);
+  const { Cookies } = context.req.headers;
+  //   console.log(Cookies);
   const response = await axios.get(
-    "http://localhost:5000/api/conversation?userid=64030116af5f071d1cefc0a2"
+    `http://localhost:5000/api/conversation?userid=${user.userid}`
   );
-  console.log(response.data);
   return {
     props: { data: response.data },
   };

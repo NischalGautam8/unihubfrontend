@@ -47,10 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       {router.pathname != "/messages/[id]" && <LoadingSpinner />}
 
-      <div
-        style={{ backgroundColor: "#000000" }}
-        className="whole__wrapper pb-10"
-      >
+      <div style={{ backgroundColor: "#000000" }} className="whole__wrapper ">
         <div className="pt-6">
           {router.pathname != "/messages/[id]" && <Navbar />}
         </div>

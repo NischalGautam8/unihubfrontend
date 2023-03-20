@@ -14,10 +14,12 @@ function MessageSection({
   updateParent,
   sendMessage,
   newMessage,
+  joinRoom,
 }: {
   updateParent: any;
   sendMessage: any;
   newMessage: messageinterface;
+  joinRoom: any;
 }) {
   const router = useRouter();
   const [load, setload] = useState(false);
@@ -54,7 +56,8 @@ function MessageSection({
   useEffect(() => {
     setNewMessage(newMessage);
     fetchMessages();
-  }, [newMessage]);
+    joinRoom();
+  }, [newMessage, router.query.id]);
   //update  on prop change
   console.log("new msge", newmsg);
   // console.log(conversationData);
