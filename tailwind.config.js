@@ -11,10 +11,10 @@ module.exports = {
       poppins: ["Poppins", "sans-serif"],
       ubuntu: ["Ubuntu", "sans-serif"],
     },
-    colors: {
-      background: "#030303",
-      white: "#ffffff",
-    },
+    // colors: {
+    //   background: "#030303",
+    //   white: "#ffffff",
+    // },
     extend: {},
   },
   plugins: [],

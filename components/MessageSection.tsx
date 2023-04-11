@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import ScrollableChat from "./forMessage/ScrollableChat";
 import { Icon } from "@iconify/react";
 import messageinterface from "../interfaces/messageinterface";
+import cookies from "js-cookie";
 
 function MessageSection({
   updateParent,
@@ -60,6 +61,7 @@ function MessageSection({
   }, [newMessage, router.query.id]);
   //update  on prop change
   console.log("new msge", newmsg);
+  const userx = cookies.get("user") && JSON.parse(cookies.get("user"));
   // console.log(conversationData);
   return (
     <div className="w-3/5 sticky  ">
@@ -77,7 +79,7 @@ function MessageSection({
               {conversationData.name}
             </h1>
           </div>
-          <div className="contentSection">
+          <div className="contentSection px-2">
             <ScrollableChat messages={messagesData} />
           </div>
           <div className="message__input w-full flex items-center gap-2">
@@ -93,6 +95,16 @@ function MessageSection({
             <Icon
               onClick={() => {
                 sendMessage();
+                setMessagesData((prev) => [
+                  ...prev,
+                  {
+                    content: inputMsg,
+                    _id: inputMsg,
+                    sender: userx.userid,
+                    receiver: router.query.id,
+                    conversation: router.query.id,
+                  },
+                ]);
                 setInputMsg("");
               }}
               width="36px"

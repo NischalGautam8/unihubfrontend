@@ -92,6 +92,7 @@ export const getServerSideProps: GetServerSideProps<any> = async (context) => {
   const response = await axios.get(
     `http://localhost:5000/api/conversation?userid=${user.userid}`
   );
+  console.log(response);
   return {
     props: { data: response.data },
   };

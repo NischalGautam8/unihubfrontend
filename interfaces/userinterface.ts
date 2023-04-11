@@ -11,4 +11,5 @@ export interface userinterface {
     type: Array<userinterface>;
   };
   googleId: string;
+  profilepic: string;
 }

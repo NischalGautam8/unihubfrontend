@@ -57,13 +57,17 @@ export const getServerSideProps: GetServerSideProps<{
   data: Data;
   comm: comment;
 }> = async (context) => {
-  const id = context.query.id;
-  const res = await axios.get(`http://localhost:5000/api/posts/${id}`);
-  let data = res.data;
-  return {
-    props: {
-      data,
-    },
-  };
+  try {
+    const id = context.query.id;
+    const res = await axios.get(`http://localhost:5000/api/posts/${id}`);
+    let data = res.data;
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+  }
 };
 export default id;

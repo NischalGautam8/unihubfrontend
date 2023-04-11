@@ -18,13 +18,18 @@ img {
   font-family: "Inter", sans-serif;
 }
 
-.comment input {
-  color: black;
-  padding: 0 5px;
+input.comment {
+  color: rgb(255, 255, 255);
+  padding: 8px 15px;
+  background-color: #000000;
   border-bottom: 1px solid rgb(255, 255, 255, 0.2);
 }
-.comment input:focus {
+.signup input{
+  color:black;
+}
+input .comment :focus {
   transition-delay: 100ms;
+  color: white;
   transition-timing-function: ease-in-out;
   border-bottom: 1px solid rgb(255, 255, 255);
   outline: none;
@@ -109,4 +114,21 @@ icon:hover {
 .scrollable_chat {
   max-height: 80vh;
   min-height: 80vh;
+}
+.comments {
+  width: 700px;
+}
+.add_conversation{
+padding:2.5px;
+}
+.add_conversation:hover{
+background-color: #201818;
+border-radius: 5px;
+}
+.dialogue__content{
+  height: 60vh;
+  width: 79vh;
+  
+  /* width: 80vw; */
+  
 }
