@@ -132,3 +132,38 @@ border-radius: 5px;
   /* width: 80vw; */
   
 }
+.mybtn:hover span{
+  color:#3c3232;
+}
+.mybtn{
+  background-color: #3c3232;
+}
+.mybtn:hover{
+  background-color: rgb(239, 235, 235);
+  color:#3c3232;
+  
+}
+.page{
+  min-height: 100vh;
+}
+@media only screen and (max-width:600px){
+
+  .singleNoteCard{
+    width:180px;
+    height: 140px;
+  }
+}
+@media only screen and (min-width:600px){
+
+  .singleNoteCard{
+    width:250px;
+    height: 230px;
+  }
+}
+@media only screen and (min-width:1200px){
+
+  .singleNoteCard{
+    width:250px;
+    height: 230px;
+  }
+}

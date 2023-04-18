@@ -6,6 +6,8 @@ import axios from "axios";
 import Loading from "./Loading";
 import { Router, useRouter } from "next/router";
 import { commentinterface } from "@/interfaces/commentinterface";
+import { makeComment, getComment } from "@/apicalls/apicalls";
+import { userinterface } from "@/interfaces/userinterface";
 interface comment {
   _id: string;
   user: string;
@@ -15,7 +17,15 @@ interface comment {
   updatedAt: string;
   likes: Array<string>;
 }
-function Comment({ compontenttype, commentid }) {
+function Comment({
+  compontenttype,
+  refid,
+  userinfo,
+}: {
+  compontenttype: string;
+  refid: string;
+  userinfo: userinterface;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [commentsdata, setcommentsdata] = useState([]);
@@ -24,45 +34,29 @@ function Comment({ compontenttype, commentid }) {
   const mappeed = commentsdata.map((element: commentinterface) => (
     <SingleComment key={element._id} {...element} />
   ));
-  const getcomment = async () => {
-    console.log("postid" + commentid ? commentid : router.query.id);
-    const comments = await axios.get(
-      `http://localhost:5000/api/${compontenttype}/${
-        commentid ? commentid : router.query.id
-      }`
-    );
-
-    console.log("comments", comments);
+  const getCommentUtility = async () => {
+    const comments = await getComment(compontenttype, refid);
     setcommentsdata(comments.data.msg);
     setLoading(false);
   };
   useEffect(() => {
-    getcomment();
+    getCommentUtility();
   }, []);
   const [comment, setcomment] = useState("");
-  const makecomment = async () => {
+  const makeCommentUtility = async () => {
     try {
-      const comm = await axios.post(
-        `http://localhost:5000/api/${componenttype}/${
-          commentid ? commentid : router.query.id
-        }`,
-        {
-          content: comment,
-          userid: "64030116af5f071d1cefc0a2",
-        }
-      );
-
+      const comm = await makeComment(compontenttype, refid, userinfo);
+      console.log(comm);
       setcomment("");
       const newdata = {
         content: comment,
-        userid: "64030116af5f071d1cefc0a2",
+        user: userinfo.userid,
         postid: router.query.id, //look here
         likes: [],
         replies: [],
       };
-      console.log(comm);
-      comm.status == 200 && setcommentsdata([...commentsdata, newdata]);
-    } catch (err) {
+      comm.status == 200 && setcommentsdata([newdata, ...commentsdata]);
+    } catch (err: any) {
       console.log(err);
       seterr(err);
     }
@@ -109,7 +103,7 @@ function Comment({ compontenttype, commentid }) {
             Cancel
           </button>
           <button
-            onClick={makecomment}
+            onClick={makeCommentUtility}
             style={{ backgroundColor: "#4f46e5      " }}
             className="  flex justify-center items-center  px-3 py-1 rounded-3xl "
           >

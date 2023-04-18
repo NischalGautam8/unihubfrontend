@@ -24,4 +24,43 @@ const createConversation =async(users)=>{
   })
   return conversation;
 }
-export  {getFollowingModule,createConversation};
+const getSingleNote=async(id)=>{
+  try{
+    const res=await axios.get(process.env.BASE_URL+"notes/"+id);
+    console.log(res);   
+    return res.data;
+  }catch(err){
+    console.log(err);
+  }
+}
+const getComment=async (compontenttype,refid)=>{
+  try{
+    console.log(compontenttype);
+     const res= await axios.get(
+      "http://localhost:5000/api/"+`${compontenttype}/${refid}`);
+      console.log(res);
+      
+      return res;
+    }catch(err){
+      console.log(err);
+    }
+}
+const makeComment=async (compontenttype,refid,userinfo)=>{
+  try{
+
+    const comm = await axios.post(
+      process.env.BASE_URL+`${compontenttype}/${refid}`,
+      {
+        content: comment,
+        userid: userinfo.userid,
+        lastName: userinfo.lastName,
+        firstName: userinfo.firstName,
+        username: userinfo.username,
+      }
+    );
+  }catch(err){
+    console.log(err);
+  }
+  return comm;
+}
+export  {getFollowingModule,createConversation,getSingleNote,getComment,makeComment};

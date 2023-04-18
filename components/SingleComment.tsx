@@ -11,6 +11,9 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { commentinterface } from "@/interfaces/commentinterface";
 import Comment from "./Comment";
+import cookie from "js-cookie";
+import { useEffect } from "react";
+import { userinterface } from "@/interfaces/userinterface";
 function SingleComment({
   _id,
   content,
@@ -21,26 +24,28 @@ function SingleComment({
   lastName,
   likes,
 }: commentinterface) {
+  console.log(user);
   const router = useRouter();
   console.log("likes", likes);
   const [comment, setcomment] = useState("");
-  const [liked, setLiked] = useState<Boolean>(
-    likes?.includes("64030116af5f071d1cefc0a1")
-  ); //look from prop
+  const [liked, setLiked] = useState<Boolean>(likes?.includes(user.toString())); //look from prop
   const [likedCount, setLikedCount] = useState<number>(likes?.length);
   const [commentCount, setCommentCount] = useState<number>(replies?.length);
   const [reply, setreply] = useState(false);
   console.log(liked);
   ///check if the user has liked it or not previously ,do it while fetching the data in the backend check for the user requesting data lies in each of the posts liked array if liked then set liked state as true default & vice versa
   //or you can check it infront end with
-  console.log(_id);
-  console.log("lastname",lastName,"fistsname",firstName);
+  var userinf = {};
+  useEffect(() => {
+    userinf = JSON.parse(cookie.get("user"));
+  }, []);
+  console.log("lastname", lastName, "fistsname", firstName);
   const handleLike = async () => {
     try {
       const response = await axios.post(
         `http://localhost:5000/api/posts/like/${_id}`,
         {
-          userid: "64030116af5f071d1cefc0a1",
+          userid: user,
         }
       );
       console.log(response);
@@ -54,7 +59,7 @@ function SingleComment({
     const response = await axios.post(
       `http://localhost:5000/api/posts/unlike/${_id}`,
       {
-        userid: "64030116af5f071d1cefc0a1",
+        userid: user,
       }
     );
     console.log(response);
@@ -120,8 +125,12 @@ function SingleComment({
                   Like {likedCount}
                 </h1>
               </div>
-              <div onClick={()=>setreply(prev=>!prev)} className="comment icon cursor-pointer  flex items-center gap-2">
-                <Image onClick={()=>setreply(prev=>!prev)}
+              <div
+                onClick={() => setreply((prev) => !prev)}
+                className="comment icon cursor-pointer  flex items-center gap-2"
+              >
+                <Image
+                  onClick={() => setreply((prev) => !prev)}
                   src={commentpic}
                   alt="comment"
                   width={18}
@@ -140,29 +149,27 @@ function SingleComment({
       </div>
       {reply && (
         <div className="replies__section">
-
-        
-        <div className="flex items-center">
-          <Image
-            className="rounded-full max-w-fit"
-            style={{
-              borderRadius: "999px",
-              objectFit: "cover",
-              width: "40px",
-              height: "40px",
-            }}
-            src={pp}
-            alt="profile"
-          />
-          <input
-            value={comment}
-            onChange={(e) => setcomment(e.target.value)}
-            className=" py-1 w-full pl-4 mt-7 mb-5"
-            type="text"
-            placeholder="Add a comment..."
-          />
-        </div>
-        <Comment compontenttype={"reply"} commentid={_id}/>
+          <div className="flex items-center">
+            <Image
+              className="rounded-full max-w-fit"
+              style={{
+                borderRadius: "999px",
+                objectFit: "cover",
+                width: "40px",
+                height: "40px",
+              }}
+              src={pp}
+              alt="profile"
+            />
+            <input
+              value={comment}
+              onChange={(e) => setcomment(e.target.value)}
+              className=" py-1 w-full pl-4 mt-7 mb-5"
+              type="text"
+              placeholder="Add a comment..."
+            />
+          </div>
+          <Comment compontenttype={"reply"} refid={_id} userinfo={userinf} />
         </div>
       )}
       {comment != "" && (

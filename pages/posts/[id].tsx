@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Posts from "@/components/Posts";
 import SinglePost from "@/components/SinglePost";
@@ -8,6 +8,8 @@ import { InferGetServerSidePropsType } from "next";
 import { GetServerSideProps } from "next";
 import Comment from "@/components/Comment";
 import axios from "axios";
+import cookie from "js-cookie";
+import { userinterface } from "@/interfaces/userinterface";
 interface comment {
   user: string;
   content: string;
@@ -31,9 +33,16 @@ function id({
   comm,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const route = useRouter();
+  console.log(route.query.id);
   console.log(data);
   const [postdata, setpostdata] = useState(data);
   const [commentdata, setcommentdata] = useState(comm);
+  console.log(process.env.BASE_URL);
+  var user: userinterface = {};
+  useEffect(() => {
+    user = JSON.parse(cookie.get("user"));
+  }, []);
+  console.log(typeof user);
   //router.push(/posts/id?route.pathname)
   return (
     <div className="  min-h-screen ">
@@ -46,7 +55,11 @@ function id({
       <div className="mainn flex flex-col ">
         <SinglePost key={data._id} {...data} />
         <div className="comments">
-          <Comment compontenttype={"comment"} />
+          <Comment
+            compontenttype={"comment"}
+            refid={route.query.id}
+            userinfo={user}
+          />
         </div>
       </div>
     </div>
@@ -59,7 +72,9 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   try {
     const id = context.query.id;
-    const res = await axios.get(`http://localhost:5000/api/posts/${id}`);
+    console.log(process.env.BASE_URL);
+    const res = await axios.get(process.env.BASE_URL + `posts/${id}`);
+    console.log("res", res);
     let data = res.data;
     return {
       props: {
