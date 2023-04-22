@@ -30,9 +30,12 @@ function Comment({
   const [loading, setLoading] = useState(true);
   const [commentsdata, setcommentsdata] = useState([]);
   const [err, seterr] = useState("");
-  console.log("commentdatatype", commentsdata);
   const mappeed = commentsdata.map((element: commentinterface) => (
-    <SingleComment key={element._id} {...element} />
+    <SingleComment
+      key={element._id}
+      {...element}
+      compontenttype={compontenttype}
+    />
   ));
   const getCommentUtility = async () => {
     const comments = await getComment(compontenttype, refid);
@@ -45,23 +48,25 @@ function Comment({
   const [comment, setcomment] = useState("");
   const makeCommentUtility = async () => {
     try {
-      const comm = await makeComment(compontenttype, refid, userinfo);
-      console.log(comm);
+      const comm = await makeComment(compontenttype, refid, userinfo, comment);
       setcomment("");
       const newdata = {
         content: comment,
-        user: userinfo.userid,
+        user: {
+          _id: userinfo.userid,
+          lastName: userinfo.lastName,
+          firstName: userinfo.firstName,
+          username: userinfo.username,
+        },
         postid: router.query.id, //look here
         likes: [],
         replies: [],
       };
       comm.status == 200 && setcommentsdata([newdata, ...commentsdata]);
     } catch (err: any) {
-      console.log(err);
       seterr(err);
     }
   };
-  console.log(comment);
   return (
     <div>
       {loading && <Loading />}
@@ -111,7 +116,12 @@ function Comment({
           </button>
         </div>
       )}
-      <div className="comments__wrapper flex flex-col gap-2">{mappeed}</div>
+      <div
+        style={compontenttype == "reply" ? { marginLeft: "50px" } : {}}
+        className="comments__wrapper flex flex-col gap-2"
+      >
+        {mappeed}
+      </div>
     </div>
   );
 }

@@ -26,7 +26,7 @@ const createConversation =async(users)=>{
 }
 const getSingleNote=async(id)=>{
   try{
-    const res=await axios.get(process.env.BASE_URL+"notes/"+id);
+    const res=await axios.get(process.env.BASE_URL+"notes/view/"+id);
     console.log(res);   
     return res.data;
   }catch(err){
@@ -45,22 +45,19 @@ const getComment=async (compontenttype,refid)=>{
       console.log(err);
     }
 }
-const makeComment=async (compontenttype,refid,userinfo)=>{
+const makeComment=async (compontenttype,refid,userinfo,comment)=>{
   try{
-
+console.log("userinfo",userinfo);
     const comm = await axios.post(
-      process.env.BASE_URL+`${compontenttype}/${refid}`,
+      "http://localhost:5000/api/"+`${compontenttype}/${refid}`,
       {
         content: comment,
         userid: userinfo.userid,
-        lastName: userinfo.lastName,
-        firstName: userinfo.firstName,
-        username: userinfo.username,
       }
-    );
+      );
+      return comm;
   }catch(err){
     console.log(err);
   }
-  return comm;
 }
 export  {getFollowingModule,createConversation,getSingleNote,getComment,makeComment};

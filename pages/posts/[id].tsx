@@ -31,18 +31,11 @@ interface Data {
 function id({
   data,
   comm,
+  user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const route = useRouter();
-  console.log(route.query.id);
-  console.log(data);
   const [postdata, setpostdata] = useState(data);
   const [commentdata, setcommentdata] = useState(comm);
-  console.log(process.env.BASE_URL);
-  var user: userinterface = {};
-  useEffect(() => {
-    user = JSON.parse(cookie.get("user"));
-  }, []);
-  console.log(typeof user);
   //router.push(/posts/id?route.pathname)
   return (
     <div className="  min-h-screen ">
@@ -72,17 +65,16 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   try {
     const id = context.query.id;
-    console.log(process.env.BASE_URL);
     const res = await axios.get(process.env.BASE_URL + `posts/${id}`);
-    console.log("res", res);
     let data = res.data;
+    const user = JSON.parse(context.req.cookies.user);
+
     return {
       props: {
         data,
+        user,
       },
     };
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 export default id;

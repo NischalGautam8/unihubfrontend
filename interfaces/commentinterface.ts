@@ -1,5 +1,7 @@
+import { userinterface } from "./userinterface";
+
 export interface commentinterface {
-  user: string;
+  user: userinterface;
   _id: string;
   content: string;
   postid: string;
@@ -10,4 +12,5 @@ export interface commentinterface {
   likes: Array<string>;
   commentimage: string;
   replies: Array<String>;
+  // compontenttype?: string; //can be reply,notecomment or comment
 }

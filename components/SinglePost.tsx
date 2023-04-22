@@ -29,10 +29,8 @@ function SinglePost({
   ); //look from prop
   const [likedCount, setLikedCount] = useState<number>(likes.length);
   const [commentCount, setCommentCount] = useState<number>(comments.length);
-  console.log("comment count", comments);
   ///check if the user has liked it or not previously ,do it while fetching the data in the backend check for the user requesting data lies in each of the posts liked array if liked then set liked state as true default & vice versa
   //or you can check it infront end with
-  console.log(_id);
   const handleLike = async () => {
     try {
       const response = await axios.post(
@@ -41,12 +39,9 @@ function SinglePost({
           userid: "64030116af5f071d1cefc0a1",
         }
       );
-      console.log(response);
       response.status == 200 && setLiked(true);
       response.status == 200 && setLikedCount((prev) => prev + 1);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const handleUnlike = async () => {
     const response = await axios.post(
@@ -55,7 +50,6 @@ function SinglePost({
         userid: "64030116af5f071d1cefc0a1",
       }
     );
-    console.log(response);
     response.status == 200 && setLiked(false);
     response.status == 200 && setLikedCount((prev) => prev - 1);
   };
@@ -127,7 +121,6 @@ function SinglePost({
                   style={{ color: "#8B8B8B" }}
                 >
                   Like {likedCount}
-                 
                 </h1>
               </div>
               <div className="comment flex items-center gap-2">

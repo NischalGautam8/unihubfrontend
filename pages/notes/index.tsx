@@ -4,12 +4,13 @@ import { GetServerSideProps } from "next";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Skeleton, Box } from "@chakra-ui/react";
+import { userinterface } from "@/interfaces/userinterface";
 interface notes {
   _id: string;
   name: string;
   url: string;
   subject: string;
-  uploadedBy: string;
+  uploadedBy: userinterface;
   ratings?: Number;
 }
 function index() {
