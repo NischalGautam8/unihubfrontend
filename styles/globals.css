@@ -156,14 +156,29 @@ border-radius: 5px;
 @media only screen and (min-width:600px){
 
   .singleNoteCard{
-    width:250px;
+    max-width:250px;
     height: 230px;
   }
 }
 @media only screen and (min-width:1200px){
 
   .singleNoteCard{
-    width:250px;
+    max-width:250px;
     height: 230px;
   }
+}
+.textSection{
+  color:rgb(175, 175, 175)
+}
+.textSection .username:hover{
+  color:white;
+}
+.tagsbutton{
+  background-color:rgb(60,50,50)
+}
+.scrollbar{
+  overflow-x:scroll;
+}
+.right__hand__bar{
+  background-color: #000000;
 }

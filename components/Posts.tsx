@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import SinglePost from "./SinglePost";
+import { postinterface } from "@/interfaces/postinterface";
+import { userinterface } from "@/interfaces/userinterface";
 
-export default function Posts({ data }) {
+export default function Posts({
+  data,
+  currentUser,
+}: {
+  data: Array<postinterface>;
+  currentUser: userinterface;
+}) {
   const todisplay = data.map((element) => (
-    <SinglePost key={element._id} {...element} />
+    <SinglePost currentUser={currentUser} key={element._id} {...element} />
   ));
   return (
     <>

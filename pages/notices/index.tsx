@@ -1,5 +1,5 @@
 import React from "react";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import SingleNotice from "@/components/SingleNotice";
 import axios from "axios";
@@ -26,7 +26,7 @@ function index({ data }: { data: Array<notice> }) {
     </div>
   );
 }
-export const getServerSideProps: GetServerSideProps<
+export const getStaticProps: GetStaticProps<
   props,
   ParsedUrlQuery
 > = async () => {
@@ -39,6 +39,7 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         data: res.data.notices,
       },
+      revalidate: 4000,
     };
   } catch (e) {
     console.log(e);

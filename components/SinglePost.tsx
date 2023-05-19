@@ -10,7 +10,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { postinterface } from "@/interfaces/postinterface";
-import axios from "axios";
+
+import { handleLikeUtil, handleUnlikeUtil } from "@/apicalls/apicalls";
+import { userinterface } from "@/interfaces/userinterface";
+interface postWitCurrentUser extends postinterface {
+  currentUser: userinterface;
+}
 
 function SinglePost({
   _id,
@@ -22,36 +27,25 @@ function SinglePost({
   postimage,
   comments, //make it just comment number
   likes,
-}: postinterface) {
+  currentUser,
+}: postWitCurrentUser) {
   const router = useRouter();
-  const [liked, setLiked] = useState<Boolean>(
-    likes.includes("64030116af5f071d1cefc0a1")
-  ); //look from prop
+  console.log(currentUser);
+  const [liked, setLiked] = useState<Boolean>(likes.includes("")); //look from prop
   const [likedCount, setLikedCount] = useState<number>(likes.length);
   const [commentCount, setCommentCount] = useState<number>(comments.length);
-  ///check if the user has liked it or not previously ,do it while fetching the data in the backend check for the user requesting data lies in each of the posts liked array if liked then set liked state as true default & vice versa
-  //or you can check it infront end with
+
   const handleLike = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/posts/like/${_id}`,
-        {
-          userid: "64030116af5f071d1cefc0a1",
-        }
-      );
-      response.status == 200 && setLiked(true);
-      response.status == 200 && setLikedCount((prev) => prev + 1);
+      const response = await handleLikeUtil(_id, currentUser.userid);
+      response?.status == 200 && setLiked(true);
+      response?.status == 200 && setLikedCount((prev) => prev + 1);
     } catch (err) {}
   };
   const handleUnlike = async () => {
-    const response = await axios.post(
-      `http://localhost:5000/api/posts/unlike/${_id}`,
-      {
-        userid: "64030116af5f071d1cefc0a1",
-      }
-    );
-    response.status == 200 && setLiked(false);
-    response.status == 200 && setLikedCount((prev) => prev - 1);
+    const response = await handleUnlikeUtil(_id, currentUser.userid);
+    response?.status == 200 && setLiked(false);
+    response?.status == 200 && setLikedCount((prev) => prev - 1);
   };
   return (
     <div

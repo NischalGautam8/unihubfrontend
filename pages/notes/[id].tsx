@@ -1,14 +1,18 @@
 import { useRouter } from "next/router";
 import Comment from "@/components/Comment";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { getSingleNote } from "@/apicalls/apicalls";
 import Skeleton from "@mui/material/Skeleton";
 import { userinterface } from "@/interfaces/userinterface";
 import Link from "next/link";
 import { Rating } from "@mui/material";
+import cookie from "js-cookie";
+import RightHandBar from "@/components/forNotes/RightHandBar";
+import AlertDialogSlide from "@/components/forNotes/RatingDialog";
+import { Context } from "vm";
+
 interface res {
   _id: string;
   name: string;
@@ -21,16 +25,29 @@ interface res {
   __v: number;
 }
 
-function id({ data, user }: { data: res; user: userinterface }) {
+function id({
+  data,
+  user,
+  rating,
+  noOfRating,
+  prevRated,
+}: {
+  data: res;
+  user: userinterface;
+  rating: number;
+  noOfRating: number;
+  prevRated: number;
+}) {
   const router = useRouter();
+  console.log("rating", rating);
   const [noteData, setNoteData] = useState<res>(data);
+  const [ratingModelVisible, setRatingModelVisible] = useState(false);
   const [ImageLoaded, setImageLoaded] = useState(true);
-  const [totalratings, setTotalRatings] = useState(40);
-  const [noofrating, setNoofRating] = useState(10);
-  const [ratingValue, setRatingValue] = useState(totalratings / noofrating);
-  console.log(noteData);
+  const [noofrating, setNoofRating] = useState(noOfRating);
+  const [ratingValue, setRatingValue] = useState(rating);
+  console.log(ratingValue, "ratingvalue");
   return (
-    <div className="page">
+    <div className="page  flex  flex-col md:flex-row">
       <div className="notesSection  flex  flex-col items-center w-2/3 gap-3">
         <div className="img shadow-white ">
           {ImageLoaded == false ? (
@@ -81,40 +98,58 @@ function id({ data, user }: { data: res; user: userinterface }) {
               <Rating
                 name="simple-controlled"
                 value={ratingValue}
+                precision={0.5}
                 onChange={(event, newValue) => {
-                  setRatingValue(newValue);
+                  // setRatingMode(true);
+                  setRatingValue(newValue || 0);
+                  setRatingModelVisible(true);
                 }}
               />
+              {ratingModelVisible && (
+                <AlertDialogSlide
+                  ratingModelVisible={ratingModelVisible}
+                  setRatingModelVisible={setRatingModelVisible}
+                  ratingValue={ratingValue}
+                  userid={JSON.parse(cookie.get("user") || "").userid}
+                />
+              )}
               <h1>({noofrating}) ratings</h1>
             </div>
+            {prevRated != 0 && (
+              <h1 className="text-sm ">Previously rated:{prevRated}</h1>
+            )}
           </div>
         </div>
+        <div className="w-full">
+          <Comment
+            compontenttype="notes"
+            refid={router.query.id}
+            userinfo={user}
+          />
+        </div>
       </div>
-      <div className="w-2/3">
-        <Comment
-          compontenttype="notes"
-          refid={router.query.id}
-          userinfo={user}
-        />
+      <div className="w-1/3">
+        <RightHandBar chosenSubject={noteData.subject} />
       </div>
     </div>
   );
 }
-export const getServerSideProps: GetServerSideProps<res> = async (context) => {
+export async function getServerSideProps(context: Context) {
   try {
-    console.log(context);
-    const data = await getSingleNote(context.query.id);
-    // console.log(context)
-    const user = JSON.parse(context.req.cookies.user);
+    const user = JSON.parse(context.req.cookies.user || "kldf");
+    const data = await getSingleNote(context.query.id, user.userid);
     return {
       props: {
         data: data.note,
         user,
+        rating: data.rating,
+        noOfRating: data.noOfRating,
+        prevRated: data.prevRated,
       },
     };
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 export default id;

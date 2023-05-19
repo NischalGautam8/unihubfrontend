@@ -12,6 +12,8 @@ interface props {
   subject: string;
 }
 function singleNoteCard({
+  width,
+  heigth,
   _id,
   url,
   uploadedBy,

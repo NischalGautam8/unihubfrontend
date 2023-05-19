@@ -6,6 +6,8 @@ import Box from "@mui/material/Box";
 import { useState, useEffect } from "react";
 import "../styles/globals.css";
 import Sidebar from "@/components/Sidebar";
+import toast, { Toaster } from "react-hot-toast";
+
 import Navbar from "@/components/Navbar";
 
 function LoadingSpinner() {
@@ -58,6 +60,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
           </div>
           <div className="posts w-full flex ml-32 flex-col gap-2">
+            <Toaster position="bottom-center" />
             <Component {...pageProps} />
           </div>
         </div>
