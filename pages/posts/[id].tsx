@@ -33,6 +33,7 @@ function id({
   comm,
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log("data", data);
   const route = useRouter();
   const [postdata, setpostdata] = useState(data);
   const [commentdata, setcommentdata] = useState(comm);
@@ -67,7 +68,7 @@ export const getServerSideProps: GetServerSideProps<{
     const id = context.query.id;
     const res = await axios.get(process.env.BASE_URL + `posts/${id}`);
     let data = res.data;
-    const user = JSON.parse(context.req.cookies.user);
+    const user = JSON.parse(context.req.cookies.user || "");
 
     return {
       props: {

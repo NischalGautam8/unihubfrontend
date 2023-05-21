@@ -7,6 +7,11 @@ const getFollowingModule = async (userid) => {
 };
 const createPost = async (description, userId) => {
   try {
+    const response = await axios.post("http://localhost:5000/api/posts", {
+      description,
+      userId,
+    });
+    return response;
   } catch (err) {
     console.log(err);
   }
@@ -146,4 +151,5 @@ export {
   getRating,
   handleLikeUtil,
   handleUnlikeUtil,
+  createPost,
 };

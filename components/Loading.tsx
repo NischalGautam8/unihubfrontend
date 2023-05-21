@@ -2,15 +2,12 @@ import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-function loading() {
+function loading({ className, size }: { className?: string; size?: number }) {
   return (
-    <div>
-      <div
-        style={{ backgroundColor: "#000000" }}
-        className="flex justify-center  my-10 "
-      >
-        <Box sx={{ display: "" }}>
-          <CircularProgress color="secondary" />
+    <div className={`max-h-full ${className}`}>
+      <div className="flex justify-center">
+        <Box>
+          <CircularProgress size={size || 40} color="secondary" />
         </Box>
       </div>
     </div>

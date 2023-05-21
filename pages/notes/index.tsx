@@ -7,6 +7,8 @@ import { Skeleton, Box, typography } from "@chakra-ui/react";
 import { userinterface } from "@/interfaces/userinterface";
 import { getNotesClientSide } from "@/apicalls/apicalls";
 import { Context } from "vm";
+import CreatePost from "@/components/CreatePost";
+import CreateNote from "@/components/forNotes/CreateNote";
 interface notes {
   _id: string;
   name: string;
@@ -32,6 +34,7 @@ function index({ data }: { data: [notes] }) {
   };
   return (
     <div className="min-h-screen">
+      <CreateNote />
       {loading ? (
         <div className="h-screen">
           <Skeleton

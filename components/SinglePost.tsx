@@ -31,19 +31,22 @@ function SinglePost({
 }: postWitCurrentUser) {
   const router = useRouter();
   console.log(currentUser);
-  const [liked, setLiked] = useState<Boolean>(likes.includes("")); //look from prop
+  const [liked, setLiked] = useState<Boolean>(
+    likes.includes("646714b941412e0da077f69d")
+    //TODO: take user info from redux and use it insted of hardcoded value
+  ); //look from prop
   const [likedCount, setLikedCount] = useState<number>(likes.length);
-  const [commentCount, setCommentCount] = useState<number>(comments.length);
+  const [commentCount, setCommentCount] = useState<number>(0);
 
   const handleLike = async () => {
     try {
-      const response = await handleLikeUtil(_id, currentUser.userid);
+      const response = await handleLikeUtil(_id, "646714b941412e0da077f69d");
       response?.status == 200 && setLiked(true);
       response?.status == 200 && setLikedCount((prev) => prev + 1);
     } catch (err) {}
   };
   const handleUnlike = async () => {
-    const response = await handleUnlikeUtil(_id, currentUser.userid);
+    const response = await handleUnlikeUtil(_id, "646714b941412e0da077f69d");
     response?.status == 200 && setLiked(false);
     response?.status == 200 && setLikedCount((prev) => prev - 1);
   };

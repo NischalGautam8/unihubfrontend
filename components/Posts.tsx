@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import SinglePost from "./SinglePost";
 import { postinterface } from "@/interfaces/postinterface";
 import { userinterface } from "@/interfaces/userinterface";
