@@ -3,11 +3,15 @@ import { Toast, toast } from "react-hot-toast";
 import { createPost } from "@/apicalls/apicalls";
 import ImageIcon from "@mui/icons-material/Image";
 import { Input } from "@mui/material";
+import { useSelector } from "react-redux";
 function CreatePost() {
   const [input, setInput] = useState("");
+  const userid = useSelector((state: any) => state.user.value.userid);
+  console.log("redux id", userid);
+  console.log(userid);
   const handlePost = async () => {
     try {
-      const response = await createPost(input, "646714b941412e0da077f69d");
+      const response = await createPost(input, userid);
       setInput("");
       toast.success("Sucessfully posted");
     } catch (err) {

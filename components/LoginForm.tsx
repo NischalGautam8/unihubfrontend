@@ -4,8 +4,11 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import { useToast } from "@chakra-ui/react";
+import { login } from "@/features/user";
+import { useDispatch } from "react-redux";
 
 function LoginForm() {
+  const dispatch = useDispatch();
   const [username, setusename] = useState<string>("");
   const [password, setpassword] = useState<string>("");
   const [err, setErr] = useState(" ");
@@ -23,7 +26,15 @@ function LoginForm() {
           password,
         }
       );
-
+      const user = res.data.user;
+      dispatch(
+        login({
+          username: user.username,
+          userid: user.userid,
+          acesstoken: res.data.access_token,
+          refreshtoken: res.data.refresh_token,
+        })
+      );
       var hundred = new Date(new Date().getTime() + 100 * 864000 * 1000);
       cookie.set("acess_token", res.data.acess_token, { expires: 15 });
       cookie.set("refresh_token", res.data.refresh_token, { expires: hundred });

@@ -2,12 +2,12 @@ import React from "react";
 import Image from "next/image";
 import art from "../public/art.jpg";
 import { useState } from "react";
+import { login } from "@/features/user";
 import LoginForm from "../components/LoginForm";
 import SignUpForm from "@/components/SignUpForm";
 function Login() {
   const [chooseLogin, setChooseLogin] = useState(false);
   const [chooseRegister, setChooseRegister] = useState(false);
-  console.log(chooseLogin, chooseRegister);
   return (
     <div
       style={{ backgroundColor: "black" }}

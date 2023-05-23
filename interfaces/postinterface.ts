@@ -1,3 +1,5 @@
+import { userinterface } from "./userinterface";
+
 export interface postinterface {
   _id: string;
   description: string;
@@ -5,7 +7,7 @@ export interface postinterface {
   lastName: string;
   username: string;
   postimage: string;
-  userId: string;
+  userId: userinterface;
   comments: Array<string>;
   likes: Array<string>;
 }

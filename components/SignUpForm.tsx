@@ -3,7 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
-import router from "../../unihubbackend/src/route/auth";
+import { login } from "@/features/user";
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 function SignUpForm() {
   const [input, setInput] = useState({
     username: "",
@@ -26,9 +28,18 @@ function SignUpForm() {
   };
   const handleRegister = async () => {
     try {
+      const dispatch=useDispatch();
       const res = await axios.post("http://localhost:5000/api/register", input);
       var hundred = new Date(new Date().getTime() + 100 * 864000 * 1000);
       cookie.set("acess_token", res.data.acess_token, { expires: 15 });
+      const user=res.data.user;
+      dispatch(
+        login({
+          username: user.username,
+          userid: user.userid,
+          acesstoken: res.data.access_token,
+          refreshtoken: res.data.refresh_token,
+        })
       cookie.set(
         "user",
         JSON.stringify({

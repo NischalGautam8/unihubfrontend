@@ -13,40 +13,36 @@ import { postinterface } from "@/interfaces/postinterface";
 
 import { handleLikeUtil, handleUnlikeUtil } from "@/apicalls/apicalls";
 import { userinterface } from "@/interfaces/userinterface";
-interface postWitCurrentUser extends postinterface {
-  currentUser: userinterface;
-}
+import { useSelector } from "react-redux";
 
 function SinglePost({
-  _id,
+  _id, //post id
   description,
-  username,
-  firstName,
-  userId,
-  lastName,
   postimage,
+  userId, //object that contains userinfo
   comments, //make it just comment number
   likes,
-  currentUser,
-}: postWitCurrentUser) {
+}: postinterface) {
   const router = useRouter();
-  console.log(currentUser);
+  const userid = useSelector((state: any) => state.user.value.userid);
+
+  console.log("useriiid", userid);
   const [liked, setLiked] = useState<Boolean>(
-    likes.includes("646714b941412e0da077f69d")
-    //TODO: take user info from redux and use it insted of hardcoded value
+    likes.includes(userid)
+    //TODO: take user info from redux and use it insted of hardcoded value:  done
   ); //look from prop
   const [likedCount, setLikedCount] = useState<number>(likes.length);
   const [commentCount, setCommentCount] = useState<number>(0);
 
   const handleLike = async () => {
     try {
-      const response = await handleLikeUtil(_id, "646714b941412e0da077f69d");
+      const response = await handleLikeUtil(_id, userid);
       response?.status == 200 && setLiked(true);
       response?.status == 200 && setLikedCount((prev) => prev + 1);
     } catch (err) {}
   };
   const handleUnlike = async () => {
-    const response = await handleUnlikeUtil(_id, "646714b941412e0da077f69d");
+    const response = await handleUnlikeUtil(_id, userid);
     response?.status == 200 && setLiked(false);
     response?.status == 200 && setLikedCount((prev) => prev - 1);
   };
@@ -82,7 +78,7 @@ function SinglePost({
           <div className="content__section flex flex-col gap-3 ">
             <div className="profilename flex flex-col gap-1  ">
               <h1 className="font-semibold text-xl ">
-                {firstName} {lastName}
+                {userId.firstName} {userId.lastName}
               </h1>
               <Link href={`/posts/${_id}`}>
                 <p
