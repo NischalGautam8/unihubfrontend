@@ -12,6 +12,7 @@ import cookie from "js-cookie";
 import RightHandBar from "@/components/forNotes/RightHandBar";
 import AlertDialogSlide from "@/components/forNotes/RatingDialog";
 import { Context } from "vm";
+import { toast } from "react-hot-toast";
 
 interface res {
   _id: string;
@@ -101,8 +102,13 @@ function id({
                 precision={0.5}
                 onChange={(event, newValue) => {
                   // setRatingMode(true);
-                  setRatingValue(newValue || 0);
-                  setRatingModelVisible(true);
+                  if (!cookie.get("refresh_token")) {
+                    router.push("/login");
+                    toast.error("please login to continue");
+                  } else {
+                    setRatingValue(newValue || 0);
+                    setRatingModelVisible(true);
+                  }
                 }}
               />
               {ratingModelVisible && (
@@ -110,7 +116,7 @@ function id({
                   ratingModelVisible={ratingModelVisible}
                   setRatingModelVisible={setRatingModelVisible}
                   ratingValue={ratingValue}
-                  userid={JSON.parse(cookie.get("user") || "").userid}
+                  userid={JSON.parse(cookie.get("user") || "").userid || ""}
                 />
               )}
               <h1>({noofrating}) ratings</h1>
@@ -136,7 +142,12 @@ function id({
 }
 export async function getServerSideProps(context: Context) {
   try {
-    const user = JSON.parse(context.req.cookies.user || "kldf");
+    var user = {
+      userid: "",
+    };
+    if (context.req.cookies.user) {
+      user = context.req.cookies.user;
+    }
     const data = await getSingleNote(context.query.id, user.userid);
     return {
       props: {

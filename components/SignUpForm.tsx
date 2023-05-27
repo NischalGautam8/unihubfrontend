@@ -7,6 +7,7 @@ import { login } from "@/features/user";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 function SignUpForm() {
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -28,11 +29,10 @@ function SignUpForm() {
   };
   const handleRegister = async () => {
     try {
-      const dispatch=useDispatch();
       const res = await axios.post("http://localhost:5000/api/register", input);
       var hundred = new Date(new Date().getTime() + 100 * 864000 * 1000);
       cookie.set("acess_token", res.data.acess_token, { expires: 15 });
-      const user=res.data.user;
+      const user = res.data.user;
       dispatch(
         login({
           username: user.username,
@@ -40,6 +40,8 @@ function SignUpForm() {
           acesstoken: res.data.access_token,
           refreshtoken: res.data.refresh_token,
         })
+      );
+
       cookie.set(
         "user",
         JSON.stringify({
@@ -99,7 +101,7 @@ function SignUpForm() {
           style={{ backgroundColor: "#f3e8ff" }}
           className="border-gray-600 border px-2 py-2"
           name="lastName"
-          type="password"
+          type="text"
           onChange={handleChange}
         />
         <label>Gender</label>

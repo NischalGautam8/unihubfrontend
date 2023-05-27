@@ -1,19 +1,29 @@
 import React, { useState } from "react";
-import { Toast, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { createPost } from "@/apicalls/apicalls";
 import ImageIcon from "@mui/icons-material/Image";
-import { Input } from "@mui/material";
 import { useSelector } from "react-redux";
+import cookie from "js-cookie";
+import { useRouter } from "next/router";
 function CreatePost() {
   const [input, setInput] = useState("");
   const userid = useSelector((state: any) => state.user.value.userid);
   console.log("redux id", userid);
   console.log(userid);
+  const router = useRouter();
   const handlePost = async () => {
     try {
-      const response = await createPost(input, userid);
+      if (!cookie.get("refresh_token")) {
+        router.push("/login");
+        toast.error("You must be logged in to create a Post");
+      }
+      const response = await createPost(
+        input,
+        userid,
+        cookie.get("refresh_token")
+      );
       setInput("");
-      toast.success("Sucessfully posted");
+      response?.status == 200 && toast.success("Sucessfully posted");
     } catch (err) {
       toast.error("Failed to post");
       console.log(err);

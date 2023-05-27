@@ -39,7 +39,7 @@ function MessageSideBar({
 }
 
 export default MessageSideBar;
-
+//TODO:DONE
 //how to create a popup window that overlaps current window
 //get follwing of current user display only those whose following contains current user
 //authenticate it in createConvo only allow to create convo beetween users who follow eacchother

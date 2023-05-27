@@ -3,20 +3,22 @@ import { useState } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
-import { useToast } from "@chakra-ui/react";
+import { toast } from "react-hot-toast";
 import { login } from "@/features/user";
 import { useDispatch } from "react-redux";
 
 function LoginForm() {
   const dispatch = useDispatch();
-  const [username, setusename] = useState<string>("");
+  const [username, setusername] = useState<string>("");
   const [password, setpassword] = useState<string>("");
   const [err, setErr] = useState(" ");
-  const toast = useToast();
   console.log(username, password);
   const router = useRouter();
   const user = cookie?.get("user");
-  user && router.push("/");
+  if (user) {
+    router.push("/");
+    return;
+  }
   const handleLogin = async () => {
     try {
       const res: AxiosResponse = await axios.post(
@@ -26,6 +28,8 @@ function LoginForm() {
           password,
         }
       );
+      res.status == 200 &&
+        toast.success(`Logged in as ${res.data.user.username}`);
       const user = res.data.user;
       dispatch(
         login({
@@ -54,16 +58,17 @@ function LoginForm() {
         {err && <h1 className="text-xl text-red-500	">{err}</h1>}
         <label>Username</label>
         <input
+          style={{ color: "black" }}
           className="border-gray-600 border px-2 py-2"
           type="text"
           value={username}
           onChange={(e) => {
-            setusename(e.target.value);
+            setusername(e.target.value);
           }}
         />
         <label>Password</label>
         <input
-          style={{ backgroundColor: "#f3e8ff" }}
+          style={{ color: "black" }}
           className="border-gray-600 border px-2 py-2"
           type="password"
           value={password}
@@ -75,13 +80,6 @@ function LoginForm() {
         <div
           onClick={() => {
             handleLogin();
-            toast({
-              title: "Account created.",
-              description: "We've created your account for you.",
-              status: "success",
-              duration: 9000,
-              isClosable: true,
-            });
           }}
           style={{ backgroundColor: "rgb(95, 88, 231)" }}
           className=" login__button2 items-center flex justify-center mt-3 max-w-max px-9 cursor-pointer"

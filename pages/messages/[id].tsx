@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MessageSideBar from "@/components/MessageSideBar";
 import MessageSection from "@/components/MessageSection";
+import Router from "next/router";
 import Cookies from "js-cookie";
 import { GetServerSideProps } from "next";
 import axios from "axios";
@@ -14,11 +15,15 @@ const token = Cookies.get("refresh_token");
 const socket = io.connect("http://localhost:5000", {
   auth: {
     token: token,
-    user: Cookies.get("user") && JSON.parse(Cookies.get("user")).userid,
+    user: Cookies.get("user") && JSON.parse(Cookies.get("user") || "").userid,
   },
 });
 function Group({ data }: { data: Array<any> }) {
   const router = useRouter();
+  if (!Cookies.get("refresh_token")) {
+    roter.push("/login");
+    return;
+  }
   const [messages, setMessageReceived] = useState<messageinterface>({});
   console.log("received", messages);
   const [messagetosend, setmessagetosend] = useState("");
@@ -27,13 +32,13 @@ function Group({ data }: { data: Array<any> }) {
     try {
       if (roomtojoin) {
         console.log("room joined");
-        socket.emit("join_room", roomtojoin);
+        socket.emit("join_room", roomtojoin, Cookies.get("refresh_token"));
       }
     } catch (err) {
       console.log(err);
     }
   };
-  const userx = Cookies.get("user") && JSON.parse(Cookies.get("user"));
+  const userx = Cookies.get("user") && JSON.parse(Cookies.get("user") || "");
   const functionTopass = (data: string) => {
     setmessagetosend(data);
   };
@@ -71,7 +76,7 @@ function Group({ data }: { data: Array<any> }) {
   });
   console.log("new messagge ", messages);
   return (
-    <div className="flex min-h-screen   w-full ">
+    <div className="flex min-h-screen w-full ">
       <div className="flex w-full ">
         <MessageSideBar conversations={data} />
         <MessageSection

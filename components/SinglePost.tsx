@@ -20,19 +20,20 @@ function SinglePost({
   description,
   postimage,
   userId, //object that contains userinfo
-  comments, //make it just comment number
-  likes,
-}: postinterface) {
+  hasLiked,
+  commentsCount,
+  likesCount,
+}: //make it just comment number,
+postinterface) {
   const router = useRouter();
   const userid = useSelector((state: any) => state.user.value.userid);
-
-  console.log("useriiid", userid);
+  console.log("redux userid", userid);
   const [liked, setLiked] = useState<Boolean>(
-    likes.includes(userid)
+    hasLiked
     //TODO: take user info from redux and use it insted of hardcoded value:  done
   ); //look from prop
-  const [likedCount, setLikedCount] = useState<number>(likes.length);
-  const [commentCount, setCommentCount] = useState<number>(0);
+  const [likedCount, setLikedCount] = useState<number>(likesCount);
+  const [commentCount, setCommentCount] = useState<number>(commentsCount);
 
   const handleLike = async () => {
     try {

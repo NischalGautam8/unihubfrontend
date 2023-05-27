@@ -5,11 +5,12 @@ const getFollowingModule = async (userid) => {
   );
   return follwing;
 };
-const createPost = async (description, userId) => {
+const createPost = async (description, userId, jwt) => {
   try {
     const response = await axios.post("http://localhost:5000/api/posts", {
       description,
       userId,
+      jwt,
     });
     return response;
   } catch (err) {

@@ -3,7 +3,8 @@ import { Toast, toast } from "react-hot-toast";
 import ImageIcon from "@mui/icons-material/Image";
 import axios from "axios";
 import Loading from "../Loading";
-import { halftone16x16Orthogonal } from "@cloudinary/base/qualifiers/dither";
+import cookie from "js-cookie";
+import Router from "next/router";
 function CreateNote() {
   const [input, setInput] = useState("");
   const [file, setFile] = useState<File>();
@@ -14,6 +15,10 @@ function CreateNote() {
   console.log(input);
   const handleNoteUpload = async () => {
     try {
+      if (!cookie.get("refresh_token")) {
+        Router.push("/login");
+        toast.error("You must be logged in to upload notes");
+      }
       if (!file) {
         toast.error("Please Select a file");
         return;
@@ -36,12 +41,14 @@ function CreateNote() {
         "http://localhost:5000/api/notes",
         formData
       );
-      response.status == 200 && setLoading(false);
-      setFile(undefined);
-      setInput("");
-      toast.success(
-        "Sucessfully uploaded your note. Thanks for contributing❤️"
-      );
+      if (response.status == 200) {
+        setLoading(false);
+        setFile(undefined);
+        setInput("");
+        toast.success(
+          "Sucessfully uploaded your note. Thanks for contributing❤️"
+        );
+      }
     } catch (err) {
       setLoading(false);
       toast.error("unable to upload file");

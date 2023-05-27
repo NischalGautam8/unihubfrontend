@@ -41,18 +41,29 @@ function index({
   return (
     <div className="min-h-screen">
       <CreatePost />
-      <Posts data={tomap} currentUser={currentUser} />
+      <Posts data={tomap} />
     </div>
   );
 }
 export async function getServerSideProps(context: Context) {
   try {
     console.log("hello");
-    const res = await fetch("http://localhost:5000/api/posts");
+    let currentUser = {
+      userid: "",
+    };
+    if (context.req.cookies.user) {
+      currentUser = JSON.parse(context.req.cookies.user);
+    }
+    const res = await fetch(
+      "http://localhost:5000/api/posts?userid=" + `${currentUser.userid}`
+    );
     const data = await res.json();
-    const currentUser = JSON.parse(context.req.cookies.user);
-    const refresh_token = context.req.cookies.refresh_token;
-    const acess_token = context.req.cookies.acess_token;
+    const refresh_token = "";
+    const acess_token = "";
+    if (context.req.cookies.refresh_token && context.req.cookies.acess_token) {
+      refresh_token: context.req.cookies.refresh_token;
+      acess_token: context.req.cookies.access_token;
+    }
     console.log(context.req.cookies.refresh_token);
     return {
       props: {
