@@ -47,98 +47,102 @@ function id({
   const [noofrating, setNoofRating] = useState(noOfRating);
   const [ratingValue, setRatingValue] = useState(rating);
   console.log(ratingValue, "ratingvalue");
-  return (
-    <div className="page  flex  flex-col md:flex-row">
-      <div className="notesSection  flex  flex-col items-center w-2/3 gap-3">
-        <div className="img shadow-white ">
-          {ImageLoaded == false ? (
-            <Skeleton
-              variant="rectangular"
-              sx={{ bgcolor: "grey.900" }}
-              width={250}
-              height={350}
-            />
-          ) : (
-            <Image
-              width={250}
-              height={133.33}
-              // onLoadingComplete={() => setImageLoaded(true)}
-              className="rounded-lg    max-w-full object-cover h-full  ease-in"
-              src={data.url.split(".").slice(0, 3).join(".") + ".jpg"}
-              alt={"alt"}
-            />
-          )}
-        </div>
-        <Link href="/">
-          <div className="mybtn px-4 py-3 rounded text-xl min-w-max ">
-            Download{" "}
-            <span className="inline text-sm">
-              {noteData.size.toString().slice(0, 4)}MB
-            </span>
+  if (!noteData) return <h1> loading</h1>;
+  else
+    return (
+      <div className="page  flex  flex-col md:flex-row">
+        <div className="notesSection  flex  flex-col items-center w-2/3 gap-3">
+          <div className="img shadow-white ">
+            {ImageLoaded == false ? (
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "grey.900" }}
+                width={250}
+                height={350}
+              />
+            ) : (
+              <Image
+                width={250}
+                height={133.33}
+                // onLoadingComplete={() => setImageLoaded(true)}
+                className="rounded-lg    max-w-full object-cover h-full  ease-in"
+                src={data.url.split(".").slice(0, 3).join(".") + ".jpg"}
+                alt={"alt"}
+              />
+            )}
           </div>
-        </Link>
-        <div className="text flex flex-col gap-2 ">
-          <h1 className="text-center text-2xl font-bold font-ubuntu">
-            {noteData.name.length > 25
-              ? noteData.name?.slice(0, 25)
-              : noteData.name}
-          </h1>
-          <div className=" gap-5 text-xl border-y py-5">
-            <h1>
-              Uploader :{" "}
-              <p className="underline inline">{noteData.uploadedBy.username}</p>
+          <Link href="/">
+            <div className="mybtn px-4 py-3 rounded text-xl min-w-max ">
+              Download{" "}
+              <span className="inline text-sm">
+                {noteData.size.toString().slice(0, 4)}MB
+              </span>
+            </div>
+          </Link>
+          <div className="text flex flex-col gap-2 ">
+            <h1 className="text-center text-2xl font-bold font-ubuntu">
+              {noteData.name.length > 25
+                ? noteData.name?.slice(0, 25)
+                : noteData.name}
             </h1>
-            {/* <h1>
+            <div className=" gap-5 text-xl border-y py-5">
+              <h1>
+                Uploader :{" "}
+                <p className="underline inline">
+                  {noteData.uploadedBy.username}
+                </p>
+              </h1>
+              {/* <h1>
               Ratings:
               {noteData.totalrating
                 ? noteData.totalrating / noteData.numberofratings
                 : 0}{" "}
               /5{" "}
             </h1> */}
-            <div className="flex gap-5">
-              <Rating
-                name="simple-controlled"
-                value={ratingValue}
-                precision={0.5}
-                onChange={(event, newValue) => {
-                  // setRatingMode(true);
-                  if (!cookie.get("refresh_token")) {
-                    router.push("/login");
-                    toast.error("please login to continue");
-                  } else {
-                    setRatingValue(newValue || 0);
-                    setRatingModelVisible(true);
-                  }
-                }}
-              />
-              {ratingModelVisible && (
-                <AlertDialogSlide
-                  ratingModelVisible={ratingModelVisible}
-                  setRatingModelVisible={setRatingModelVisible}
-                  ratingValue={ratingValue}
-                  userid={JSON.parse(cookie.get("user") || "").userid || ""}
+              <div className="flex gap-5">
+                <Rating
+                  name="simple-controlled"
+                  value={ratingValue}
+                  precision={0.5}
+                  onChange={(event, newValue) => {
+                    // setRatingMode(true);
+                    if (!cookie.get("refresh_token")) {
+                      router.push("/login");
+                      toast.error("please login to continue");
+                    } else {
+                      setRatingValue(newValue || 0);
+                      setRatingModelVisible(true);
+                    }
+                  }}
                 />
+                {ratingModelVisible && (
+                  <AlertDialogSlide
+                    ratingModelVisible={ratingModelVisible}
+                    setRatingModelVisible={setRatingModelVisible}
+                    ratingValue={ratingValue}
+                    userid={JSON.parse(cookie.get("user") || "").userid || ""}
+                  />
+                )}
+                <h1>({noofrating}) ratings</h1>
+              </div>
+              {prevRated != 0 && (
+                <h1 className="text-sm ">Previously rated:{prevRated}</h1>
               )}
-              <h1>({noofrating}) ratings</h1>
             </div>
-            {prevRated != 0 && (
-              <h1 className="text-sm ">Previously rated:{prevRated}</h1>
-            )}
+          </div>
+          <div className="w-full">
+            <Comment
+              compontenttype="notes"
+              refid={router.query.id}
+              userinfo={user}
+            />
           </div>
         </div>
-        <div className="w-full">
-          <Comment
-            compontenttype="notes"
-            refid={router.query.id}
-            userinfo={user}
-          />
+        <div className="w-1/3">
+          <RightHandBar chosenSubject={noteData.subject} />
         </div>
       </div>
-      <div className="w-1/3">
-        <RightHandBar chosenSubject={noteData.subject} />
-      </div>
-    </div>
-  );
+    );
 }
 export async function getServerSideProps(context: Context) {
   try {

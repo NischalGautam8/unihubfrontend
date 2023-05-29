@@ -11,53 +11,37 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import {
-  getFollowingModule,
-  createConversation,
-} from "../../apicalls/apicalls";
+import { getFollowingModule } from "../../apicalls/apicalls";
 import pp from "../../public/pp.jpg";
 import { useRouter } from "next/router";
 import { userinterface } from "@/interfaces/userinterface";
-export default function ScrollDialog({
-  createConvo,
-  setCreateConvo,
+import useProfile from "./useProfile";
+import { toast } from "react-hot-toast";
+export default function ProfileDialog({
+  dialogOpen,
+  setDialogOpen,
+  type,
 }: {
-  createConvo: Boolean;
-  setCreateConvo: any;
+  dialogOpen: boolean;
+  setDialogOpen: Function; //functionn
+  type: String; //Follower of Following
 }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(dialogOpen);
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
-  const [friends, setFriends] = React.useState<Array<userinterface>>([]);
-  const [newConvoUsers, setNewConvouUsers] = React.useState<
-    Array<userinterface>
-  >([]);
-  const hashmap = new Map();
+  const { follow, unfollow } = useProfile();
+  const [friends, setFriends] = React.useState([]);
+  const { getFollowers } = useProfile();
   const [load, setLoad] = React.useState(true);
   const router = useRouter();
   const handleClickOpen = (scrollType: DialogProps["scroll"]) => () => {
     setOpen(true);
     setScroll(scrollType);
   };
-  const handleCheckBoxChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    console.log(e.target.value);
-    if (e.target.checked) {
-      // setNewConvouUsers([...newConvoUsers, JSON.parse(e.target.value)]);
-      console.log(index, "checked");
-      console.log(JSON.parse(e.target.value));
-      hashmap.set(index, JSON.parse(e.target.value));
-    } else {
-      hashmap.delete(index);
-    }
-    console.log(hashmap);
-  };
+
   const handleClose = () => {
     setOpen(false);
-    setCreateConvo(false);
+    setDialogOpen(false);
   };
-  console.log("new", newConvoUsers);
 
   const descriptionElementRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
@@ -67,21 +51,41 @@ export default function ScrollDialog({
         descriptionElement.focus();
       }
     }
-  }, [createConvo]);
-  const user = JSON.parse(Cookies.get("user"));
-  const getFollowing = async () => {
-    console.log(getFollowingModule(user.userid));
-    const following = await getFollowingModule(user.userid);
-    console.log(following);
-    const friends = following.data.following.filter((element: userinterface) =>
-      element.following.includes(user.userid)
-    );
+  }, []);
+  const user = JSON.parse(Cookies.get("user") || "");
+  const getFollowingUtility = async () => {
+    console.log(getFollowingModule(router.query.id as string));
+    const following = await getFollowingModule(router.query.id as string);
     console.log(friends);
+    setFriends(following.data.following);
     setLoad(false);
-    setFriends(friends);
+  };
+  const getFollowersUtility = async () => {
+    try {
+      const res = await getFollowers(router.query.id, user.userid);
+      if (!res) throw new Error("cannot fetch followers");
+      console.log("followrs", res);
+      setFriends(res.data.followers);
+      setLoad(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const followUtility = async (id: string, userid: string) => {
+    const res = await follow(id, userid);
+    res?.status == 200 && toast.success("followed");
+  };
+  const unfollowUtility = async (id: string, userid: string) => {
+    try {
+      const res = await unfollow(id, userid);
+      console.log(res);
+      res?.status == 200 && toast.success("followed");
+    } catch (err) {
+      console.log(err);
+    }
   };
   const mapped = friends.map((element: userinterface, index: number) => (
-    <div className="flex justify-between" key={element._id}>
+    <div className="flex justify-between " key={element._id}>
       <div className="flex items-center gap-3">
         <Image
           style={{
@@ -94,22 +98,38 @@ export default function ScrollDialog({
           className="rounded-full max-w-fit"
           alt="profile"
         ></Image>
-        <h1 className="text-lg font-bold text-black font-inter ">
-          {element.firstName + " "}
-          {element.lastName}
-        </h1>
+        <div className="nameandbutton flex gap-7 items-center ">
+          <h1 className="text-lg font-bold text-black font-inter ">
+            {element.firstName + " "}
+            {element.lastName}
+          </h1>
+
+          {!element.doYouFollow ? (
+            <button
+              onClick={async () => followUtility(element._id, user.userid)}
+              className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
+            >
+              Follow
+            </button>
+          ) : (
+            <button
+              onClick={async () => unfollowUtility(element._id, user.userid)}
+              className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
+            >
+              Unfollow
+            </button>
+          )}
+        </div>
       </div>
-      <input
-        onChange={(e) => handleCheckBoxChange(e, index)}
-        value={JSON.stringify(element)}
-        type="checkbox"
-        className="w-4"
-      />
     </div>
   ));
   useEffect(() => {
-    getFollowing();
-  }, [createConvo]);
+    if (type == "Following") {
+      getFollowingUtility();
+    } else if (type == "Followers") {
+      getFollowersUtility();
+    }
+  }, []);
   console.log(load);
   return (
     <div>
@@ -124,9 +144,7 @@ export default function ScrollDialog({
       >
         <div>
           <DialogTitle className="font-bold" id="scroll-dialog-title">
-            <h1 className="text-xl font-bold" style={{ color: "black" }}>
-              Create a New Conversation
-            </h1>
+            <h1 className="text-xl font-bold">{type}</h1>
           </DialogTitle>
           <DialogContent
             className=" dialogue__content  "
@@ -153,19 +171,8 @@ export default function ScrollDialog({
               Cancel
             </Button>
             <Button
-              onClick={async () => {
-                try {
-                  const res = await createConversation([
-                    ...Array.from(hashmap.values()),
-                    user.userid,
-                  ]);
-                  console.log(res.data._id);
-                  res.status == 200 && router.push("/messages/", res.data._id);
-                  console.log(res);
-                  handleClose();
-                } catch (error) {
-                  console.log(error);
-                }
+              onClick={() => {
+                handleClose();
               }}
             >
               Create

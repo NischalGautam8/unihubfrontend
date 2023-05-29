@@ -31,6 +31,7 @@ function index({ data }: { data: [notes] }) {
     console.log(data);
     setNotes(data);
     setLoading(false);
+    if (!notes) return <h1>Loading</h1>;
   };
   return (
     <div className="min-h-screen">

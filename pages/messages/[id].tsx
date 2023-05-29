@@ -9,7 +9,6 @@ import Cookies from "js-cookie";
 import { GetServerSideProps } from "next";
 import axios from "axios";
 import messageinterface from "../../interfaces/messageinterface";
-import { userinterface } from "../../interfaces/userinterface";
 const token = Cookies.get("refresh_token");
 // console.log("token", token);
 const socket = io.connect("http://localhost:5000", {
@@ -20,10 +19,6 @@ const socket = io.connect("http://localhost:5000", {
 });
 function Group({ data }: { data: Array<any> }) {
   const router = useRouter();
-  if (!Cookies.get("refresh_token")) {
-    roter.push("/login");
-    return;
-  }
   const [messages, setMessageReceived] = useState<messageinterface>({});
   console.log("received", messages);
   const [messagetosend, setmessagetosend] = useState("");

@@ -6,12 +6,11 @@ export interface userinterface {
   lastName: string;
   gender: string;
   password?: string;
-  followers?: {
-    type: Array<userinterface>;
-  };
+  followers?: userinterface[];
   following?: {
     type: Array<userinterface>;
   };
   googleId?: string;
   profilepic?: string;
+  createdAt:string;
 }

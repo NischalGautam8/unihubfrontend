@@ -30,17 +30,17 @@ function LoadingSpinner() {
     };
   }, [router]);
 
-  return (
-    loading && (
-      <div
-        style={{ backgroundColor: "#000000" }}
-        className="h-screen flex items-center justify-center"
-      >
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress color="secondary" />
-        </Box>
-      </div>
-    )
+  return loading ? (
+    <div
+      style={{ backgroundColor: "#000000" }}
+      className="h-screen flex items-center justify-center"
+    >
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress color="secondary" />
+      </Box>
+    </div>
+  ) : (
+    <></>
   );
 }
 export default function App({ Component, pageProps }: AppProps) {
@@ -54,7 +54,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return router.pathname !== "/login" ? (
     <Provider store={store}>
       <>
-        {router.pathname != "/messages/[id]" && <LoadingSpinner />}
+        {router.pathname != ("/messages/[id]" || "/notes/[id]") && (
+          <LoadingSpinner />
+        )}
 
         <div style={{ backgroundColor: "#000000" }} className="whole__wrapper ">
           <div className="pt-6 ">
