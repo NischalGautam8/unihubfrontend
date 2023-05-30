@@ -4,10 +4,12 @@ import axios from "axios";
 import React from "react";
 
 function useProfile() {
-  const getUserInfo = async (userid: string) => {
+  const getUserInfo = async (userid: string, myid: string) => {
     try {
       console.log(userid, "userid");
-      const res = await axios.get(`http://localhost:5000/api/user/${userid}`);
+      const res = await axios.get(
+        `http://localhost:5000/api/user/${userid}?myid=${myid}`
+      );
       return res;
     } catch (err) {
       console.log(err);

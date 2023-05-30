@@ -7,8 +7,13 @@ import { GetServerSideProps } from "next";
 
 function index({ data }: { data: Array<any> }) {
   return (
-    <div>
+    <div className="flex">
       <MessageSideBar conversations={data} />
+      <div className=" w-2/3 font-bold text-xl select flex items-center justify-center">
+        <h1 className="text-white">
+          Please select a conversation to start messaging
+        </h1>
+      </div>
     </div>
   );
 }

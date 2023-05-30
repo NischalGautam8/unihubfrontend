@@ -5,6 +5,8 @@ import { userinterface } from "@/interfaces/userinterface";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { Icon } from "@iconify/react";
+import Link from "next/link";
 import { postinterface } from "@/interfaces/postinterface";
 import pp from "../../public/pp.jpg";
 import Loading from "@/components/Loading";
@@ -13,29 +15,38 @@ import getTimeAgo from "../../utilityFunctions/dateTime";
 import cookie from "js-cookie";
 import ProfileDialog from "@/components/Profile/profileDialog";
 
-interface responseData extends userinterface {
+export interface responseData extends userinterface {
   followerCount: Number;
   followingCount: Number;
+  doYouFollow: boolean;
 }
 function profile() {
+  const { follow, unfollow } = useProfile();
   const router = useRouter();
   let tabs = ["Posts", "Notes"];
   const { id } = router.query;
   // if (JSON.parse(cookie.get("user") || "").userid == id) {
   //   tabs = ["Tweets", "Saved", "Notes"];
   // }
+  let myid = "";
+  if (cookie.get("user")) {
+    myid = JSON.parse(cookie.get("user") as string).userid;
+  }
   const [userData, setUserData] = useState<responseData>();
   const [userPosts, setUserPosts] = useState<Array<postinterface>>();
+  console.log(userData, "userData");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [followerOrFollowing, setFollowerOrFollowing] = useState("");
+  const [doYouFollow, setDoYouFollow] = useState<Boolean>();
   const [activeTab, setActiveTab] = useState("Posts");
   const { getUserInfo, getUserPosts } = useProfile();
   const getInfoUtility = async () => {
     try {
-      const response = await getUserInfo(id as string);
+      const response = await getUserInfo(id as string, myid);
       console.log(response);
       if (!response) throw new Error("cannot fetch");
       setUserData(response.data.user);
+      setDoYouFollow(response.data.user.doYouFollow);
     } catch (err) {
       console.log(err);
     }
@@ -50,13 +61,32 @@ function profile() {
       console.log(err);
     }
   };
+  const followUtility = async (id: string, userid: string) => {
+    const res = await follow(id, userid);
+    // res?.status == 200
+  };
+  const unfollowUtility = async (id: string, userid: string) => {
+    try {
+      const res = await unfollow(id, userid);
+      console.log(res);
+      // res?.status == 200 && toast.success("followed");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     getInfoUtility();
     getPostsUtility();
   }, [id]);
   return (
     <div className="min-h-screen  ">
-      <div className="container ">
+      <div className=" flex mb-5 fixed  gap-2  items-center  ">
+        <Link href={router.query.refby?.toString() || "/"}>
+          <Icon width={42} icon="ion:arrow-back-outline" color="white" />
+        </Link>
+        <h1 className="text-3xl font-bold font-ubuntu">Profile</h1>
+      </div>
+      <div className="container mt-12 ">
         {userData ? (
           <div className="top">
             <div className="pp border border-black">
@@ -73,9 +103,33 @@ function profile() {
               />
             </div>
             <div className="textContent pl-2 ">
-              <h1 className="font-bold text-2xl  tracking-wider ">
-                {userData?.firstName} {userData?.lastName}
-              </h1>
+              <div className="flex gap-5">
+                <h1 className="font-bold text-2xl  tracking-wider ">
+                  {userData?.firstName} {userData?.lastName}
+                </h1>
+                {router.query.id != myid && !doYouFollow && (
+                  <button
+                    className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
+                    onClick={async () => {
+                      followUtility(id as string, myid);
+                      setDoYouFollow(true);
+                    }}
+                  >
+                    Follow
+                  </button>
+                )}
+                {router.query.id != myid && doYouFollow && (
+                  <button
+                    className="text-white rounded font-inter px-2 py-1 border-2 cursor-pointer"
+                    onClick={async () => {
+                      unfollowUtility(id as string, myid);
+                      setDoYouFollow(false);
+                    }}
+                  >
+                    Unfollow
+                  </button>
+                )}
+              </div>
               <p className="color  text-slate-500 text-lg">
                 {"@" + userData?.username}
               </p>
@@ -91,6 +145,7 @@ function profile() {
                     type={followerOrFollowing}
                   />
                 )}
+
                 <p
                   className="cursor-pointer"
                   onClick={() => {
@@ -122,7 +177,6 @@ function profile() {
         ) : (
           <h1>Loading</h1>
         )}
-        {console.log(activeTab)}
         <div className="tabs flex gap-5 mt-8 px-5 ">
           {tabs.map((tab) => {
             return (

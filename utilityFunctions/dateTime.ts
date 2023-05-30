@@ -11,7 +11,7 @@ export default function getTimeAgo(dateTimeString: string) {
   const years = Math.floor(days / 365);
 
   if (seconds < 60) {
-    return "just now";
+    return `${seconds} ago`;
   } else if (minutes === 1) {
     return "1 minute ago";
   } else if (minutes < 60) {

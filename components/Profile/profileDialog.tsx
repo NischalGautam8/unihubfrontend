@@ -16,6 +16,7 @@ import pp from "../../public/pp.jpg";
 import { useRouter } from "next/router";
 import { userinterface } from "@/interfaces/userinterface";
 import useProfile from "./useProfile";
+import { responseData } from "@/pages/Profile/[id]";
 import { toast } from "react-hot-toast";
 export default function ProfileDialog({
   dialogOpen,
@@ -29,6 +30,7 @@ export default function ProfileDialog({
   const [open, setOpen] = React.useState(dialogOpen);
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const { follow, unfollow } = useProfile();
+  const [rerender, setRerender] = React.useState(false);
   const [friends, setFriends] = React.useState([]);
   const { getFollowers } = useProfile();
   const [load, setLoad] = React.useState(true);
@@ -79,50 +81,60 @@ export default function ProfileDialog({
     try {
       const res = await unfollow(id, userid);
       console.log(res);
-      res?.status == 200 && toast.success("followed");
+      res?.status == 200 && toast.success("unfollowed");
     } catch (err) {
       console.log(err);
     }
   };
-  const mapped = friends.map((element: userinterface, index: number) => (
-    <div className="flex justify-between " key={element._id}>
-      <div className="flex items-center gap-3">
-        <Image
-          style={{
-            borderRadius: "999px",
-            objectFit: "cover",
-            width: "50px",
-            height: "50px",
-          }}
-          src={pp}
-          className="rounded-full max-w-fit"
-          alt="profile"
-        ></Image>
-        <div className="nameandbutton flex gap-7 items-center ">
-          <h1 className="text-lg font-bold text-black font-inter ">
-            {element.firstName + " "}
-            {element.lastName}
-          </h1>
+  const mapped = friends.map((element: any, index: number) => {
+    return (
+      <div className="flex  " key={element._id}>
+        <div className="flex items-center   gap-3">
+          <Image
+            style={{
+              borderRadius: "999px",
+              objectFit: "cover",
+              width: "50px",
+              height: "50px",
+            }}
+            src={pp}
+            className="rounded-full max-w-fit"
+            alt="profile"
+          ></Image>
+          <div className="nameandbutton justify-between flex gap-7 items-center ">
+            <h1 className="text-lg font-bold text-black font-inter ">
+              {element.firstName + " "}
+              {element.lastName}
+            </h1>
 
-          {!element.doYouFollow ? (
-            <button
-              onClick={async () => followUtility(element._id, user.userid)}
-              className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
-            >
-              Follow
-            </button>
-          ) : (
-            <button
-              onClick={async () => unfollowUtility(element._id, user.userid)}
-              className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
-            >
-              Unfollow
-            </button>
-          )}
+            {user.userid != element._id && (
+              <button
+                onClick={async () => {
+                  !element.doYouFollow
+                    ? followUtility(element._id, user.userid)
+                    : unfollowUtility(element._id, user.userid);
+                  element.doYouFollow = !element.doYouFollow;
+                }}
+                className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
+              >
+                {element.doYouFollow ? "Follow" : "Unfollow"}
+              </button>
+            )}
+            {/* {user.userid != element._id && element.doYouFollow && (
+              <button
+                onClick={async () => {
+                  unfollowUtility(element._id, user.userid);
+                }}
+                className="text-white rounded bg-indigo-700 font-inter px-2 py-1 "
+              >
+                Unfollow
+              </button>
+            )} */}
+          </div>
         </div>
       </div>
-    </div>
-  ));
+    );
+  });
   useEffect(() => {
     if (type == "Following") {
       getFollowingUtility();
@@ -161,6 +173,7 @@ export default function ProfileDialog({
                 id="scroll-dialog-description"
                 ref={descriptionElementRef}
                 tabIndex={-1}
+                className=""
               >
                 {mapped}
               </DialogContentText>
