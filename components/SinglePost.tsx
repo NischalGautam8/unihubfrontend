@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 function SinglePost({
   _id, //post id
   description,
-  postimage,
+  image,
   userId, //object that contains userinfo
   hasLiked,
   commentsCount,
@@ -52,8 +52,8 @@ postinterface) {
       onClick={(e) => {
         router.push(`/posts/${_id}`);
       }}
-      className=""
-      style={{ width: "700px" }}
+      className="w-[450px] md:w-[550px] lg:w-[700px]"
+      // style={{ width: "700px" }}
     >
       <div
         style={{ backgroundColor: "#000000" }}
@@ -89,9 +89,15 @@ postinterface) {
                   {description}
                 </p>
               </Link>
-              {postimage && (
+              {image && (
                 <div className="py-2 max-w-fit  ">
-                  <Image className="rounded" src={post} alt="postimage"></Image>
+                  <Image
+                    className="rounded"
+                    src={image}
+                    width={600}
+                    height={700}
+                    alt="postimage"
+                  ></Image>
                 </div>
               )}
             </div>

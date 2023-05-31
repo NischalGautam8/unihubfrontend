@@ -34,11 +34,17 @@ function MessageSection({
   }>({ name: "", id: "", updatedAt: "" });
   const [memberData, setMemberData] = useState([]);
   // console.log(router.pathname);
+  const [page, setPage] = useState(1);
   const [inputMsg, setInputMsg] = useState("");
   const fetchMessages = async () => {
     try {
       const res: conversations = await axios.get(
-        `http://localhost:5000/api/convoandmessage/${router.query.id}`
+        `http://localhost:5000/api/convoandmessage/${router.query.id}?page=${page}`,
+        {
+          headers: {
+            authorization: `Bearer ${cookies.get("refresh_token")}`,
+          },
+        }
       );
       setConversationData({
         name: res.data.conversation.name,
@@ -58,10 +64,10 @@ function MessageSection({
     setNewMessage(newMessage);
     fetchMessages();
     joinRoom();
-  }, [newMessage, router.query.id]);
+  }, [newMessage, router.query.id, page]);
   //update  on prop change
   console.log("new msge", newmsg);
-  const userx = cookies.get("user") && JSON.parse(cookies.get("user"));
+  const userx = cookies.get("user") && JSON.parse(cookies.get("user") || "");
   // console.log(conversationData);
   return (
     <div className="w-3/5 sticky  ">
@@ -80,11 +86,31 @@ function MessageSection({
             </h1>
           </div>
           <div className="contentSection px-2">
-            <ScrollableChat messages={messagesData} />
+            <ScrollableChat
+              messages={messagesData}
+              setPage={setPage}
+              page={page}
+            />
           </div>
-          <div className="message__input w-full flex items-center gap-2">
+          <div className="message__input w-full flex items-center gap-2 pt-2">
             <input
               value={inputMsg}
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  sendMessage();
+                  setMessagesData((prev) => [
+                    ...prev,
+                    {
+                      content: inputMsg,
+                      _id: inputMsg,
+                      sender: userx.userid,
+                      receiver: router.query.id,
+                      conversation: router.query.id,
+                    },
+                  ]);
+                  setInputMsg("");
+                }
+              }}
               onChange={(e) => {
                 updateParent(e.target.value);
                 setInputMsg(e.target.value);

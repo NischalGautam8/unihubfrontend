@@ -86,7 +86,7 @@ function Group({ data }: { data: Array<any> }) {
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async (context) => {
-  const user = JSON.parse(context.req.cookies.user);
+  const user = JSON.parse(context.req.cookies.user || "");
   const { Cookies } = context.req.headers;
   //   console.log(Cookies);
   const response = await axios.get(

@@ -62,9 +62,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="pt-6 ">
             {router.pathname != "/messages/[id]" && <Navbar />}
           </div>
-          <div className="lower flex sm:gap-2 lg:gap-36 ">
-            <div className="wrapper__forflex">
-              <div className="overflow-x-hidden fixed ">
+          <div className="lower flex sm:gap-2 lg:gap-36  ">
+            <div className="wrapper__forflex hidden sm:block">
+              <div className="overflow-x-hidden fixed  ">
                 <Sidebar />
               </div>
             </div>

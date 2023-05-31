@@ -16,6 +16,7 @@ function SingleMessage({ message }: { message: messageinteface }) {
       style={{
         marginLeft: config.marginLeft,
       }}
+      className="cursor-pointer"
     >
       <div
         style={
@@ -29,7 +30,7 @@ function SingleMessage({ message }: { message: messageinteface }) {
                 marginLeft: config.marginLeft,
                 backgroundColor:
                   message.sender == user.userid ? "#5858ce" : "#1a2313",
-              }j
+              }
         }
         className="px-3 py-2 rounded-xl delay-100 ease-in max-w-fit min-w-max"
       >
@@ -40,7 +41,9 @@ function SingleMessage({ message }: { message: messageinteface }) {
       {clicked && (
         <p className="text-slate-500">
           {(message.sender == user.userid ? "sent " : "received ") +
-            getTimeAgo(message.createdAt)}
+            (message.createdAt != undefined
+              ? getTimeAgo(message.createdAt)
+              : "just now")}
         </p>
       )}
     </div>

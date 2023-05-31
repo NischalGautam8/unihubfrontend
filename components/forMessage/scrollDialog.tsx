@@ -68,13 +68,13 @@ export default function ScrollDialog({
       }
     }
   }, [createConvo]);
-  const user = JSON.parse(Cookies.get("user"));
+  const user = JSON.parse(Cookies.get("user") || "");
   const getFollowing = async () => {
     console.log(getFollowingModule(user.userid));
     const following = await getFollowingModule(user.userid);
     console.log(following);
-    const friends = following.data.following.filter((element: userinterface) =>
-      element.following.includes(user.userid)
+    const friends = following.data.following.filter(
+      (element: any) => element.isFriend
     );
     console.log(friends);
     setLoad(false);

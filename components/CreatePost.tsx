@@ -30,7 +30,7 @@ function CreatePost() {
     }
   };
   return (
-    <div className="flex w-[700px]  md:w-1/2 mb-5  ">
+    <div className="flex w-[400px] md:w-[500px] lg:w-[600px]   mb-5  ">
       <div className="relative    w-full ">
         <input
           onChange={(e) => setInput(e.target.value)}

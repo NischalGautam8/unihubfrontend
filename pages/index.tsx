@@ -39,7 +39,7 @@ function index({
   const tomap = data.msg;
   // console.log(currentUser, "user");
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       <CreatePost />
       <Posts data={tomap} />
     </div>
