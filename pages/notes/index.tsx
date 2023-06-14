@@ -51,7 +51,7 @@ function index({
     );
   return (
     <div className="min-h-screen">
-      <CreateNote /> (
+      <CreateNote />
       <div className="min-h-screen">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-2 gap-x-2">
           {notes.map((element: notes) => (
@@ -64,7 +64,6 @@ function index({
           ))}
         </div>
       </div>
-      )
     </div>
   );
 }

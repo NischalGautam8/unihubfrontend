@@ -55,7 +55,8 @@ function CreatePost() {
           value={input}
           type="text"
           placeholder="Pour your thoughts..."
-          className="bg-gray-900  border-0  py-3 px-2 rounded-xl w-full"
+          style={{ backgroundColor: "rgb(32, 35, 39)" }}
+          className="bg-gray-800 outline-none  border-0  py-3 px-2 rounded-xl w-full"
         />
         <div className="image-upload flex absolute right-24 top-6 items-center ">
           <div className="absolute flex">

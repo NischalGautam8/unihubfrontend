@@ -65,20 +65,22 @@ function CreateNote() {
     }
   };
   return (
-    <div className="flex flex-col md:flex-row w-[280px] md:w-[700px]   mb-5  ">
+    <div className="flex flex-col md:flex-row w-[380px] md:w-[500px] lg:w-[600px]mb-5  ">
       <div className="relative flex gap-2    w-full ">
         <input
+          style={{ backgroundColor: "rgb(32, 35, 39)" }}
           onChange={(e) => setInput(e.target.value)}
           value={input}
           type="text"
           placeholder="Title for  your note"
-          className="bg-gray-900 inline  border-0  py-3 px-2 rounded-xl w-3/5"
+          className=" inline outline-none  border-0  py-3 px-2 text-gray-200 rounded-xl w-3/5"
         />
         <input
           onChange={(e) => setSubject(e.target.value)}
+          style={{ backgroundColor: "rgb(32, 35, 39)" }}
           type="text"
-          placeholder="Enter the subject"
-          className="bg-gray-900  border-0  py-3 px-2 rounded-xl w-2/5 inline"
+          placeholder="subject"
+          className="bg-gray-900 text-gray-200 outline-none  border-0  py-3 px-2 rounded-xl w-2/5 inline"
         />
         <div className="image-upload flex absolute right-24 top-6 items-center ">
           <div className="absolute flex">
@@ -93,7 +95,7 @@ function CreateNote() {
             <ImageIcon className="relative" />
           </div>
           <input
-            className="absolute opacity-0 "
+            className="absolute opacity-0 text-gray-200 "
             id="file-input"
             value=""
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

@@ -45,6 +45,12 @@ const handleUnlikeUtil = async (_id, userid, jwt) => {
     console.log(err);
   }
 };
+const findUserByUsername = async (username) => {
+  const res = await axios.get("http://localhost:3000/api/usser/find", {
+    username,
+  });
+  return res.data.user;
+};
 const createConversation = async (users) => {
   var name = "";
   console.log(users.length);
@@ -190,4 +196,5 @@ export {
   fetchPosts,
   fetchUserPosts,
   getSavedPosts,
+  findUserByUsername,
 };
