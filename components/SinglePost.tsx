@@ -1,57 +1,72 @@
 import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useEffect } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import comment from "../public/comment.png";
 import share from "../public/share.png";
 import pp from "../public/pp.jpg";
-import post from "../public/post.jpg";
 import "../styles/Home.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { postinterface } from "@/interfaces/postinterface";
-
+import cookie from "js-cookie";
 import { handleLikeUtil, handleUnlikeUtil } from "@/apicalls/apicalls";
 import { userinterface } from "@/interfaces/userinterface";
-import { useSelector } from "react-redux";
 
 function SinglePost({
   _id, //post id
   description,
   image,
-  userId, //object that contains userinfo
+  userId,
   hasLiked,
   commentsCount,
   likesCount,
-}: //make it just comment number,
-postinterface) {
+}: postinterface) {
   const router = useRouter();
-  const userid = useSelector((state: any) => state.user.value.userid);
-  console.log("redux userid", userid);
+  console.log("hasliked", hasLiked);
+  //@ts-expect-error obj
+  const [user, setUser] = useState<userinterface>({});
+  const [refresh_token, setrefresh_token] = useState("");
+
+  useEffect(() => {
+    let user = JSON.parse(cookie.get("user") || "");
+    setUser(user);
+    let refresh_token = cookie.get("refresh_token") || "";
+    setrefresh_token(refresh_token);
+  }, []);
   const [liked, setLiked] = useState<Boolean>(
     hasLiked
-    //TODO: take user info from redux and use it insted of hardcoded value:  done
+    //TODO: take user info  from redux and use it insted of hardcoded value:  done
   ); //look from prop
-  const [likedCount, setLikedCount] = useState<number>(likesCount);
+  console.log(liked);
+  console.log(hasLiked);
+  const [likedCount, setLikedCount] = useState<number>(Number(likesCount));
   const [commentCount, setCommentCount] = useState<number>(commentsCount);
-
   const handleLike = async () => {
     try {
-      const response = await handleLikeUtil(_id, userid);
+      const response = await handleLikeUtil(_id, user.userid, refresh_token);
+
       response?.status == 200 && setLiked(true);
       response?.status == 200 && setLikedCount((prev) => prev + 1);
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
   const handleUnlike = async () => {
-    const response = await handleUnlikeUtil(_id, userid);
-    response?.status == 200 && setLiked(false);
-    response?.status == 200 && setLikedCount((prev) => prev - 1);
+    try {
+      const response = await handleUnlikeUtil(_id, user.userid, refresh_token);
+      response?.status == 200 && setLiked(false);
+      response?.status == 200 && setLikedCount((prev) => Number(prev) - 1);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div
-      onClick={(e) => {
-        router.push(`/posts/${_id}`);
-      }}
+      // onClick={(e) => {
+      //   router.push(`/posts/${_id}`);
+      // }}
       className="w-[450px] md:w-[550px] lg:w-[700px]"
       // style={{ width: "700px" }}
     >
@@ -63,7 +78,10 @@ postinterface) {
           style={{ objectFit: "cover" }}
           className="profile__pic__content flex gap-3"
         >
-          <div className="">
+          <div
+            onClick={() => router.push(`/profile/${userId._id}`)}
+            className=""
+          >
             <Image
               style={{
                 borderRadius: "999px",
@@ -73,7 +91,12 @@ postinterface) {
               }}
               className="rounded-full max-w-fit"
               alt="profilepic"
-              src={pp}
+              width={50}
+              height={50}
+              src={
+                image ||
+                "https://res.cloudinary.com/ds8b7v9pf/image/upload/v1686138382/vtte6f71uucqydh78dhw.png"
+              }
             ></Image>
           </div>
           <div className="content__section flex flex-col gap-3 ">

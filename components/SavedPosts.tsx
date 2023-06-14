@@ -8,15 +8,17 @@ import { fetchPosts, fetchUserPosts, getSavedPosts } from "@/apicalls/apicalls";
 import Loading from "./Loading";
 import { useRouter } from "next/router";
 import { noteinterface } from "@/interfaces/noteinterface";
-import { Context } from "vm";
-export default function Posts() {
+export default function SavedPosts({
+  userid,
+  refresh_token,
+}: {
+  userid: string;
+  refresh_token: string;
+}) {
+  console.log(refresh_token, "myid", userid);
   const [postsData, setPostsData] = useState([]);
   const [page, setPage] = useState(1);
   const router = useRouter();
-  const stringuser = cookie.get("user");
-  console.log(stringuser);
-  // var user = JSON.parse(stringuser);
-
   const initialdata: Array<noteinterface> = [
     // {
     //   _id: "646b3ef07a5d8ac5c00a679b",
@@ -37,10 +39,10 @@ export default function Posts() {
   ];
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["query3"],
+    ["query5"],
     async ({ pageParam = 1 }) => {
-      const response = await fetchPosts("646714b941412e0da077f69d", pageParam);
-      return response.msg;
+      const response = await getSavedPosts(userid, pageParam, refresh_token);
+      return response.data.msg;
     },
     {
       getNextPageParam: (_, pages) => {
@@ -52,14 +54,6 @@ export default function Posts() {
       },
     }
   );
-  // if (!data) return <></>;
-  // if (data?.pages[0].length == 0) {
-  //   return (
-  //     <div>
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="w-1/2 pb-2">

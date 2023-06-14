@@ -28,7 +28,7 @@ interface Data {
   likes: Array<String>;
 }
 
-function id({
+function Id({
   data,
   comm,
   user,
@@ -40,7 +40,7 @@ function id({
   //router.push(/posts/id?route.pathname)
   return (
     <div className="  min-h-screen ">
-      <div className=" fixed flex gap-2  items-center  ">
+      <div className=" fixed flex gap-2  items-center">
         <Link href={route.query.refby?.toString() || "/"}>
           <Icon width={42} icon="ion:arrow-back-outline" color="white" />
         </Link>
@@ -65,10 +65,13 @@ export const getServerSideProps: GetServerSideProps<{
   comm: comment;
 }> = async (context) => {
   try {
-    const id = context.query.id;
-    const res = await axios.get(process.env.BASE_URL + `posts/${id}`);
-    let data = res.data;
     const user = JSON.parse(context.req.cookies.user || "");
+    console.log("user", user);
+    const id = context.query.id;
+    const res = await axios.get(
+      process.env.BASE_URL + `posts/${id}?userid=${user.userid}`
+    );
+    let data = res.data;
 
     return {
       props: {
@@ -78,4 +81,4 @@ export const getServerSideProps: GetServerSideProps<{
     };
   } catch (err) {}
 };
-export default id;
+export default Id;

@@ -78,7 +78,12 @@ function SingleComment({
               }}
               className="rounded-full max-w-fit"
               alt="profilepic"
-              src={pp}
+              width={50}
+              height={50}
+              src={
+                user.profilepic ||
+                "https://res.cloudinary.com/ds8b7v9pf/image/upload/v1686138382/vtte6f71uucqydh78dhw.png"
+              }
             ></Image>
           </div>
           <div className="content__section flex flex-col gap-3 ">
@@ -92,11 +97,12 @@ function SingleComment({
               >
                 {content}
               </p>
-              {commentimage && (
+              {/** TODO feature comments with images/ */}
+              {/* {commentimage && (
                 <div className="py-2 max-w-fit  ">
                   <Image className="rounded" src={post} alt="postimage"></Image>
                 </div>
-              )}
+              )} */}
             </div>
             <div className="comment__details flex gap-4">
               <div className="comment flex items-center gap-2">

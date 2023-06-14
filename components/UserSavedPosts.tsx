@@ -37,10 +37,13 @@ export default function Posts() {
   ];
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["query3"],
+    ["query"],
     async ({ pageParam = 1 }) => {
-      const response = await fetchPosts("646714b941412e0da077f69d", pageParam);
-      return response.msg;
+      const response = await getSavedPosts(
+        "646714b941412e0da077f69d",
+        pageParam
+      );
+      return response.data.msg;
     },
     {
       getNextPageParam: (_, pages) => {

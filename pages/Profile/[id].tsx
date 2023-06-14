@@ -14,7 +14,10 @@ import Posts from "../../components/Posts";
 import getTimeAgo from "../../utilityFunctions/dateTime";
 import cookie from "js-cookie";
 import ProfileDialog from "@/components/Profile/profileDialog";
-
+import UserPosts from "@/components/userPosts";
+import Notes from "@/components/forNotes/Notes";
+import UserNotes from "@/components/forNotes/UserNotes";
+import SavedPosts from "@/components/SavedPosts";
 export interface responseData extends userinterface {
   followerCount: Number;
   followingCount: Number;
@@ -24,13 +27,20 @@ function profile() {
   const { follow, unfollow } = useProfile();
   const router = useRouter();
   let tabs = ["Posts", "Notes"];
+  if ((router.query.id = "646714b941412e0da077f69d")) {
+    tabs.push("Saved");
+  }
   const { id } = router.query;
   // if (JSON.parse(cookie.get("user") || "").userid == id) {
   //   tabs = ["Tweets", "Saved", "Notes"];
   // }
   let myid = "";
-  if (cookie.get("user")) {
+  var user = {};
+  let refresh_token;
+  if (cookie.get("user") && cookie.get("refresh_token")) {
     myid = JSON.parse(cookie.get("user") as string).userid;
+    user = JSON.parse(cookie.get("user") || "");
+    refresh_token = cookie.get("refresh_token");
   }
   const [userData, setUserData] = useState<responseData>();
   const [userPosts, setUserPosts] = useState<Array<postinterface>>();
@@ -195,10 +205,11 @@ function profile() {
             );
           })}
         </div>
-        {userPosts ? (
-          activeTab == "Posts" && <Posts data={userPosts} />
-        ) : (
-          <Loading />
+        {/* {console.log("refresh_token", refresh_token, "myid", myid)} */}
+        {activeTab == "Notes" && <UserNotes />}
+        {activeTab == "Posts" && <UserPosts userid={myid} />}
+        {activeTab == "Saved" && refresh_token && myid && (
+          <SavedPosts refresh_token={refresh_token} userid={myid} />
         )}
       </div>
     </div>

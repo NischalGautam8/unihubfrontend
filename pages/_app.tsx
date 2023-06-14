@@ -11,6 +11,13 @@ import userReducer from "../features/user";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import Navbar from "@/components/Navbar";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+const queryClient = new QueryClient();
+
 function LoadingSpinner() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -52,35 +59,42 @@ export default function App({ Component, pageProps }: AppProps) {
     },
   });
   return router.pathname !== "/login" ? (
-    <Provider store={store}>
-      <>
-        {router.pathname != ("/messages/[id]" || "/notes/[id]") && (
-          <LoadingSpinner />
-        )}
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <>
+          {router.pathname != ("/messages/[id]" || "/notes/[id]") && (
+            <LoadingSpinner />
+          )}
 
-        <div style={{ backgroundColor: "#000000" }} className="whole__wrapper ">
-          <div className="pt-6 ">
-            {router.pathname != "/messages/[id]" && <Navbar />}
-          </div>
-          <div className="lower flex sm:gap-2 lg:gap-36  ">
-            <div className="wrapper__forflex hidden sm:block">
-              <div className="overflow-x-hidden fixed  ">
-                <Sidebar />
+          <div
+            style={{ backgroundColor: "#000000" }}
+            className="whole__wrapper "
+          >
+            <div className="pt-6 ">
+              {router.pathname != "/messages/[id]" && <Navbar />}
+            </div>
+            <div className="lower flex sm:gap-2 lg:gap-36  ">
+              <div className="wrapper__forflex hidden sm:block">
+                <div className="overflow-x-hidden fixed  ">
+                  <Sidebar />
+                </div>
+              </div>
+              <div className="posts w-full flex ml-32 flex-col gap-2">
+                <Toaster position="bottom-center" />
+                <Component {...pageProps} />
               </div>
             </div>
-            <div className="posts w-full flex ml-32 flex-col gap-2">
-              <Toaster position="bottom-center" />
-              <Component {...pageProps} />
-            </div>
           </div>
-        </div>
-      </>
-    </Provider>
+        </>
+      </Provider>
+    </QueryClientProvider>
   ) : (
-    <Provider store={store}>
-      <>
-        <Component {...pageProps} />
-      </>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <>
+          <Component {...pageProps} />
+        </>
+      </Provider>
+    </QueryClientProvider>
   );
 }

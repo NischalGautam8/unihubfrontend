@@ -16,7 +16,7 @@ import pp from "../../public/pp.jpg";
 import { useRouter } from "next/router";
 import { userinterface } from "@/interfaces/userinterface";
 import useProfile from "./useProfile";
-import { responseData } from "@/pages/Profile/[id]";
+import { responseData } from "@/pages/profile/[id]";
 import { toast } from "react-hot-toast";
 export default function ProfileDialog({
   dialogOpen,

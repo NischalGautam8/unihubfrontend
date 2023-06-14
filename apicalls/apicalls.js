@@ -18,23 +18,26 @@ const createPost = async (description, userId, jwt) => {
   }
 };
 
-const handleLikeUtil = async (_id, userid) => {
+const handleLikeUtil = async (_id, userid, jwt) => {
   try {
     const response = await axios.post(
       `http://localhost:5000/api/posts/like/${_id}`,
       {
         userid,
+        jwt,
       }
     );
     return response;
   } catch (err) {}
 };
-const handleUnlikeUtil = async (_id, userid) => {
+
+const handleUnlikeUtil = async (_id, userid, jwt) => {
   try {
     const response = await axios.post(
       `http://localhost:5000/api/posts/unlike/${_id}`,
       {
         userid,
+        jwt,
       }
     );
     return response;
@@ -141,8 +144,39 @@ const rateNote = async (noteid, userid, rating) => {
     console.log(err);
   }
 };
+const fetchUserPosts = async (userId, page, myid) => {
+  const res = await axios.get(
+    `http://localhost:5000/api/posts/user/${userId}?page=${page}&&myid=${myid}`
+  );
+  return res;
+};
+const getSavedPosts = async (userId, page, jwt) => {
+  const res = await axios.get(
+    `http://localhost:5000/api/posts/saved/${userId}?page=${page}`,
+    {
+      headers: {
+        authorization: `Bearer ${jwt}`,
+      }, //res.data.msg
+    }
+  ); //send jwt
+  return res;
+};
+const fetchPosts = async (userid, page) => {
+  const res = await fetch(
+    "http://localhost:5000/api/posts?userid=" + `${userid}&&page=${page}`
+  );
+  const data = await res.json();
+  return data;
+};
+const getUserNotes = async (id, page) => {
+  const res = await axios.get(
+    `http://localhost:5000/api/notes/user/${id}?page=${page}`
+  );
+  return res;
+};
 export {
   getFollowingModule,
+  getUserNotes,
   createConversation,
   getSingleNote,
   getComment,
@@ -153,4 +187,7 @@ export {
   handleLikeUtil,
   handleUnlikeUtil,
   createPost,
+  fetchPosts,
+  fetchUserPosts,
+  getSavedPosts,
 };

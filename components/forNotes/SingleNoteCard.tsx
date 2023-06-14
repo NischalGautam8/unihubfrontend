@@ -12,8 +12,6 @@ interface props {
   subject: string;
 }
 function singleNoteCard({
-  width,
-  heigth,
   _id,
   url,
   uploadedBy,
@@ -22,7 +20,6 @@ function singleNoteCard({
   subject,
 }: props) {
   console.log("single Note");
-  console.log(url.split(".").slice(0, 3).join("."));
   return (
     <>
       <Link href={"/notes/" + _id}>

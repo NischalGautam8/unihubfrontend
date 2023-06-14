@@ -13,6 +13,7 @@ import RightHandBar from "@/components/forNotes/RightHandBar";
 import AlertDialogSlide from "@/components/forNotes/RatingDialog";
 import { Context } from "vm";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 interface res {
   _id: string;
@@ -26,7 +27,7 @@ interface res {
   __v: number;
 }
 
-function id({
+function Id({
   data,
   user,
   rating,
@@ -39,7 +40,9 @@ function id({
   noOfRating: number;
   prevRated: number;
 }) {
+  console.log("user", user);
   const router = useRouter();
+  const useruser = useSelector((state) => state.user.value);
   console.log("rating", rating);
   const [noteData, setNoteData] = useState<res>(data);
   const [ratingModelVisible, setRatingModelVisible] = useState(false);
@@ -88,7 +91,12 @@ function id({
             <div className=" gap-5 text-xl border-y py-5">
               <h1>
                 Uploader :{" "}
-                <p className="underline inline">
+                <p
+                  onClick={() =>
+                    router.push(`/profile/${noteData.uploadedBy._id}`)
+                  }
+                  className="underline inline"
+                >
                   {noteData.uploadedBy.username}
                 </p>
               </h1>
@@ -133,8 +141,8 @@ function id({
           <div className="w-full">
             <Comment
               compontenttype="notes"
-              refid={router.query.id}
-              userinfo={user}
+              refid={router.query.id as string}
+              userinfo={useruser}
             />
           </div>
         </div>
@@ -150,7 +158,7 @@ export async function getServerSideProps(context: Context) {
       userid: "",
     };
     if (context.req.cookies.user) {
-      user = context.req.cookies.user;
+      user = JSON.parse(context.req.cookies.user);
     }
     const data = await getSingleNote(context.query.id, user.userid);
     return {
@@ -167,4 +175,4 @@ export async function getServerSideProps(context: Context) {
   }
 }
 
-export default id;
+export default Id;

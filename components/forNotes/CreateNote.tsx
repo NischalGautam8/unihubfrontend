@@ -4,20 +4,24 @@ import ImageIcon from "@mui/icons-material/Image";
 import axios from "axios";
 import Loading from "../Loading";
 import cookie from "js-cookie";
+import { useSelector } from "react-redux";
 import Router from "next/router";
 function CreateNote() {
   const [input, setInput] = useState("");
   const [file, setFile] = useState<File>();
+  console.log(file, "file");
   const [subject, setSubject] = useState("");
   const [loading, setLoading] = useState(false);
   console.log(file?.type);
-  console.log("hello");
-  console.log(input);
+  const user = JSON.parse(cookie.get("user") || "");
+  const refresh_token = cookie.get("refresh_token");
+  console.log(user, "user");
   const handleNoteUpload = async () => {
     try {
-      if (!cookie.get("refresh_token")) {
+      if (!refresh_token) {
         Router.push("/login");
         toast.error("You must be logged in to upload notes");
+        return;
       }
       if (!file) {
         toast.error("Please Select a file");
@@ -25,6 +29,10 @@ function CreateNote() {
       }
       if (input.length == 0) {
         toast.error("Please insert the Note title!");
+        return;
+      }
+      if (file.size > 25 * 1000000) {
+        toast.error("File too large. Max size is 25MB");
         return;
       }
       if (subject.length == 0) {
@@ -36,7 +44,8 @@ function CreateNote() {
       formData.append("name", input);
       formData.append("file", file || "");
       formData.append("subject", subject);
-      formData.append("uploadedBy", "646714b941412e0da077f69d");
+      formData.append("uploadedBy", user.userid);
+      formData.append("jwt", user.refresh_token);
       const response = await axios.post(
         "http://localhost:5000/api/notes",
         formData
@@ -56,7 +65,7 @@ function CreateNote() {
     }
   };
   return (
-    <div className="flex w-[700px]  md:w-1/2 mb-5  ">
+    <div className="flex flex-col md:flex-row w-[280px] md:w-[700px]   mb-5  ">
       <div className="relative flex gap-2    w-full ">
         <input
           onChange={(e) => setInput(e.target.value)}
@@ -100,9 +109,7 @@ function CreateNote() {
                 allowedFormats.includes(e.target.files[0].type)
               ) {
                 setFile(e.target.files[0]);
-              } else {
-                // File format not allowed
-                toast.error("The selected file format is not allowed");
+                toast.success("file selected");
               }
             }}
             type="file"
@@ -114,7 +121,7 @@ function CreateNote() {
           disabled={loading}
           className="px-3 top-1  absolute right-1   rounded-lg py-2 bg-slate-800 hover:bg-slate-500  ease-in delay-75"
         >
-          <div className="flex  gap-4 items-center  ">
+          <div className="flex  gap-4 items-center">
             <h1 className="text-lg">Post</h1>
             {loading && <div>{<Loading size={20} />}</div>}
           </div>
