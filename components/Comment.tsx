@@ -18,6 +18,13 @@ interface comment {
   updatedAt: string;
   likes: Array<string>;
 }
+interface userinfo {
+  _id: string;
+  username: string;
+  userid: string;
+  lastName: string;
+  firstName: string;
+}
 function Comment({
   compontenttype,
   refid,
@@ -27,7 +34,7 @@ function Comment({
   compontenttype: string;
   refid: string;
   refresh_token: string;
-  userinfo: userinterface;
+  userinfo: userinfo;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);

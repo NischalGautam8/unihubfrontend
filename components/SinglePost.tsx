@@ -3,8 +3,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useEffect } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import comment from "../public/comment.png";
-import share from "../public/share.png";
-import pp from "../public/pp.jpg";
+import save from "../public/saved.png";
+import unsave from "../public/icons8-save-30.png";
+
 import "../styles/Home.module.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -161,7 +162,7 @@ function SinglePost({
               </div>
               <div className="comment flex items-center gap-2">
                 <Image
-                  src={comment}
+                  src={unsave}
                   alt="comment"
                   width={18}
                   height={18}
