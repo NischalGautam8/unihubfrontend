@@ -1,5 +1,4 @@
 import React from "react";
-import conversations from "../interfaces/conversation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
@@ -38,7 +37,7 @@ function MessageSection({
   const [inputMsg, setInputMsg] = useState("");
   const fetchMessages = async () => {
     try {
-      const res: conversations = await axios.get(
+      const res = await axios.get(
         `https://unihubbackend.onrender.com/api/convoandmessage/${router.query.id}?page=${page}`,
         {
           headers: {
@@ -99,6 +98,7 @@ function MessageSection({
               onKeyDown={(e) => {
                 if (e.key == "Enter") {
                   sendMessage();
+                  //@ts-expect-error
                   setMessagesData((prev) => [
                     ...prev,
                     {
@@ -122,6 +122,7 @@ function MessageSection({
             <Icon
               onClick={() => {
                 sendMessage();
+                //@ts-expect-error
                 setMessagesData((prev) => [
                   ...prev,
                   {

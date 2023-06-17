@@ -11,6 +11,7 @@ import axios from "axios";
 import messageinterface from "../../interfaces/messageinterface";
 const token = Cookies.get("refresh_token");
 // console.log("token", token);
+//@ts-expect-error connect
 const socket = io.connect("https://unihubbackend.onrender.com", {
   auth: {
     token: token,
@@ -19,6 +20,7 @@ const socket = io.connect("https://unihubbackend.onrender.com", {
 });
 function Group({ data }: { data: Array<any> }) {
   const router = useRouter();
+  //@ts-expect-error
   const [messages, setMessageReceived] = useState<messageinterface>({});
   console.log("received", messages);
   const [messagetosend, setmessagetosend] = useState("");
@@ -59,6 +61,7 @@ function Group({ data }: { data: Array<any> }) {
         room: string;
       }) => {
         console.log("messege_received", data);
+        //@ts-expect-error
         setMessageReceived({
           _id: data.message,
           content: data.message,
