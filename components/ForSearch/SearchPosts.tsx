@@ -56,7 +56,7 @@ export default function SearchPosts({
     }
   );
   console.log(data);
-  if (data.pages[0].length == 0) return <h1>No posts match your search</h1>;
+  if (data?.pages[0].length == 0) return <h1>No posts match your search</h1>;
   // if (!data) return <></>;
   // if (data?.pages[0].length == 0) {
   //   return (
