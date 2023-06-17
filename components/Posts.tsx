@@ -4,17 +4,39 @@ import { postinterface } from "@/interfaces/postinterface";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import cookie from "js-cookie";
-import { fetchPosts, fetchUserPosts, getSavedPosts } from "@/apicalls/apicalls";
+import {
+  fetchPosts,
+  fetchUserPosts,
+  findPosts,
+  getSavedPosts,
+} from "@/apicalls/apicalls";
 import Loading from "./Loading";
 import { useRouter } from "next/router";
 import { noteinterface } from "@/interfaces/noteinterface";
-import { Context } from "vm";
-export default function Posts() {
+import SavedPosts from "./SavedPosts";
+import SearchPosts from "./ForSearch/SearchPosts";
+import { toast } from "react-hot-toast";
+export default function Posts({
+  forSearch,
+  forSaved,
+  forUser,
+  userid,
+  refresh_token,
+  searchQuery,
+}: {
+  forSearch: boolean;
+  searchQuery?: string;
+  forUser: boolean;
+  forSaved: boolean;
+  userid?: string; //for savedpost
+  refresh_token?: string; //for saved post
+}) {
   const [postsData, setPostsData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const router = useRouter();
-  const stringuser = cookie.get("user");
-  console.log(stringuser);
+  console.log(router.query.id);
+  const [searchQueryState, setSearchQueryState] = useState(searchQuery);
   // var user = JSON.parse(stringuser);
 
   const initialdata: Array<noteinterface> = [
@@ -36,35 +58,142 @@ export default function Posts() {
     // },
   ];
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["query3"],
+  const {
+    data: SearchPosts,
+    fetchNextPage: fetchNextPageSearch,
+    isFetchingNextPage: isFetchingNextPageSearch,
+    isFetching,
+  } = useInfiniteQuery(
+    ["searchposts"],
     async ({ pageParam = 1 }) => {
-      const response = await fetchPosts("646714b941412e0da077f69d", pageParam);
-      return response.msg;
+      const response = await findPosts(searchQueryState);
+      return response.data.posts;
     },
     {
+      onSuccess: () => {
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
+      },
       getNextPageParam: (_, pages) => {
         return pages.length + 1;
       },
+      enabled: forSearch,
       initialData: {
         pages: [initialdata],
         pageParams: [1],
       },
     }
   );
-  // if (!data) return <></>;
-  // if (data?.pages[0].length == 0) {
-  //   return (
-  //     <div>
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
+  console.log(SearchPosts?.pages);
+  const {
+    data: UserPosts,
+    fetchNextPage: fetchNextPageUser,
+    isFetchingNextPage: isFetchingNextPageUser,
+  } = useInfiniteQuery(
+    ["userposts"],
+    async ({ pageParam = 1 }) => {
+      const response = await fetchUserPosts(router.query.id, pageParam, userid);
+      return response.data.msg;
+    },
+    {
+      onSuccess: () => {
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
+      },
+      getNextPageParam: (_, pages) => {
+        return pages.length + 1;
+      },
+      enabled: forUser,
+      initialData: {
+        pages: [initialdata],
+        pageParams: [1],
+      },
+    }
+  );
+  const {
+    data: SavedPosts,
+    fetchNextPage: fetchNextPageSaved,
+    isFetchingNextPage: isFetchingNextPageSaved,
+  } = useInfiniteQuery(
+    ["savedposts"],
+    async ({ pageParam = 1 }) => {
+      const response = await getSavedPosts(userid, pageParam, refresh_token);
+      return response.data.msg;
+    },
+    {
+      onSuccess: () => {
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
+      },
+      getNextPageParam: (_, pages) => {
+        return pages.length + 1;
+      },
+      enabled: forSaved,
+      initialData: {
+        pages: [initialdata],
+        pageParams: [1],
+      },
+    }
+  );
+  const {
+    data: RegularPosts,
+    fetchNextPage: fetchNextPageRegular,
+    isFetchingNextPage: isFetchingNextPageRegular,
+  } = useInfiniteQuery(
+    ["regularposts"],
+    async ({ pageParam = 1 }) => {
+      const response = await fetchPosts(userid, pageParam);
+      return response.msg;
+    },
 
+    {
+      getNextPageParam: (_, pages) => {
+        return pages.length + 1;
+      },
+      onSuccess: () => {
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
+      },
+      enabled: !forSearch && !forSaved && !forUser,
+      initialData: {
+        pages: [initialdata],
+        pageParams: [1],
+      },
+    }
+  );
+  ///////////////add user posts
+  // if (!data) return <></>;
+  if (loading) {
+    return (
+      <div className="w-1/2">
+        <Loading />
+      </div>
+    );
+  }
+  let tomap;
+
+  if (forSaved) {
+    tomap = SavedPosts;
+  } else if (forUser) {
+    tomap = UserPosts;
+  } else if (forSearch) {
+    tomap = SearchPosts;
+  } else if (!forSaved && !forSearch && !forUser) {
+    tomap = RegularPosts;
+  }
+  console.log("tomap", tomap?.pages);
   return (
     <div className="w-1/2 pb-2">
       <div className="  flex flex-col gap-2">
-        {data?.pages.map((page: Array<postinterface>, i) => (
+        {tomap?.pages.map((page: Array<postinterface>, i) => (
           <div key={i}>
             {page.map((element) => (
               <SinglePost key={element._id} {...element} />
@@ -73,13 +202,13 @@ export default function Posts() {
         ))}
       </div>
       <div className="flex justify-center items-center">
-        {data?.pages[data.pages.length - 1].length == 20 && (
+        {RegularPosts?.pages[RegularPosts.pages.length - 1].length == 20 && (
           <button
-            disabled={isFetchingNextPage}
+            disabled={isFetchingNextPageRegular}
             className="px-3 py-2 rounded bg-white text-black mt-2 mb-5  "
-            onClick={() => fetchNextPage()}
+            onClick={() => fetchNextPageRegular()}
           >
-            {isFetchingNextPage ? "Loading.." : "Load more"}
+            {isFetchingNextPageRegular ? "Loading.." : "Load more"}
           </button>
         )}
         {/* {data?.pages[data.pages.length - 1].length !== 20 && (

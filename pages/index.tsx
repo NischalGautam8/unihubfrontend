@@ -9,8 +9,9 @@ import cookie from "js-cookie";
 function Index() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
+  let user = {};
   useEffect(() => {
-    const currentUser = JSON.parse(cookie.get("user") || "");
+    var currentUser = JSON.parse(cookie.get("user") || "");
     dispatch(
       login({
         username: currentUser.username,
@@ -34,7 +35,15 @@ function Index() {
     <div className="min-h-screen ">
       <CreatePost />
 
-      {postsData && <Posts usecase="home" />}
+      {postsData && (
+        //remove the hardcoded userid value todo
+        <Posts
+          userid={"646714b941412e0da077f69d"}
+          forSearch={false}
+          forUser={false}
+          forSaved={false}
+        />
+      )}
     </div>
   );
 }

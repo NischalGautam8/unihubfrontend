@@ -20,6 +20,7 @@ function SingleComment({
   content,
   user,
   commentimage,
+  refresh_token,
   replies,
   likes,
 }: commentinterface) {
@@ -45,6 +46,7 @@ function SingleComment({
         `http://localhost:5000/api/posts/like/${_id}`,
         {
           userid: user._id,
+          jwt: refresh_token,
         }
       );
       response.status == 200 && setLiked(true);
@@ -56,6 +58,7 @@ function SingleComment({
       `http://localhost:5000/api/posts/unlike/${_id}`,
       {
         userid: user._id,
+        jwt: refresh_token,
       }
     );
     response.status == 200 && setLiked(false);

@@ -14,23 +14,15 @@ function Navbar() {
         {/* <div className="logo text-2xl font-bold">UNIHUB</div> */}
         <div className="login__signup ml-auto flex gap-8">
           <div className="relative">
-            <Image
-              onClick={() => {
-                input.length > 0 && router.push(`/search?searchquery=${input}`);
-              }}
-              src={search}
-              width={27}
-              height={27}
-              alt="search"
-              className="absolute left-2 top-0.5 "
-            />
-            <input
-              style={{ backgroundColor: "rgb(32, 35, 39)" }}
-              type="text"
-              placeholder="username"
-              onChange={(e) => setInput(e.target.value)}
-              className=" px-1 text-gray-200 py-1 pl-10 rounded-lg outline-none "
-            />
+            <Link href={`/search`}>
+              <Image
+                src={search}
+                width={27}
+                height={27}
+                alt="search"
+                className=" left-2 top-0.5 hover:color-white cursor-pointer  "
+              />
+            </Link>
           </div>
           <Link href={"/login"}>
             <h1 className="text-lg">Login</h1>

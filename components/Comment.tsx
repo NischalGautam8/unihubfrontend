@@ -8,6 +8,7 @@ import { Router, useRouter } from "next/router";
 import { commentinterface } from "@/interfaces/commentinterface";
 import { makeComment, getComment } from "@/apicalls/apicalls";
 import { userinterface } from "@/interfaces/userinterface";
+import { toast } from "react-hot-toast";
 interface comment {
   _id: string;
   user: string;
@@ -20,10 +21,12 @@ interface comment {
 function Comment({
   compontenttype,
   refid,
+  refresh_token,
   userinfo,
 }: {
   compontenttype: string;
   refid: string;
+  refresh_token: string;
   userinfo: userinterface;
 }) {
   const router = useRouter();
@@ -34,6 +37,7 @@ function Comment({
     <SingleComment
       key={element._id}
       {...element}
+      refresh_token={refresh_token}
       compontenttype={compontenttype}
     />
   ));
@@ -64,7 +68,8 @@ function Comment({
       };
       comm.status == 200 && setcommentsdata([newdata, ...commentsdata]);
     } catch (err: any) {
-      seterr(err);
+      toast.error("unable to add comment");
+      // seterr(err);
     }
   };
   return (

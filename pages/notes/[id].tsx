@@ -14,6 +14,7 @@ import AlertDialogSlide from "@/components/forNotes/RatingDialog";
 import { Context } from "vm";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { refresh } from "@cloudinary/base/qualifiers/artisticFilter";
 
 interface res {
   _id: string;
@@ -33,6 +34,7 @@ function Id({
   rating,
   noOfRating,
   prevRated,
+  refresh_token,
 }: {
   data: res;
   user: userinterface;
@@ -42,14 +44,14 @@ function Id({
 }) {
   console.log("user", user);
   const router = useRouter();
-  const useruser = useSelector((state) => state.user.value);
+  const useruser = user;
+  console.log(useruser, "useruser");
   console.log("rating", rating);
   const [noteData, setNoteData] = useState<res>(data);
   const [ratingModelVisible, setRatingModelVisible] = useState(false);
   const [ImageLoaded, setImageLoaded] = useState(true);
   const [noofrating, setNoofRating] = useState(noOfRating);
   const [ratingValue, setRatingValue] = useState(rating);
-  console.log(ratingValue, "ratingvalue");
   if (!noteData) return <h1> loading</h1>;
   else
     return (
@@ -140,6 +142,7 @@ function Id({
           </div>
           <div className="w-full">
             <Comment
+              refresh_token={refresh_token}
               compontenttype="notes"
               refid={router.query.id as string}
               userinfo={useruser}
@@ -161,10 +164,13 @@ export async function getServerSideProps(context: Context) {
       user = JSON.parse(context.req.cookies.user);
     }
     const data = await getSingleNote(context.query.id, user.userid);
+    const refresh_token = context.req.cookies.refresh_token;
+    console.log("refreshtoken", refresh_token);
     return {
       props: {
         data: data.note,
         user,
+        refresh_token,
         rating: data.rating,
         noOfRating: data.noOfRating,
         prevRated: data.prevRated,

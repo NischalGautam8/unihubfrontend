@@ -8,7 +8,6 @@ import { InferGetServerSidePropsType } from "next";
 import { GetServerSideProps } from "next";
 import Comment from "@/components/Comment";
 import axios from "axios";
-import cookie from "js-cookie";
 import { userinterface } from "@/interfaces/userinterface";
 interface comment {
   user: string;
@@ -32,9 +31,11 @@ function Id({
   data,
   comm,
   user,
+  refresh_token,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log("data", data);
   const route = useRouter();
+  console.log(refresh_token);
   const [postdata, setpostdata] = useState(data);
   const [commentdata, setcommentdata] = useState(comm);
   //router.push(/posts/id?route.pathname)
@@ -50,8 +51,9 @@ function Id({
         <SinglePost key={data._id} {...data} />
         <div className="comments">
           <Comment
+            refresh_token={refresh_token}
             compontenttype={"comment"}
-            refid={route.query.id}
+            refid={route.query.id as string}
             userinfo={user}
           />
         </div>
@@ -59,15 +61,18 @@ function Id({
     </div>
   );
 }
-
+//@ts-expect-error
 export const getServerSideProps: GetServerSideProps<{
   data: Data;
   comm: comment;
+  user: userinterface;
+  refresh_token: string;
 }> = async (context) => {
   try {
     const user = JSON.parse(context.req.cookies.user || "");
     console.log("user", user);
     const id = context.query.id;
+    const refresh_token = context.req.cookies.refresh_token;
     const res = await axios.get(
       process.env.BASE_URL + `posts/${id}?userid=${user.userid}`
     );
@@ -77,6 +82,7 @@ export const getServerSideProps: GetServerSideProps<{
       props: {
         data,
         user,
+        refresh_token,
       },
     };
   } catch (err) {}

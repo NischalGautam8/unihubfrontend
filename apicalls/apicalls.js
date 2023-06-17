@@ -151,6 +151,7 @@ const rateNote = async (noteid, userid, rating) => {
   }
 };
 const fetchUserPosts = async (userId, page, myid) => {
+  console.log("fetchuserposts", userId, myid);
   const res = await axios.get(
     `http://localhost:5000/api/posts/user/${userId}?page=${page}&&myid=${myid}`
   );
@@ -165,6 +166,27 @@ const getSavedPosts = async (userId, page, jwt) => {
       }, //res.data.msg
     }
   ); //send jwt
+  return res;
+};
+const findPosts = async (querystring, userid) => {
+  console.log("querystring", querystring);
+  console.log("usserid", userid);
+  const res = await axios.get(
+    `http://localhost:5000/api/posts/find?querystring=${querystring}&&userid=${userid}`
+  );
+  return res;
+};
+const findNotes = async (querystring) => {
+  console.log(querystring);
+  const res = await axios.get(
+    `http://localhost:5000/api/notes/find?querystring=${querystring}`
+  );
+  return res;
+};
+const findUsers = async (querystring) => {
+  const res = await axios.get(
+    `http://localhost:5000/api/users/find?querystring=${querystring}`
+  );
   return res;
 };
 const fetchPosts = async (userid, page) => {
@@ -197,4 +219,7 @@ export {
   fetchUserPosts,
   getSavedPosts,
   findUserByUsername,
+  findNotes,
+  findPosts,
+  findUsers,
 };

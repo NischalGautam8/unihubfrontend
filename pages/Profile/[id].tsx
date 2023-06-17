@@ -30,6 +30,7 @@ function profile() {
   if ((router.query.id = "646714b941412e0da077f69d")) {
     tabs.push("Saved");
   }
+
   const { id } = router.query;
   // if (JSON.parse(cookie.get("user") || "").userid == id) {
   //   tabs = ["Tweets", "Saved", "Notes"];
@@ -206,10 +207,22 @@ function profile() {
           })}
         </div>
         {/* {console.log("refresh_token", refresh_token, "myid", myid)} */}
-        {activeTab == "Notes" && <UserNotes />}
-        {activeTab == "Posts" && <UserPosts userid={myid} />}
+        {activeTab == "Notes" && <Notes forSearch={false} forUser={true} />}
+        {activeTab == "Posts" && (
+          <Posts
+            forSearch={false}
+            forUser={true}
+            forSaved={false}
+            userid={myid}
+          />
+        )}
         {activeTab == "Saved" && refresh_token && myid && (
-          <SavedPosts refresh_token={refresh_token} userid={myid} />
+          <SavedPosts
+            refresh_token={refresh_token}
+            userid={myid}
+            forSaved={true}
+            forSearch={false}
+          />
         )}
       </div>
     </div>

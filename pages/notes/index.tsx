@@ -9,6 +9,7 @@ import { getNotesClientSide } from "@/apicalls/apicalls";
 import Loading from "@/components/Loading";
 import CreatePost from "@/components/CreatePost";
 import CreateNote from "@/components/forNotes/CreateNote";
+import Notes from "@/components/forNotes/Notes";
 interface notes {
   _id: string;
   name: string;
@@ -52,7 +53,7 @@ function index({
   return (
     <div className="min-h-screen">
       <CreateNote />
-      <div className="min-h-screen">
+      {/* <div className="min-h-screen">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-2 gap-x-2">
           {notes.map((element: notes) => (
             <SingleNoteCard
@@ -63,7 +64,8 @@ function index({
             />
           ))}
         </div>
-      </div>
+      </div> */}
+      <Notes forSearch={false} />
     </div>
   );
 }
