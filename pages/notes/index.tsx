@@ -18,7 +18,7 @@ interface notes {
   uploadedBy: userinterface;
   ratings?: Number;
 }
-function index({
+function Index({
   data,
 }: {
   data: [notes];
@@ -31,7 +31,7 @@ function index({
   const [loading, setLoading] = useState(false);
   const getNotesUtility = async () => {
     // const res = await axios.get(
-    //   `http://localhost:5000/api/notes?page=${page}&&subject=${subject}`
+    //   `https://unihubbackend.onrender.com/api/notes?page=${page}&&subject=${subject}`
     // );
     // console.log(res);
     const data = await getNotesClientSide(page, subject);
@@ -71,7 +71,7 @@ function index({
 }
 // export async function getServerSideProps(context: Context) {
 //   try {
-//     const res = await axios.get(`http://localhost:5000/api/notes`);
+//     const res = await axios.get(`https://unihubbackend.onrender.com/api/notes`);
 //     console.log(res.data);
 //     let refresh_token = "";
 //     let acess_token = "";
@@ -97,4 +97,4 @@ function index({
 //   }
 // }
 
-export default index;
+export default Index;

@@ -41,10 +41,12 @@ function Id({
   rating: number;
   noOfRating: number;
   prevRated: number;
+  refresh_token: string;
 }) {
   console.log("user", user);
   const router = useRouter();
   const useruser = user;
+
   console.log(useruser, "useruser");
   console.log("rating", rating);
   const [noteData, setNoteData] = useState<res>(data);

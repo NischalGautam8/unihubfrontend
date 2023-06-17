@@ -29,7 +29,10 @@ function SignUpForm() {
   };
   const handleRegister = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/register", input);
+      const res = await axios.post(
+        "https://unihubbackend.onrender.com/api/register",
+        input
+      );
       var hundred = new Date(new Date().getTime() + 100 * 864000 * 1000);
       cookie.set("acess_token", res.data.acess_token, { expires: 15 });
       const user = res.data.user;

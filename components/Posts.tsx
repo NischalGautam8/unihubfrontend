@@ -14,8 +14,7 @@ import Loading from "./Loading";
 import { useRouter } from "next/router";
 import { noteinterface } from "@/interfaces/noteinterface";
 import SavedPosts from "./SavedPosts";
-import SearchPosts from "./ForSearch/SearchPosts";
-import { toast } from "react-hot-toast";
+
 export default function Posts({
   forSearch,
   forSaved,
@@ -35,10 +34,10 @@ export default function Posts({
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const router = useRouter();
-  console.log(router.query.id);
+  console.log("id", router.query.id);
   const [searchQueryState, setSearchQueryState] = useState(searchQuery);
   // var user = JSON.parse(stringuser);
-
+  console.log(router.query.user);
   const initialdata: Array<noteinterface> = [
     // {
     //   _id: "646b3ef07a5d8ac5c00a679b",
@@ -86,7 +85,6 @@ export default function Posts({
       },
     }
   );
-  console.log(SearchPosts?.pages);
   const {
     data: UserPosts,
     fetchNextPage: fetchNextPageUser,
@@ -94,7 +92,12 @@ export default function Posts({
   } = useInfiniteQuery(
     ["userposts"],
     async ({ pageParam = 1 }) => {
-      const response = await fetchUserPosts(router.query.id, pageParam, userid);
+      ////todo remove this hardcoded value ant try to take user infor from the router.query.id
+      const response = await fetchUserPosts(
+        "646714b941412e0da077f69d",
+        pageParam,
+        userid
+      );
       return response.data.msg;
     },
     {
@@ -169,6 +172,7 @@ export default function Posts({
       },
     }
   );
+  console.log(loading);
   ///////////////add user posts
   // if (!data) return <></>;
   if (loading) {

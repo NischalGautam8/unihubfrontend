@@ -15,15 +15,21 @@ import cookie from "js-cookie";
 import { useEffect } from "react";
 import { userinterface } from "@/interfaces/userinterface";
 import { Console } from "console";
+import { handleLikeUtil, handleUnlikeUtil } from "@/apicalls/apicalls";
+interface commentswithrefreshtoken extends commentinterface {
+  refresh_token: string;
+  compontenttype: string;
+}
 function SingleComment({
   _id,
   content,
   user,
   commentimage,
   refresh_token,
+  compontenttype,
   replies,
   likes,
-}: commentinterface) {
+}: commentswithrefreshtoken) {
   const router = useRouter();
   const [comment, setcomment] = useState("");
   const [liked, setLiked] = useState<Boolean>(
@@ -35,6 +41,7 @@ function SingleComment({
   ///check if the user has liked it or not previously ,do it while fetching the data in the backend check for the user requesting data lies in each of the posts liked array if liked then set liked state as true default & vice versa
   //or you can check it infront end with
   const topassuserinfo = {
+    _id: user?._id,
     username: user.username,
     userid: user._id,
     lastName: user.lastName,
@@ -42,27 +49,15 @@ function SingleComment({
   };
   const handleLike = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/posts/like/${_id}`,
-        {
-          userid: user._id,
-          jwt: refresh_token,
-        }
-      );
-      response.status == 200 && setLiked(true);
-      response.status == 200 && setLikedCount((prev) => prev + 1);
+      const response = await handleLikeUtil(_id, user._id, refresh_token);
+      response?.status == 200 && setLiked(true);
+      response?.status == 200 && setLikedCount((prev) => prev + 1);
     } catch (err) {}
   };
   const handleUnlike = async () => {
-    const response = await axios.post(
-      `http://localhost:5000/api/posts/unlike/${_id}`,
-      {
-        userid: user._id,
-        jwt: refresh_token,
-      }
-    );
-    response.status == 200 && setLiked(false);
-    response.status == 200 && setLikedCount((prev) => prev - 1);
+    const response = await handleUnlikeUtil(_id, user._id, refresh_token);
+    response?.status == 200 && setLiked(false);
+    response?.status == 200 && setLikedCount((prev) => prev - 1);
   };
   return (
     <div className="" style={{ width: "700px" }}>
@@ -129,24 +124,26 @@ function SingleComment({
                   Like {likedCount}
                 </h1>
               </div>
-              <div
-                onClick={() => setreply((prev) => !prev)}
-                className="comment icon cursor-pointer  flex items-center gap-2"
-              >
-                <Image
+              {compontenttype !== "reply" && compontenttype !== "notes" && (
+                <div
                   onClick={() => setreply((prev) => !prev)}
-                  src={commentpic}
-                  alt="comment"
-                  width={18}
-                  height={18}
-                ></Image>
-                <h1
-                  className="  text-sm font-ubuntu "
-                  style={{ color: "#8B8B8B" }}
+                  className="comment icon cursor-pointer  flex items-center gap-2"
                 >
-                  Reply {replies.length}
-                </h1>
-              </div>
+                  <Image
+                    // onClick={() => setreply((prev) => !prev)}
+                    src={commentpic}
+                    alt="comment"
+                    width={18}
+                    height={18}
+                  ></Image>
+                  <h1
+                    className="  text-sm font-ubuntu "
+                    style={{ color: "#8B8B8B" }}
+                  >
+                    Reply {replies.length}
+                  </h1>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -157,6 +154,7 @@ function SingleComment({
             compontenttype={"reply"}
             refid={_id}
             userinfo={topassuserinfo}
+            refresh_token={refresh_token}
           />
         </div>
       )}

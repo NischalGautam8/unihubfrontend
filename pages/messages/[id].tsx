@@ -11,7 +11,7 @@ import axios from "axios";
 import messageinterface from "../../interfaces/messageinterface";
 const token = Cookies.get("refresh_token");
 // console.log("token", token);
-const socket = io.connect("http://localhost:5000", {
+const socket = io.connect("https://unihubbackend.onrender.com", {
   auth: {
     token: token,
     user: Cookies.get("user") && JSON.parse(Cookies.get("user") || "").userid,
@@ -90,7 +90,7 @@ export const getServerSideProps: GetServerSideProps<any> = async (context) => {
   const { Cookies } = context.req.headers;
   //   console.log(Cookies);
   const response = await axios.get(
-    `http://localhost:5000/api/conversation?userid=${user.userid}`
+    `https://unihubbackend.onrender.com/api/conversation?userid=${user.userid}`
   );
   console.log(response);
   return {

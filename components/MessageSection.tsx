@@ -39,7 +39,7 @@ function MessageSection({
   const fetchMessages = async () => {
     try {
       const res: conversations = await axios.get(
-        `http://localhost:5000/api/convoandmessage/${router.query.id}?page=${page}`,
+        `https://unihubbackend.onrender.com/api/convoandmessage/${router.query.id}?page=${page}`,
         {
           headers: {
             authorization: `Bearer ${cookies.get("refresh_token")}`,

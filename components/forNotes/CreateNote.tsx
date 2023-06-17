@@ -47,7 +47,7 @@ function CreateNote() {
       formData.append("uploadedBy", user.userid);
       formData.append("jwt", user.refresh_token);
       const response = await axios.post(
-        "http://localhost:5000/api/notes",
+        "https://unihubbackend.onrender.com/api/notes",
         formData
       );
       if (response.status == 200) {
@@ -65,7 +65,7 @@ function CreateNote() {
     }
   };
   return (
-    <div className="flex flex-col md:flex-row w-[380px] md:w-[500px] lg:w-[600px]mb-5  ">
+    <div className="flex flex-col md:flex-row w-[380px] mb-10 md:w-[500px] lg:w-[600px]mb-5 ">
       <div className="relative flex gap-2    w-full ">
         <input
           style={{ backgroundColor: "rgb(32, 35, 39)" }}

@@ -36,7 +36,7 @@ function CreatePost() {
         }
       }
       const response = await axios.post(
-        "http://localhost:5000/api/posts",
+        "https://unihubbackend.onrender.com/api/posts",
         formdata
       );
       setInput("");

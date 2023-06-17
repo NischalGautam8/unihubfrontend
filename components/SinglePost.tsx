@@ -27,7 +27,6 @@ function SinglePost({
   //@ts-expect-error obj
   const [user, setUser] = useState<userinterface>({});
   const [refresh_token, setrefresh_token] = useState("");
-
   useEffect(() => {
     let user = JSON.parse(cookie.get("user") || "");
     setUser(user);

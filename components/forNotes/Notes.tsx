@@ -27,6 +27,7 @@ function Notes({
     data: RegularNotesData,
     fetchNextPage: fetchNextPageRegular,
     isFetchingNextPage: isFetchingNextPageRegular,
+    hasNextPage: hasNextPageRegular,
   } = useInfiniteQuery(
     ["notespage"],
     async ({ pageParam = 1 }) => {
@@ -122,15 +123,37 @@ function Notes({
   }
   console.log(tomap);
   return (
-    <div className="">
-      {tomap.pages?.map((page: Array<noteinterface>, i) => (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2" key={i}>
+    <div className=" pb-2">
+      {tomap?.pages?.map((page: Array<noteinterface>, i) => (
+        <div
+          className=" grid grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-3"
+          key={i}
+        >
           {page.map((element) => (
             //@ts-expect-error temp fix
             <SingleNoteCard key={element._id} {...element} />
           ))}
         </div>
       ))}
+
+      {RegularNotesData?.pages[RegularNotesData.pages.length - 1].length ==
+        10 && (
+        <div className="flex justify-center items-center">
+          <button
+            disabled={isFetchingNextPageRegular}
+            onClick={() => {
+              if (forSearch) fetchNextSearch();
+              else if (forUser) FetchNextUser();
+              else fetchNextPageRegular();
+            }}
+            className="px-3 py-2 rounded bg-white text-black mt-2 mb-5"
+          >
+            {isFetchingNextPageRegular || isFetchingSearch || isFetchingUserNote
+              ? "Loading..."
+              : "Next Page"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ function useProfile() {
     try {
       console.log(userid, "userid");
       const res = await axios.get(
-        `http://localhost:5000/api/user/${userid}?myid=${myid}`
+        `https://unihubbackend.onrender.com/api/user/${userid}?myid=${myid}`
       );
       return res;
     } catch (err) {
@@ -18,7 +18,7 @@ function useProfile() {
   const getFollowers = async (userid: string, myid: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/followers/${userid}?id=${myid}`
+        `https://unihubbackend.onrender.com/api/followers/${userid}?id=${myid}`
       );
       return response;
     } catch (err) {
@@ -28,7 +28,7 @@ function useProfile() {
   const follow = async (userid: string, myid: string) => {
     try {
       const respnse = await axios.post(
-        `http://localhost:5000/api/follow/${userid}`,
+        `https://unihubbackend.onrender.com/api/follow/${userid}`,
         {
           id: myid,
         }
@@ -41,7 +41,7 @@ function useProfile() {
   const unfollow = async (userid: string, myid: string) => {
     try {
       const respnse = await axios.post(
-        `http://localhost:5000/api/unfollow/${userid}`,
+        `https://unihubbackend.onrender.com/api/unfollow/${userid}`,
         {
           id: myid,
         }
@@ -54,7 +54,7 @@ function useProfile() {
   const getUserPosts = async (userid: string) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/posts/user/${userid}`
+        `https://unihubbackend.onrender.com/api/posts/user/${userid}`
       );
       return res;
     } catch (err) {

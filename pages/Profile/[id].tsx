@@ -9,7 +9,6 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { postinterface } from "@/interfaces/postinterface";
 import pp from "../../public/pp.jpg";
-import Loading from "@/components/Loading";
 import Posts from "../../components/Posts";
 import getTimeAgo from "../../utilityFunctions/dateTime";
 import cookie from "js-cookie";
@@ -26,11 +25,7 @@ export interface responseData extends userinterface {
 function profile() {
   const { follow, unfollow } = useProfile();
   const router = useRouter();
-  let tabs = ["Posts", "Notes"];
-  if ((router.query.id = "646714b941412e0da077f69d")) {
-    tabs.push("Saved");
-  }
-
+  let tabs = ["Posts", "Notes", "Saved"];
   const { id } = router.query;
   // if (JSON.parse(cookie.get("user") || "").userid == id) {
   //   tabs = ["Tweets", "Saved", "Notes"];
@@ -43,6 +38,7 @@ function profile() {
     user = JSON.parse(cookie.get("user") || "");
     refresh_token = cookie.get("refresh_token");
   }
+  console.log(myid);
   const [userData, setUserData] = useState<responseData>();
   const [userPosts, setUserPosts] = useState<Array<postinterface>>();
   console.log(userData, "userData");
@@ -62,16 +58,16 @@ function profile() {
       console.log(err);
     }
   };
-  const getPostsUtility = async () => {
-    try {
-      const response = await getUserPosts(id as string);
-      console.log(response);
-      if (!response) throw new Error("cannot fetch");
-      setUserPosts(response.data.msg);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const getPostsUtility = async () => {
+  //   try {
+  //     const response = await getUserPosts(id as string);
+  //     console.log(response);
+  //     if (!response) throw new Error("cannot fetch");
+  //     setUserPosts(response.data.msg);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   const followUtility = async (id: string, userid: string) => {
     const res = await follow(id, userid);
     // res?.status == 200
@@ -87,7 +83,7 @@ function profile() {
   };
   useEffect(() => {
     getInfoUtility();
-    getPostsUtility();
+    // getPostsUtility();
   }, [id]);
   return (
     <div className="min-h-screen  ">
@@ -217,12 +213,7 @@ function profile() {
           />
         )}
         {activeTab == "Saved" && refresh_token && myid && (
-          <SavedPosts
-            refresh_token={refresh_token}
-            userid={myid}
-            forSaved={true}
-            forSearch={false}
-          />
+          <SavedPosts refresh_token={refresh_token} userid={myid} />
         )}
       </div>
     </div>

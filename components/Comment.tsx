@@ -43,7 +43,7 @@ function Comment({
   ));
   const getCommentUtility = async () => {
     const comments = await getComment(compontenttype, refid);
-    setcommentsdata(comments.data.msg);
+    setcommentsdata(comments?.data.msg);
     setLoading(false);
   };
   useEffect(() => {
@@ -66,7 +66,8 @@ function Comment({
         likes: [],
         replies: [],
       };
-      comm.status == 200 && setcommentsdata([newdata, ...commentsdata]);
+      //@ts-expect-error
+      comm?.status == 200 && setcommentsdata([newdata, ...commentsdata]);
     } catch (err: any) {
       toast.error("unable to add comment");
       // seterr(err);
@@ -114,7 +115,7 @@ function Comment({
           </button>
           <button
             onClick={makeCommentUtility}
-            style={{ backgroundColor: "#4f46e5      " }}
+            style={{ backgroundColor: "#4f46e5" }}
             className="  flex justify-center items-center  px-3 py-1 rounded-3xl "
           >
             Comment
