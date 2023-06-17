@@ -51,6 +51,7 @@ export default function ProfileDialog({
         descriptionElement.focus();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const user = JSON.parse(Cookies.get("user") || "");
   const getFollowingUtility = async () => {
