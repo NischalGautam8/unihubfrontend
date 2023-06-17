@@ -8,14 +8,13 @@ import Link from "next/link";
 import { noteinterface } from "@/interfaces/noteinterface";
 import dateTime from "../../utilityFunctions/dateTime";
 import { useRouter } from "next/router";
-
 function RightHandBar({ chosenSubject }: { chosenSubject: string }) {
+  const router = useRouter();
   const [notesData, setNotesData] = React.useState([]);
 
   const [subject, setSubject] = useState(chosenSubject);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const router = useRouter();
   const getNotesUtility = async () => {
     const data = await getNotesClientSide(page, subject);
     console.log(data);
@@ -27,16 +26,18 @@ function RightHandBar({ chosenSubject }: { chosenSubject: string }) {
       return (
         <div key={element._id}>
           <div className="flex gap-2 ">
-            <Image
-              width={80}
-              height={30}
-              className="rounded-t-lg  rounded-lg  max-w-full object-cover h-full"
-              src={element.url.split(".").slice(0, 3).join(".") + ".jpg"}
-              alt={element?.name || "alt"}
-            />
+            <Link href={`/notes/${element._id}`}>
+              <Image
+                width={80}
+                height={30}
+                className="rounded-t-lg  rounded-lg  max-w-full object-cover h-full"
+                src={element.url.split(".").slice(0, 3).join(".") + ".jpg"}
+                alt={element?.name || "alt"}
+              />
+            </Link>
             <div className="textSection flex flex-col gap-1 mt-1">
               <h1 className="  text-xl">{element.name.slice(0, 20)}</h1>
-              <Link href={"/" + element.uploadedBy.username}>
+              <Link href={"/profile/" + element.uploadedBy._id}>
                 <p className=" textSection username text-md">
                   {element.uploadedBy.username}
                 </p>
@@ -53,6 +54,7 @@ function RightHandBar({ chosenSubject }: { chosenSubject: string }) {
   });
   useEffect(() => {
     getNotesUtility();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subject]);
   console.log(loading);
   console.log(notesData);

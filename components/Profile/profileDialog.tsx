@@ -14,9 +14,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { getFollowingModule } from "../../apicalls/apicalls";
 import pp from "../../public/pp.jpg";
 import { useRouter } from "next/router";
-import { userinterface } from "@/interfaces/userinterface";
 import useProfile from "./useProfile";
-import { responseData } from "@/pages/profile/[id]";
 import { toast } from "react-hot-toast";
 export default function ProfileDialog({
   dialogOpen,
@@ -64,7 +62,7 @@ export default function ProfileDialog({
   };
   const getFollowersUtility = async () => {
     try {
-      const res = await getFollowers(router.query.id, user.userid);
+      const res = await getFollowers(router.query.id as string, user.userid);
       if (!res) throw new Error("cannot fetch followers");
       console.log("followrs", res);
       setFriends(res.data.followers);
@@ -141,6 +139,7 @@ export default function ProfileDialog({
     } else if (type == "Followers") {
       getFollowersUtility();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   console.log(load);
   return (

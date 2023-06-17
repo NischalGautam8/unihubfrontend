@@ -84,7 +84,7 @@ function profile() {
   useEffect(() => {
     getInfoUtility();
     // getPostsUtility();
-  }, [id]);
+  });
   return (
     <div className="min-h-screen  ">
       <div className=" flex mb-5 fixed  gap-2  items-center  ">

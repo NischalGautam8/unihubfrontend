@@ -67,6 +67,7 @@ export default function ScrollDialog({
         descriptionElement.focus();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createConvo]);
   const user = JSON.parse(Cookies.get("user") || "");
   const getFollowing = async () => {
@@ -109,6 +110,7 @@ export default function ScrollDialog({
   ));
   useEffect(() => {
     getFollowing();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createConvo]);
   console.log(load);
   return (

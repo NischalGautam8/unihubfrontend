@@ -22,8 +22,7 @@ function Index() {
         userid: currentUser.userid,
       })
     );
-    fetchPostsUtility(currentUser.userid || "", page);
-  }, [page]);
+  });
 
   const [postsData, setPostsData] = useState();
   console.log(postsData);
@@ -34,16 +33,12 @@ function Index() {
   return (
     <div className="min-h-screen ">
       <CreatePost />
-
-      {postsData && (
-        //remove the hardcoded userid value todo
-        <Posts
-          userid={"646714b941412e0da077f69d"}
-          forSearch={false}
-          forUser={false}
-          forSaved={false}
-        />
-      )}
+      <Posts
+        userid={"646714b941412e0da077f69d"}
+        forSearch={false}
+        forUser={false}
+        forSaved={false}
+      />
     </div>
   );
 }

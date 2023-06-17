@@ -55,9 +55,9 @@ export default function AlertDialogSlide({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <div style={{ backgroundColor: "black" }}>
-          <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-          <DialogContent>
+        <div className="bg-black ">
+          <DialogTitle>{"Rate this Note"}</DialogTitle>
+          <DialogContent className="w-[280px] ">
             <Rating
               name="simple-controlled"
               value={toratevalue}

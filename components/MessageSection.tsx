@@ -64,6 +64,7 @@ function MessageSection({
     setNewMessage(newMessage);
     fetchMessages();
     joinRoom();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newMessage, router.query.id, page]);
   //update  on prop change
   console.log("new msge", newmsg);

@@ -48,7 +48,7 @@ function Comment({
   };
   useEffect(() => {
     getCommentUtility();
-  }, []);
+  });
   const [comment, setcomment] = useState("");
   const makeCommentUtility = async () => {
     try {
