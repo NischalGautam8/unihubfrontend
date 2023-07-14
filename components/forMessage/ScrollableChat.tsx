@@ -15,6 +15,7 @@ function ScrollableChat({
 }) {
   const msgref = useRef(null);
   const scrollToBottom = () => {
+    //@ts-expect-error
     msgref.current?.scrollIntoView({ behavior: "smooth" });
   };
   useEffect(() => {

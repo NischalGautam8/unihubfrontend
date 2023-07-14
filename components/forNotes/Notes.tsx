@@ -130,7 +130,6 @@ function Notes({
           key={i}
         >
           {page.map((element) => (
-            //@ts-expect-error temp fix
             <SingleNoteCard key={element._id} {...element} />
           ))}
         </div>

@@ -3,10 +3,11 @@ import image from "../../../../Pictures/Screenshots/Screenshot (2).png";
 import Image from "next/image";
 import Link from "next/link";
 import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { userinterface } from "@/interfaces/userinterface";
 interface props {
   _id: string;
   url: string;
-  uploadedBy: string;
+  uploadedBy: userinterface;
   ratings?: Number;
   name: string;
   subject: string;
