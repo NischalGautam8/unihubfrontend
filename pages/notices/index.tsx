@@ -26,10 +26,7 @@ function index({ data }: { data: Array<notice> }) {
     </div>
   );
 }
-export const getStaticProps: GetStaticProps<
-  props,
-  ParsedUrlQuery
-> = async () => {
+export const getStaticProps = async () => {
   try {
     const res = await axios.get(
       "https://real-cyan-chicken-veil.cyclic.app/notices"

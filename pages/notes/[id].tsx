@@ -147,6 +147,7 @@ function Id({
               refresh_token={refresh_token}
               compontenttype="notes"
               refid={router.query.id as string}
+              // @ts-expect-error 
               userinfo={useruser}
             />
           </div>

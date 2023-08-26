@@ -1,4 +1,3 @@
-//@ts-expect-error
 import axios from "axios";
 const getFollowingModule = async (userid) => {
   const follwing = await axios.get(

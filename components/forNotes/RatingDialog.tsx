@@ -10,7 +10,6 @@ import { TransitionProps } from "@mui/material/transitions";
 import { rateNote } from "@/apicalls/apicalls";
 import { Rating } from "@mui/material";
 import toast from "react-hot-toast";
-import router from "@/../unihubbackend/src/route/auth";
 import { useRouter } from "next/router";
 
 const Transition = React.forwardRef(function Transition(

@@ -4,7 +4,6 @@ import axios from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import { login } from "@/features/user";
-import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 function SignUpForm() {
   const dispatch = useDispatch();

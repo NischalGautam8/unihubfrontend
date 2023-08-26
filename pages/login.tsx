@@ -47,6 +47,7 @@ function Login() {
           </div>
         </div>
       )}
+     { /*@ts-expect-error*/ }
       {chooseLogin && <LoginForm />}
       {chooseRegister && <SignUpForm />}
     </div>

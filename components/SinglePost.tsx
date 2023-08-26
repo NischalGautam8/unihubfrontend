@@ -14,7 +14,9 @@ import { postinterface } from "@/interfaces/postinterface";
 import cookie from "js-cookie";
 import { handleLikeUtil, handleUnlikeUtil } from "@/apicalls/apicalls";
 import { userinterface } from "@/interfaces/userinterface";
-
+interface props{
+  _id: string;
+   description: string; userId: {firstName:string;lastName:string;username:string;_id:string};hasLiked?:boolean;image?:string;commentsCount?:number;likesCount:number}
 function SinglePost({
   _id, //post id
   description,
@@ -23,7 +25,7 @@ function SinglePost({
   hasLiked,
   commentsCount,
   likesCount,
-}: postinterface) {
+}: props ) {
   const router = useRouter();
   //@ts-expect-error obj
   const [user, setUser] = useState<userinterface>({});
@@ -35,11 +37,11 @@ function SinglePost({
     setrefresh_token(refresh_token);
   }, []);
   const [liked, setLiked] = useState<Boolean>(
-    hasLiked
+    hasLiked ?hasLiked:false
     //TODO: take user info  from redux and use it insted of hardcoded value:  done
   ); //look from prop
   const [likedCount, setLikedCount] = useState<number>(Number(likesCount));
-  const [commentCount, setCommentCount] = useState<number>(commentsCount);
+  const [commentCount, setCommentCount] = useState<number>(commentsCount || 0);
   const handleLike = async () => {
     try {
       const response = await handleLikeUtil(_id, user.userid, refresh_token);

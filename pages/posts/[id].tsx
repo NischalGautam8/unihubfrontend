@@ -19,12 +19,7 @@ interface comment {
 }
 interface Data {
   _id: string;
-  description: String;
-  firstName: String;
-  lastName: String;
-  userId: String;
-  comments: Array<String>;
-  likes: Array<String>;
+   description: string; userId: {firstName:string;lastName:string;username:string;_id:string};hasLiked?:boolean|false;image?:string;commentsCount?:number;likesCount:number
 }
 
 function Id({
@@ -39,6 +34,7 @@ function Id({
   const [postdata, setpostdata] = useState(data);
   const [commentdata, setcommentdata] = useState(comm);
   //router.push(/posts/id?route.pathname)
+  console.log("singlepostdata",data);
   return (
     <div className="  min-h-screen ">
       <div className=" fixed flex gap-2  items-center">
@@ -48,12 +44,13 @@ function Id({
         <h1 className="text-3xl font-bold font-ubuntu">Post</h1>
       </div>
       <div className="mainn flex flex-col ">
-        <SinglePost key={data._id} {...data} />
+        <SinglePost  {...data} />
         <div className="comments">
           <Comment
             refresh_token={refresh_token}
             compontenttype={"comment"}
             refid={route.query.id as string}
+            //@ts-expect-error
             userinfo={user}
           />
         </div>
