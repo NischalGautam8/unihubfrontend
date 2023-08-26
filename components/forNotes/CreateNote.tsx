@@ -13,8 +13,16 @@ function CreateNote() {
   const [subject, setSubject] = useState("");
   const [loading, setLoading] = useState(false);
   console.log(file?.type);
-  const user = JSON.parse(cookie.get("user") || "");
   const refresh_token = cookie.get("refresh_token");
+  let user:any;
+  if(cookie.get('user')){
+    try{
+
+      user = JSON.parse(cookie.get("user") || "");
+    }catch(err){
+      console.log('unable to parse')
+    }
+  }
   console.log(user, "user");
   const handleNoteUpload = async () => {
     try {
