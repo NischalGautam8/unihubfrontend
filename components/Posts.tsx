@@ -94,7 +94,7 @@ export default function Posts({
     async ({ pageParam = 1 }) => {
       ////todo remove this hardcoded value ant try to take user infor from the router.query.id
       const response = await fetchUserPosts(
-        "646714b941412e0da077f69d",
+        userid,
         pageParam,
         userid
       );

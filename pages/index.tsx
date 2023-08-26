@@ -10,11 +10,11 @@ function Index() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   let user = {};
-  useEffect(() => {
     if(cookie.get('user')){
       var currentUser = JSON.parse(cookie.get("user") || "");
     }
-    dispatch(
+    console.log(currentUser)
+    {currentUser!=undefined && dispatch(
       login({
         username: currentUser.username,
         firstName: currentUser.firstName,
@@ -23,9 +23,7 @@ function Index() {
         refresh_token: cookie.get("refresh_token"),
         userid: currentUser.userid,
       })
-    );
-  });
-
+    );}
   const [postsData, setPostsData] = useState();
   console.log(postsData);
   const fetchPostsUtility = async (userid: string, page: Number) => {
@@ -36,7 +34,7 @@ function Index() {
     <div className="min-h-screen ">
       <CreatePost />
       <Posts
-        userid={"646714b941412e0da077f69d"}
+        userid={ currentUser?currentUser.userId : ""}
         forSearch={false}
         forUser={false}
         forSaved={false}
