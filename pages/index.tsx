@@ -11,7 +11,9 @@ function Index() {
   const dispatch = useDispatch();
   let user = {};
   useEffect(() => {
-    var currentUser = JSON.parse(cookie.get("user") || "");
+    if(cookie.get('user')){
+      var currentUser = JSON.parse(cookie.get("user") || "");
+    }
     dispatch(
       login({
         username: currentUser.username,
