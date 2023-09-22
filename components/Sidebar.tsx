@@ -28,7 +28,7 @@ function Sidebar() {
             <h1 className="text-xl  font-poppins">Home</h1>
           </div>
         </Link>
-        <Link href="/confession">
+        <Link href="https://www.confess.nischalgautam.com.np">
           <div
             onClick={() => {
               setActive("Confessions");

@@ -27,6 +27,7 @@ function profile() {
   const router = useRouter();
   let tabs = ["Posts", "Notes", "Saved"];
   const { id } = router.query;
+  console.log(id);
   // if (JSON.parse(cookie.get("user") || "").userid == id) {
   //   tabs = ["Tweets", "Saved", "Notes"];
   // }
@@ -209,7 +210,7 @@ function profile() {
             forSearch={false}
             forUser={true}
             forSaved={false}
-            userid={myid}
+            userid={id as string}
           />
         )}
         {activeTab == "Saved" && refresh_token && myid && (

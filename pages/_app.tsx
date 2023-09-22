@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { AppShell} from '@mantine/core';
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
