@@ -51,7 +51,7 @@ function profile() {
   const getInfoUtility = async () => {
     try {
       const response = await getUserInfo(id as string, myid);
-      console.log(response);
+      console.log("user data",response);
       if (!response) throw new Error("cannot fetch");
       setUserData(response.data.user);
       setDoYouFollow(response.data.user.doYouFollow);

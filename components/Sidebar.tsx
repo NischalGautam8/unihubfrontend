@@ -66,7 +66,7 @@ function Sidebar() {
             <h1 className="text-xl  font-poppins">Notes</h1>
           </div>
         </Link>
-        <Link href="/groups">
+        <Link href="/messages">
           <div
             onClick={() => {
               setActive("Groups");
@@ -82,7 +82,7 @@ function Sidebar() {
             className="icon flex  items-center justify-center gap-3 px-3 py-1  "
           >
             <Icon width={"34px"} icon="material-symbols:clinical-notes" />
-            <h1 className="text-xl  font-poppins">Groups</h1>
+            <h1 className="text-xl  font-poppins">Message</h1>
           </div>
         </Link>
         <Link href="/notices">
