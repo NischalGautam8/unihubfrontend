@@ -104,44 +104,6 @@ function Sidebar() {
             <h1 className="text-xl  font-poppins">Notices</h1>
           </div>
         </Link>
-        <Link href="">
-          <div
-            onClick={() => {
-              setActive("Not");
-            }}
-            style={
-              active == "Not"
-                ? {
-                    backgroundColor: "#3c3232",
-                    borderRadius: "16px",
-                  }
-                : {}
-            }
-            className="icon flex  items-center justify-center gap-3 px-3 py-1  "
-          >
-            <Icon width={"34px"} icon="ic:baseline-home" />
-            <h1 className="text-xl  font-poppins">Not</h1>
-          </div>
-        </Link>
-        <Link href="">
-          <div
-            onClick={() => {
-              setActive("Null");
-            }}
-            style={
-              active == "Null"
-                ? {
-                    backgroundColor: "#3c3232",
-                    borderRadius: "16px",
-                  }
-                : {}
-            }
-            className="icon flex  items-center justify-center gap-3 px-3 py-1  "
-          >
-            <Icon width={"34px"} icon="ic:baseline-home" />
-            <h1 className="text-xl  font-poppins">Null</h1>
-          </div>
-        </Link>
       </div>
     </div>
   );
