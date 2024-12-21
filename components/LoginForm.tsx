@@ -59,6 +59,7 @@ function LoginForm() {
         <label>Username</label>
         <input
           style={{ color: "black" }}
+          defaultValue={'nischal'}
           className="border-gray-600 border px-2 py-2"
           type="text"
           value={username}
@@ -71,6 +72,7 @@ function LoginForm() {
           style={{ color: "black" }}
           className="border-gray-600 border px-2 py-2"
           type="password"
+          defaultValue={'nischal'}
           value={password}
           onChange={(e) => {
             setpassword(e.target.value);

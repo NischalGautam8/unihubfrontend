@@ -46,6 +46,7 @@ function CreatePost() {
       toast.error("Failed to post");
       console.log(err);
     }
+    router.reload();
   };
   return (
     <div className="flex w-[380px] md:w-[500px] lg:w-[600px]   mb-5  ">
