@@ -175,13 +175,13 @@ export default function Posts({
   console.log(loading);
   ///////////////add user posts
   // if (!data) return <></>;
-  if (loading) {
-    return (
-      <div className="w-1/2">
-        <Loading />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 h-6">
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
   let tomap;
 
   if (forSaved) {

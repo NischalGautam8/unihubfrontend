@@ -40,18 +40,18 @@ function LoadingSpinner() {
     };
   }, [router]);
 
-  return loading ? (
-    <div
-      style={{ backgroundColor: "#000000" }}
-      className="h-screen flex items-center justify-center"
-    >
-      <Box sx={{ display: "flex" }}>
-        <CircularProgress color="secondary" />
-      </Box>
-    </div>
-  ) : (
-    <></>
-  );
+  // return loading ? (
+  //   <div
+  //     style={{ backgroundColor: "#000000" }}
+  //     className="h-12 flex items-center justify-center"
+  //   >
+  //     <Box sx={{ display: "flex" }}>
+  //       {/* <CircularProgress color="secondary" /> */}
+  //     </Box>
+  //   </div>
+  // ) : (
+  //   <></>
+  // );
 }
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
