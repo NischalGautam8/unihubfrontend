@@ -66,9 +66,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <>
         
-          {router.pathname != ("/messages/[id]" || "/notes/[id]") && (
+          {/* {router.pathname != ("/messages/[id]" || "/notes/[id]") && (
             <LoadingSpinner />
-          )}
+          )} */}
 
           <div
             style={{ backgroundColor: "#000000" }}
