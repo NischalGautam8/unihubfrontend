@@ -44,6 +44,7 @@ function Index() {
   }, [dispatch, router]);
 
   // Fetch posts data
+  //@ts-expect-error
   const fetchPostsUtility = async (userid, page) => {
     try {
       const res = await fetchPosts(userid, page);
@@ -55,6 +56,7 @@ function Index() {
 
   useEffect(() => {
     if (currentUser) {
+      //@ts-expect-error
       fetchPostsUtility(currentUser.userid, page);
     }
   }, [currentUser, page]);
@@ -68,6 +70,7 @@ function Index() {
     <div className="min-h-screen">
       <CreatePost />
       <Posts
+      //@ts-expect-error
         userid={currentUser ? currentUser.userid : ""}
         forSearch={false}
         forUser={false}
