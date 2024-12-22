@@ -6,6 +6,7 @@ import SingleNoteCard from "./SingleNoteCard";
 import Loading from "../Loading";
 import { getNotesClientSide } from "@/apicalls/apicalls";
 import { findNotes } from "@/apicalls/apicalls";
+import { getUserNotes } from "@/apicalls/apicalls";
 function Notes({
   forSearch,
   forUser,
