@@ -1,15 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import {
-  findNotes,
-  getNotesClientSide,
-  getUserNotes,
-} from "@/apicalls/apicalls";
-import Loading from "../Loading";
 import { useRouter } from "next/router";
 import { noteinterface } from "@/interfaces/noteinterface";
 import SingleNoteCard from "./SingleNoteCard";
+import Loading from "../Loading";
+import { getNotesClientSide } from "@/apicalls/apicalls";
+import { findNotes } from "@/apicalls/apicalls";
 function Notes({
   forSearch,
   forUser,
@@ -22,7 +18,7 @@ function Notes({
   const router = useRouter();
   const initialdata: Array<noteinterface> = [];
   const [loading, setLoading] = useState(true);
-  ///usernotes for search regular notes
+
   const {
     data: RegularNotesData,
     fetchNextPage: fetchNextPageRegular,
@@ -35,22 +31,14 @@ function Notes({
       return data;
     },
     {
-      onSuccess: () => {
-        setLoading(false);
-      },
-      onError: () => {
-        setLoading(false);
-      },
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1;
-      },
+      onSuccess: () => setLoading(false),
+      onError: () => setLoading(false),
+      getNextPageParam: (_, pages) => pages.length + 1,
       enabled: !forSearch && !forUser,
-      initialData: {
-        pages: [initialdata],
-        pageParams: [1],
-      },
+      initialData: { pages: [initialdata], pageParams: [1] },
     }
   );
+
   const {
     data: NotesSearchData,
     fetchNextPage: fetchNextSearch,
@@ -62,22 +50,14 @@ function Notes({
       return response.data;
     },
     {
-      onSuccess: () => {
-        setLoading(false);
-      },
-      onError: () => {
-        setLoading(false);
-      },
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1;
-      },
+      onSuccess: () => setLoading(false),
+      onError: () => setLoading(false),
+      getNextPageParam: (_, pages) => pages.length + 1,
       enabled: forSearch,
-      initialData: {
-        pages: [initialdata],
-        pageParams: [1],
-      },
+      initialData: { pages: [initialdata], pageParams: [1] },
     }
   );
+
   const {
     data: NotesUserData,
     fetchNextPage: FetchNextUser,
@@ -89,57 +69,47 @@ function Notes({
       return response.data.notes;
     },
     {
-      onSuccess: () => {
-        setLoading(false);
-      },
-      onError: () => {
-        setLoading(false);
-      },
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1;
-      },
+      onSuccess: () => setLoading(false),
+      onError: () => setLoading(false),
+      getNextPageParam: (_, pages) => pages.length + 1,
       enabled: forUser,
-      initialData: {
-        pages: [initialdata],
-        pageParams: [1],
-      },
+      initialData: { pages: [initialdata], pageParams: [1] },
     }
   );
-  console.log(RegularNotesData);
-  if (loading) {
-    return (
-      <div className="w-1/2">
-        <Loading />
-      </div>
-    );
-  }
-  let tomap;
-  if (forUser) {
-    tomap = NotesUserData;
-  } else if (forSearch) {
-    tomap = NotesSearchData;
-  } else {
-    tomap = RegularNotesData;
-  }
-  console.log(tomap);
-  return (
-    <div className=" pb-2">
-      {tomap?.pages?.map((page: Array<noteinterface>, i) => (
-        <div
-          className=" grid grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-3"
-          key={i}
-        >
-          {page.map((element) => (
-            <SingleNoteCard key={element._id} {...element} />
-          ))}
-        </div>
-      ))}
 
-      {RegularNotesData?.pages[RegularNotesData.pages.length - 1].length ==
-        10 && (
+  const dataToMap = forUser
+    ? NotesUserData
+    : forSearch
+    ? NotesSearchData
+    : RegularNotesData;
+
+  return (
+    <div className="relative">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50">
+          <Loading />
+        </div>
+      )}
+      <div className="pb-2">
+        {dataToMap?.pages?.map((page: Array<noteinterface>, i) => (
+          <div
+            className="grid grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-3"
+            key={i}
+          >
+            {page.map((note) => (
+              <SingleNoteCard key={note._id} {...note} />
+            ))}
+          </div>
+        ))}
+      </div>
+      {dataToMap?.pages?.[dataToMap.pages.length - 1]?.length === 10 && (
         <div className="flex justify-center items-center">
           <button
-            disabled={isFetchingNextPageRegular}
+            disabled={
+              isFetchingNextPageRegular ||
+              isFetchingSearch ||
+              isFetchingUserNote
+            }
             onClick={() => {
               if (forSearch) fetchNextSearch();
               else if (forUser) FetchNextUser();
