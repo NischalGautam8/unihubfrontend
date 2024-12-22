@@ -39,7 +39,7 @@ function LoadingSpinner() {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
-
+return <></>
   // return loading ? (
   //   <div
   //     style={{ backgroundColor: "#000000" }}
