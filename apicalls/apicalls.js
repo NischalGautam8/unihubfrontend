@@ -49,9 +49,12 @@ const handleUnlikeUtil = async (_id, userid, jwt) => {
   }
 };
 const findUserByUsername = async (username) => {
-  const res = await axios.get("http://localhost:3000/api/usser/find", {
-    username,
-  });
+  const res = await axios.get(
+    "https://unihubbackend.onrender.com/api/usser/find",
+    {
+      username,
+    }
+  );
   return res.data.user;
 };
 const createConversation = async (users) => {
