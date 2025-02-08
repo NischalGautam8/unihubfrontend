@@ -67,7 +67,7 @@ function Index() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       <CreatePost />
       <Posts
       //@ts-expect-error

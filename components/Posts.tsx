@@ -14,6 +14,7 @@ import Loading from "./Loading";
 import { useRouter } from "next/router";
 import { noteinterface } from "@/interfaces/noteinterface";
 import SavedPosts from "./SavedPosts";
+import SinglePostSkeleton from "./SinglePostSkeleton";
 
 export default function Posts({
   forSearch,
@@ -175,13 +176,15 @@ export default function Posts({
   console.log(loading);
   ///////////////add user posts
   // if (!data) return <></>;
-  // if (loading) {
-  //   return (
-  //     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 h-6">
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+     
+<div className="space-y-6">
+      {[...Array(5)].map((_, index) => (
+        <SinglePostSkeleton key={index} />
+      ))}
+    </div>    );
+  }
   let tomap;
 
   if (forSaved) {
@@ -206,6 +209,7 @@ export default function Posts({
         ))}
       </div>
       <div className="flex justify-center items-center">
+        
         {RegularPosts?.pages[RegularPosts.pages.length - 1].length == 20 && (
           <button
             disabled={isFetchingNextPageRegular}

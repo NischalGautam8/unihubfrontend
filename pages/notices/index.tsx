@@ -14,7 +14,7 @@ interface props {
 function index({ data }: { data: Array<notice> }) {
   console.log(data);
   return (
-    <div>Notices</div>
+    <div className="h-screen">Notices section</div>
     // <div className="min-h-screen px-5 flex flex-col gap-5">
     //   {data.map((element) => (
     //     <SingleNotice

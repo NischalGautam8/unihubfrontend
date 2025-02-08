@@ -49,7 +49,7 @@ function CreatePost() {
     router.reload();
   };
   return (
-    <div className="flex w-[380px] md:w-[500px] lg:w-[600px]   mb-5  ">
+    <div className="flex w-full max-w-2xl   mb-5  ">
       <div className="relative  w-full ">
         <input
           onChange={(e) => setInput(e.target.value)}
