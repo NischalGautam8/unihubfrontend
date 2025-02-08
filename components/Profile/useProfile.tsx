@@ -10,7 +10,6 @@ function useProfile() {
       const res = await axios.get(
         `https://unihubbackend.onrender.com/api/user/${userid}?myid=${myid}`
       );
-      console.log(res.data,"res");
       return res;
     } catch (err) {
       console.log(err);
