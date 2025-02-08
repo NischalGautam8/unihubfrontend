@@ -50,7 +50,7 @@ const handleUnlikeUtil = async (_id, userid, jwt) => {
 };
 const findUserByUsername = async (username) => {
   const res = await axios.get(
-    "https://unihubbackend.onrender.com/api/usser/find",
+    "https://unihubbackend.onrender.com/api/user/find",
     {
       username,
     }

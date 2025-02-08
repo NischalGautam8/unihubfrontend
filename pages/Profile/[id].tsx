@@ -183,7 +183,11 @@ function profile() {
             </div>
           </div>
         ) : (
-          <div className="w-10 h-3 animate-pulse bg-gray-800"/>
+          <div className="space-x-3 flex items-center">
+                        <div className="w-12 h-12 rounded-full bg-gray-800 animate-pulse" />
+
+          <div className="w-12 h-5 animate-pulse bg-gray-800"/>
+          </div>
         )}
         <div className="tabs flex gap-5 mt-8 px-5 ">
           {tabs.map((tab) => {
