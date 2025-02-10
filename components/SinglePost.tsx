@@ -66,7 +66,7 @@ function SinglePost({
       // onClick={(e) => {
       //   router.push(`/posts/${_id}`);
       // }}
-      className="w-full max-w-2xl  mx-auto rounded-md overflow-hidden border-gray-800 "
+      className="w-full max-w-2xl rounded-md overflow-hidden border-gray-800 "
       // style={{ width: "700px" }}
     >
       <div
