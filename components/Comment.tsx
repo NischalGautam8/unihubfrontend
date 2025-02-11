@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SingleComment from "./SingleComment";
 import Image from "next/image";
-import pp from "../public/pp.jpg";
 import axios from "axios";
 import Loading from "./Loading";
 import { Router, useRouter } from "next/router";
@@ -9,6 +8,7 @@ import { commentinterface } from "@/interfaces/commentinterface";
 import { makeComment, getComment } from "@/apicalls/apicalls";
 import { userinterface } from "@/interfaces/userinterface";
 import { toast } from "react-hot-toast";
+import { AccountCircle } from "@mui/icons-material";
 interface comment {
   _id: string;
   user: string;
@@ -92,17 +92,7 @@ function Comment({
         </div>
       )}
       <div className="flex items-center">
-        <Image
-          className="rounded-full max-w-fit"
-          style={{
-            borderRadius: "999px",
-            objectFit: "cover",
-            width: "40px",
-            height: "40px",
-          }}
-          src={pp}
-          alt="profile"
-        />
+       <AccountCircle className="w-12 h-12"/>
         <input
           value={comment}
           onChange={(e) => setcomment(e.target.value)}

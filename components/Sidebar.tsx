@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import secret from "../public/icons8-secured-mail-50.png";
+// import secret from "../public/icons8-secured-mail-50.png";
 
 function Sidebar() {
   const [active, setActive] = React.useState("Home");
@@ -28,7 +28,7 @@ function Sidebar() {
             <h1 className="text-xl  font-poppins">Home</h1>
           </div>
         </Link>
-        <Link href="https://www.confess.nischalgautam.com.np">
+        {/* <Link href="https://www.confess.nischalgautam.com.np">
           <div
             onClick={() => {
               setActive("Confessions");
@@ -46,7 +46,7 @@ function Sidebar() {
             <Image style={{ width: "34px" }} alt="secret" src={secret} />
             <h1 className="text-xl  font-poppins">Confessions</h1>
           </div>
-        </Link>
+        </Link> */}
         <Link href="/notes">
           <div
             onClick={() => {
@@ -85,7 +85,7 @@ function Sidebar() {
             <h1 className="text-xl  font-poppins">Message</h1>
           </div>
         </Link>
-        <Link href="/notices">
+        {/* <Link href="/notices">
           <div
             onClick={() => {
               setActive("Notices");
@@ -103,7 +103,7 @@ function Sidebar() {
             <Icon width={"34px"} icon="ic:baseline-home" />
             <h1 className="text-xl  font-poppins">Notices</h1>
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

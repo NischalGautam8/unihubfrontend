@@ -2,18 +2,17 @@ import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useEffect } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import comment from "../public/comment.png";
-import save from "../public/saved.png";
+
 import unsave from "../public/icons8-save-30.png";
 
 import "../styles/Home.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { postinterface } from "@/interfaces/postinterface";
 import cookie from "js-cookie";
 import { handleLikeUtil, handleUnlikeUtil } from "@/apicalls/apicalls";
 import { userinterface } from "@/interfaces/userinterface";
+import { AccountCircle, CommentRounded } from "@mui/icons-material";
 interface props{
   _id: string;
    description: string; userId: {firstName:string;lastName:string;username:string;_id:string};hasLiked?:boolean;image?:string;commentsCount?:number;likesCount:number}
@@ -83,22 +82,7 @@ function SinglePost({
             }
           >
             <div className="">
-              <Image
-                style={{
-                  borderRadius: "999px",
-                  objectFit: "cover",
-                  width: "50px",
-                  height: "50px",
-                }}
-                className="rounded-full max-w-fit"
-                alt="profilepic"
-                width={50}
-                height={50}
-                src={
-                  image ||
-                  "https://res.cloudinary.com/ds8b7v9pf/image/upload/v1686138382/vtte6f71uucqydh78dhw.png"
-                }
-              ></Image>
+              <AccountCircle className="w-12 h-12"/>
             </div>
           </div>
           <div className="content__section flex flex-col gap-3 ">
@@ -149,12 +133,7 @@ function SinglePost({
                 </h1>
               </div>
               <div className="comment flex items-center gap-2">
-                <Image
-                  src={comment}
-                  alt="comment"
-                  width={18}
-                  height={18}
-                ></Image>
+                <CommentRounded/>
                 <h1
                   className=" text-sm font-ubuntu "
                   style={{ color: "#8B8B8B" }}
@@ -181,7 +160,7 @@ function SinglePost({
                 <button
                   onClick={async () =>
                     await navigator.clipboard.writeText(
-                      `http://localhost:3000/posts/${_id}`
+                      `https://https://unihubfrontend.vercel.app/posts/${_id}`
                     )
                   }
                   style={{ color: "black" }}

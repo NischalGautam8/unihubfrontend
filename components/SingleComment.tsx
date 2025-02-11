@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import commentpic from "../public/comment.png";
-import pp from "../public/pp.jpg";
-import post from "../public/post.jpg";
+import { AccountCircle, CommentRounded } from "@mui/icons-material";
 import "../styles/Home.module.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -67,22 +66,8 @@ function SingleComment({
           className="profile__pic__content flex gap-3"
         >
           <div className="">
-            <Image
-              style={{
-                borderRadius: "999px",
-                objectFit: "cover",
-                width: "50px",
-                height: "50px",
-              }}
-              className="rounded-full max-w-fit"
-              alt="profilepic"
-              width={50}
-              height={50}
-              src={
-                user.profilepic ||
-                "https://res.cloudinary.com/ds8b7v9pf/image/upload/v1686138382/vtte6f71uucqydh78dhw.png"
-              }
-            ></Image>
+                          <AccountCircle className="w-12 h-12"/>
+            
           </div>
           <div className="content__section flex flex-col gap-3 ">
             <div className="profilename flex flex-col gap-1  ">
@@ -129,13 +114,7 @@ function SingleComment({
                   onClick={() => setreply((prev) => !prev)}
                   className="comment icon cursor-pointer  flex items-center gap-2"
                 >
-                  <Image
-                    // onClick={() => setreply((prev) => !prev)}
-                    src={commentpic}
-                    alt="comment"
-                    width={18}
-                    height={18}
-                  ></Image>
+                  <CommentRounded/>
                   <h1
                     className="  text-sm font-ubuntu "
                     style={{ color: "#8B8B8B" }}

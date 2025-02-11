@@ -37,7 +37,7 @@ function Id({
   console.log("singlepostdata",data);
   return (
     <div className="  min-h-screen ">
-      <div className=" fixed flex gap-2  items-center">
+      <div className="  flex gap-2  items-center">
         <Link href={route.query.refby?.toString() || "/"}>
           <Icon width={42} icon="ion:arrow-back-outline" color="white" />
         </Link>

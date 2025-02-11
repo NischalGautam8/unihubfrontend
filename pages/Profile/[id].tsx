@@ -17,6 +17,7 @@ import UserPosts from "@/components/userPosts";
 import Notes from "@/components/forNotes/Notes";
 import UserNotes from "@/components/forNotes/UserNotes";
 import SavedPosts from "@/components/SavedPosts";
+import { AccountCircle } from "@mui/icons-material";
 export interface responseData extends userinterface {
   followerCount: Number;
   followingCount: Number;
@@ -88,7 +89,7 @@ function profile() {
   });
   return (
     <div className="min-h-screen  ">
-      <div className=" flex mb-5 fixed  gap-2  items-center  ">
+      <div className=" flex mb-5   gap-2  items-center  ">
         <Link href={router.query.refby?.toString() || "/"}>
           <Icon width={42} icon="ion:arrow-back-outline" color="white" />
         </Link>
@@ -98,7 +99,7 @@ function profile() {
         {userData ? (
           <div className="top">
             <div className="pp border border-black">
-              <Image
+              {/* <Image
                 style={{
                   borderRadius: "999px",
                   objectFit: "cover",
@@ -108,7 +109,8 @@ function profile() {
                 className="rounded-full max-w-fit"
                 src={pp}
                 alt={"profilePic"}
-              />
+              /> */}
+              <AccountCircle className="w-16 h-16"/>
             </div>
             <div className="textContent pl-2 ">
               <div className="flex gap-5">

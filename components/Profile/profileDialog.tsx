@@ -183,13 +183,6 @@ export default function ProfileDialog({
             <Button className="" onClick={handleClose}>
               Cancel
             </Button>
-            <Button
-              onClick={() => {
-                handleClose();
-              }}
-            >
-              Create
-            </Button>
           </DialogActions>
         </div>
       </Dialog>
