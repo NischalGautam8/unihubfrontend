@@ -32,6 +32,7 @@ function SinglePost({
   useEffect(() => {
     let user = JSON.parse(cookie.get("user") || "");
     setUser(user);
+
     let refresh_token = cookie.get("refresh_token") || "";
     setrefresh_token(refresh_token);
   }, []);

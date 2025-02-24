@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Posts from "@/components/Posts";
 import CreatePost from "@/components/CreatePost";
+import PostsHomePage from "@/components/PostsHomePage";
 import { useDispatch } from "react-redux";
 import { login } from "@/features/user";
 import { fetchPosts } from "@/apicalls/apicalls";
@@ -69,13 +70,14 @@ function Index() {
   return (
     <div className="min-h-screen ">
       <CreatePost />
-      <Posts
+      {/* <Posts
       //@ts-expect-error
         userid={currentUser ? currentUser.userid : ""}
         forSearch={false}
         forUser={false}
         forSaved={false}
-      />
+      /> */}
+      <PostsHomePage/>
     </div>
   );
 }
