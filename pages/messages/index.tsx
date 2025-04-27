@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<any> = async (context) => {
   const { Cookies } = context.req.headers;
   //   console.log(Cookies);
   const response = await axios.get(
-    `https://unihubbackend.onrender.com/api/conversation?userid=${user.userid}`
+    `https://unihubbackend-production.up.railway.app/api/conversation?userid=${user.userid}`
   );
   console.log(response);
   return {

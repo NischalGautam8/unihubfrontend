@@ -29,7 +29,7 @@ function SignUpForm() {
   const handleRegister = async () => {
     try {
       const res = await axios.post(
-        "https://unihubbackend.onrender.com/api/register",
+        "https://unihubbackend-production.up.railway.app/api/register",
         input
       );
       var hundred = new Date(new Date().getTime() + 100 * 864000 * 1000);

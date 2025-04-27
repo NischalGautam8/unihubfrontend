@@ -12,7 +12,7 @@ import messageinterface from "../../interfaces/messageinterface";
 const token = Cookies.get("refresh_token");
 // console.log("token", token);
 //@ts-expect-error connect
-const socket = io.connect("https://unihubbackend.onrender.com", {
+const socket = io.connect("https://unihubbackend-production.up.railway.app", {
   auth: {
     token: token,
     user: Cookies.get("user") && JSON.parse(Cookies.get("user") || "").userid,
@@ -93,7 +93,7 @@ export const getServerSideProps: GetServerSideProps<any> = async (context) => {
   const { Cookies } = context.req.headers;
   //   console.log(Cookies);
   const response = await axios.get(
-    `https://unihubbackend.onrender.com/api/conversation?userid=${user.userid}`
+    `https://unihubbackend-production.up.railway.app/api/conversation?userid=${user.userid}`
   );
   console.log(response);
   return {

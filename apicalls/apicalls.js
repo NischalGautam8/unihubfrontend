@@ -1,14 +1,14 @@
 import axios from "axios";
 const getFollowingModule = async (userid) => {
   const follwing = await axios.get(
-    "https://unihubbackend.onrender.com/api/following/" + userid
+    "https://unihubbackend-production.up.railway.app/api/following/" + userid
   );
   return follwing;
 };
 const createPost = async (description, userId, jwt) => {
   try {
     const response = await axios.post(
-      "https://unihubbackend.onrender.com/api/posts",
+      "https://unihubbackend-production.up.railway.app/api/posts",
       {
         description,
         userId,
@@ -24,7 +24,7 @@ const createPost = async (description, userId, jwt) => {
 const handleLikeUtil = async (_id, userid, jwt) => {
   try {
     const response = await axios.post(
-      `https://unihubbackend.onrender.com/api/posts/like/${_id}`,
+      `https://unihubbackend-production.up.railway.app/api/posts/like/${_id}`,
       {
         userid,
         jwt,
@@ -37,7 +37,7 @@ const handleLikeUtil = async (_id, userid, jwt) => {
 const handleUnlikeUtil = async (_id, userid, jwt) => {
   try {
     const response = await axios.post(
-      `https://unihubbackend.onrender.com/api/posts/unlike/${_id}`,
+      `https://unihubbackend-production.up.railway.app/api/posts/unlike/${_id}`,
       {
         userid,
         jwt,
@@ -50,7 +50,7 @@ const handleUnlikeUtil = async (_id, userid, jwt) => {
 };
 const findUserByUsername = async (username) => {
   const res = await axios.get(
-    "https://unihubbackend.onrender.com/api/user/find",
+    "https://unihubbackend-production.up.railway.app/api/user/find",
     {
       username,
     }
@@ -70,7 +70,7 @@ const createConversation = async (users) => {
   }
   console.log(name);
   const conversation = await axios.post(
-    "https://unihubbackend.onrender.com/api/conversation",
+    "https://unihubbackend-production.up.railway.app/api/conversation",
     {
       name: name,
       users: users,
@@ -81,7 +81,7 @@ const createConversation = async (users) => {
 const getSingleNote = async (id, userid) => {
   try {
     const res = await axios.get(
-      "https://unihubbackend.onrender.com/api/" +
+      "https://unihubbackend-production.up.railway.app/api/" +
         "notes/view/" +
         id +
         "?userid=" +
@@ -97,7 +97,8 @@ const getComment = async (compontenttype, refid) => {
   try {
     console.log(compontenttype);
     const res = await axios.get(
-      "https://unihubbackend.onrender.com/api/" + `${compontenttype}/${refid}`
+      "https://unihubbackend-production.up.railway.app/api/" +
+        `${compontenttype}/${refid}`
     );
     console.log(res);
 
@@ -110,7 +111,8 @@ const makeComment = async (compontenttype, refid, userinfo, comment) => {
   try {
     console.log("userinfo", userinfo);
     const comm = await axios.post(
-      "https://unihubbackend.onrender.com/api/" + `${compontenttype}/${refid}`,
+      "https://unihubbackend-production.up.railway.app/api/" +
+        `${compontenttype}/${refid}`,
       {
         content: comment,
         userid: userinfo.userid,
@@ -124,7 +126,7 @@ const makeComment = async (compontenttype, refid, userinfo, comment) => {
 const getNotesClientSide = async (page, subject) => {
   try {
     const res = await axios.get(
-      `https://unihubbackend.onrender.com/api/notes?page=${page}&&subject=${subject}`
+      `https://unihubbackend-production.up.railway.app/api/notes?page=${page}&&subject=${subject}`
     );
     // console.log(res);
     return res.data.notes;
@@ -135,7 +137,9 @@ const getNotesClientSide = async (page, subject) => {
 const getRating = async (noteid, userid) => {
   try {
     const res = await axios.get(
-      "https://unihubbackend.onrender.com/api/" + "notes/rate/" + noteid,
+      "https://unihubbackend-production.up.railway.app/api/" +
+        "notes/rate/" +
+        noteid,
       {
         userid,
       }
@@ -149,7 +153,9 @@ const getRating = async (noteid, userid) => {
 const rateNote = async (noteid, userid, rating) => {
   try {
     const res = await axios.post(
-      "https://unihubbackend.onrender.com/api/" + "notes/rate/" + noteid,
+      "https://unihubbackend-production.up.railway.app/api/" +
+        "notes/rate/" +
+        noteid,
       {
         userid: userid,
         rating,
@@ -163,13 +169,13 @@ const rateNote = async (noteid, userid, rating) => {
 const fetchUserPosts = async (userId, page, myid) => {
   console.log("fetchuserposts", userId, myid);
   const res = await axios.get(
-    `https://unihubbackend.onrender.com/api/posts/user/${userId}?page=${page}&&myid=${myid}`
+    `https://unihubbackend-production.up.railway.app/api/posts/user/${userId}?page=${page}&&myid=${myid}`
   );
   return res;
 };
 const getSavedPosts = async (userId, page, jwt) => {
   const res = await axios.get(
-    `https://unihubbackend.onrender.com/api/posts/saved/${userId}?page=${page}`,
+    `https://unihubbackend-production.up.railway.app/api/posts/saved/${userId}?page=${page}`,
     {
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -182,26 +188,26 @@ const findPosts = async (querystring, userid) => {
   console.log("querystring", querystring);
   console.log("usserid", userid);
   const res = await axios.get(
-    `https://unihubbackend.onrender.com/api/posts/find?querystring=${querystring}&&userid=${userid}`
+    `https://unihubbackend-production.up.railway.app/api/posts/find?querystring=${querystring}&&userid=${userid}`
   );
   return res;
 };
 const findNotes = async (querystring) => {
   console.log(querystring);
   const res = await axios.get(
-    `https://unihubbackend.onrender.com/api/notes/find?querystring=${querystring}`
+    `https://unihubbackend-production.up.railway.app/api/notes/find?querystring=${querystring}`
   );
   return res;
 };
 const findUsers = async (querystring) => {
   const res = await axios.get(
-    `https://unihubbackend.onrender.com/api/users/find?querystring=${querystring}`
+    `https://unihubbackend-production.up.railway.app/api/users/find?querystring=${querystring}`
   );
   return res;
 };
 const fetchPosts = async (userid, page) => {
   const res = await fetch(
-    "https://unihubbackend.onrender.com/api/posts?userid=" +
+    "https://unihubbackend-production.up.railway.app/api/posts?userid=" +
       `${userid}&&page=${page}`
   );
   const data = await res.json();
@@ -209,7 +215,7 @@ const fetchPosts = async (userid, page) => {
 };
 const getUserNotes = async (id, page) => {
   const res = await axios.get(
-    `https://unihubbackend.onrender.com/api/notes/user/${id}?page=${page}`
+    `https://unihubbackend-production.up.railway.app/api/notes/user/${id}?page=${page}`
   );
   return res;
 };
