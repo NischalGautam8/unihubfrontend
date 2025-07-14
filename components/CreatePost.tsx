@@ -36,7 +36,7 @@ function CreatePost() {
         }
       }
       const response = await axios.post(
-        "https://unihubbackend-production.up.railway.app/api/posts",
+        "https://unihubbackend.onrender.com/api/posts",
         formdata
       );
       setInput("");

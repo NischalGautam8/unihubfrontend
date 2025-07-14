@@ -10,7 +10,7 @@ function PostsHomePage() {
     useEffect(() => {
         const getPosts = async () => {
             try {
-                const response = await fetch("https://unihubbackend-production.up.railway.app/api/posts");
+                const response = await fetch("https://unihubbackend.onrender.com/api/posts");
                 const data = await response.json();
                 setPosts(data.msg);
                 setLoading(false);

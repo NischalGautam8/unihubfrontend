@@ -55,7 +55,7 @@ function CreateNote() {
       formData.append("uploadedBy", user.userid);
       formData.append("jwt", user.refresh_token);
       const response = await axios.post(
-        "https://unihubbackend-production.up.railway.app/api/notes",
+        "https://unihubbackend.onrender.com/api/notes",
         formData
       );
       if (response.status == 200) {
